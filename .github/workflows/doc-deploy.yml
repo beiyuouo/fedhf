@@ -30,6 +30,6 @@ jobs:
           publish_branch: gh-pages  # default: gh-pages
           publish_dir: ./docs/public  # default: public
           # external_repository: beiyuouo/FedHF
-          cname: beiyuouo.github.io
+          cname: fedhf.bj-yan.top
 
 # reference https://github.com/marketplace/actions/github-pages-action 
