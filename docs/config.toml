@@ -1,0 +1,142 @@
+baseURL = 'https://beiyuouo.github.io/fedhf/'
+languageCode = 'en-us'
+title = "hugo-theme-learn"
+# Change the default theme to be use when building the site with Hugo
+theme = "hugo-theme-learn"
+
+# For search functionality
+[outputs]
+home = [ "HTML", "RSS", "JSON"]
+
+[params]
+  # Prefix URL to edit current page. Will display an "Edit this page" button on top right hand corner of every page.
+  # Useful to give opportunity to people to create merge request for your doc.
+  # See the config.toml file from this documentation site to have an example.
+  editURL = ""
+  # Author of the site, will be used in meta information
+  author = ""
+  # Description of the site, will be used in meta information
+  description = ""
+  # Shows a checkmark for visited pages on the menu
+  showVisitedLinks = false
+  # Disable search function. It will hide search bar
+  disableSearch = false
+  # Javascript and CSS cache are automatically busted when new version of site is generated.
+  # Set this to true to disable this behavior (some proxies don't handle well this optimization)
+  disableAssetsBusting = false
+  # Set this to true to disable copy-to-clipboard button for inline code.
+  disableInlineCopyToClipBoard = false
+  # A title for shortcuts in menu is set by default. Set this to true to disable it.
+  disableShortcutsTitle = false
+  # If set to false, a Home button will appear below the search bar on the menu.
+  # It is redirecting to the landing page of the current language if specified. (Default is "/")
+  disableLandingPageButton = true
+  # When using mulitlingual website, disable the switch language button.
+  disableLanguageSwitchingButton = false
+  # Hide breadcrumbs in the header and only show the current page title
+  disableBreadcrumb = true
+  # If set to true, prevents Hugo from including the mermaid module if not needed (will reduce load times and traffic)
+  disableMermaid = false
+  # Specifies the remote location of the mermaid js
+  customMermaidURL = "https://unpkg.com/mermaid@8.8.0/dist/mermaid.min.js"
+  # Hide Next and Previous page buttons normally displayed full height beside content
+  disableNextPrev = true
+  # Order sections in menu by "weight" or "title". Default to "weight"
+  ordersectionsby = "weight"
+  # Change default color scheme with a variant one. Can be "red", "blue", "green".
+  themeVariant = ""
+  # Provide a list of custom css files to load relative from the `static/` folder in the site root.
+  custom_css = ["css/foo.css", "css/bar.css"]
+  # Change the title separator. Default to "::".
+  titleSeparator = "-"
+  # Change default color scheme with a variant one. Can be "red", "blue", "green".
+  # themeVariant = "blue"
+
+
+[Languages]
+[Languages.en]
+title = "Documentation for Hugo Learn Theme"
+weight = 1
+languageName = "English"
+landingPageURL = "/en"
+landingPageName = "<i class='fas fa-home'></i> Home"
+
+[[Languages.en.menu.shortcuts]]
+name = "<i class='fab fa-fw fa-github'></i> GitHub repo"
+identifier = "ds"
+url = "https://github.com/matcornic/hugo-theme-learn"
+weight = 10
+
+[[Languages.en.menu.shortcuts]]
+name = "<i class='fas fa-fw fa-camera'></i> Showcases"
+url = "showcase"
+weight = 11
+
+[[Languages.en.menu.shortcuts]]
+name = "<i class='fas fa-fw fa-bookmark'></i> Hugo Documentation"
+identifier = "hugodoc"
+url = "https://gohugo.io/"
+weight = 20
+
+[[Languages.en.menu.shortcuts]]
+name = "<i class='fas fa-fw fa-bullhorn'></i> Credits"
+url = "/credits"
+weight = 30
+
+[Languages.fr]
+title = "Documentation du thème Hugo Learn"
+weight = 2
+languageName = "Français"
+landingPageURL = "/fr"
+landingPageName = "<i class='fas fa-home'></i> Accueil"
+
+[[Languages.fr.menu.shortcuts]]
+name = "<i class='fab fa-fw fa-github'></i> Repo GitHub"
+identifier = "ds"
+url = "https://github.com/matcornic/hugo-theme-learn"
+weight = 10
+
+[[Languages.fr.menu.shortcuts]]
+name = "<i class='fas fa-fw fa-camera'></i> Vitrine"
+url = "/showcase"
+weight = 11
+
+[[Languages.fr.menu.shortcuts]]
+name = "<i class='fas fa-fw fa-bookmark'></i> Documentation Hugo"
+identifier = "hugodoc"
+url = "https://gohugo.io/"
+weight = 20
+
+[[Languages.fr.menu.shortcuts]]
+name = "<i class='fas fa-fw fa-bullhorn'></i> Crédits"
+url = "/credits"
+weight = 30
+
+[Languages.zh]
+title = "Hugo 主题的 Learn 文档"
+weight = 3
+languageName = "简体中文"
+landingPageURL = "/zh"
+landingPageName = "<i class='fas fa-home'></i> 家"
+
+[[Languages.zh.menu.shortcuts]]
+name = "<i class='fab fa-fw fa-github'></i> GitHub 仓库"
+identifier = "ds"
+url = "https://github.com/matcornic/hugo-theme-learn"
+weight = 10
+
+[[Languages.zh.menu.shortcuts]]
+name = "<i class='fas fa-fw fa-camera'></i> 展示区"
+url = "/showcase"
+weight = 11
+
+[[Languages.zh.menu.shortcuts]]
+name = "<i class='fas fa-fw fa-bookmark'></i> Hugo 文档"
+identifier = "hugodoc"
+url = "https://gohugo.io/"
+weight = 20
+
+[[Languages.zh.menu.shortcuts]]
+name = "<i class='fas fa-fw fa-bullhorn'></i> 鸣谢"
+url = "/credits"
+weight = 30
