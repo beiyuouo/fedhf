@@ -15,6 +15,10 @@ class opts(object):
     def __init__(self):
         self.parser = argparse.ArgumentParser()
 
+        # high priority setting
+        self.parser.add_argument('--from_file', default=None,
+                                 help='load config from file.')
+
         # basic experiment setting
         self.parser.add_argument('--dataset', default='mnist',
                                  help='see fedhf/dataset for available datasets')
@@ -43,6 +47,8 @@ class opts(object):
                                  help='logger name')
         self.parser.add_argument('--log_file', default=None, type=str,
                                  help='where to save log')
+        self.parser.add_argument('--log_level', default='debug', type=str,
+                                 help='log level, it could be in [ error | warning | info | debug ]')
 
         # model setting
         self.parser.add_argument('--model', default='resnet',
@@ -81,6 +87,9 @@ class opts(object):
         else:
             opt = self.parser.parse_args(args)
 
+        if opt.from_file:
+            opt = self.load_from_file(args)
+
         opt.gpus_str = opt.gpus
         opt.gpus = [int(gpu) for gpu in opt.gpus.split(',')]
         opt.gpus = [i for i in range(
@@ -88,9 +97,13 @@ class opts(object):
 
         opt.num_workers = max(opt.num_workers, 2 * len(opt.gpus))
 
-        # log dirs
+        # make dirs
         # TODO
 
         if opt.resume and opt.load_model == '':
             opt.load_model = os.path.join(opt.save_dir, 'model_last.pth')
         return opt
+
+    def load_from_file(self, args):
+        # TODO
+        pass

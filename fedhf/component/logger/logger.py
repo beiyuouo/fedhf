@@ -2,15 +2,17 @@
 # -*- encoding: utf-8 -*-
 """
 @File    :   fedhf\component\logger\logger.py
-@Time    :   2021/10/19 10:45:58
+@Time    :   2021-10-26 11:06:47
 @Author  :   Bingjie Yan
 @Email   :   bj.yan.pa@qq.com
+@License :   Apache License 2.0
 """
-import logging
-
 
 import logging
 import sys
+import wandb
+
+from base_logger import BaseLogger, logger_map
 
 logging.basicConfig(
     stream=sys.stdout,
@@ -20,20 +22,19 @@ logging.basicConfig(
 logging.getLogger().setLevel(logging.INFO)
 
 
-class Logger(object):
-    """record cmd info to file and print it to cmd at the same time
-
-    Args:
-        log_name (str): log name for output.
-        log_file (str): a file path of log file.
-    """
+class Logger(BaseLogger):
 
     def __init__(self, args):
+        if args.log_level in logger_map:
+            self.log_level = logger_map[args.log_level]
+        else:
+            raise "No such log level!"
+
         if args.log_name is not None:
             self.logger = logging.getLogger(args.log_name)
             self.name = args.log_name
         else:
-            logging.getLogger().setLevel(logging.INFO)
+            logging.getLogger().setLevel(logging.DEBUG)
             self.logger = logging
             self.name = "root"
 
@@ -45,10 +46,21 @@ class Logger(object):
             handler.setFormatter(formatter)
             self.logger.addHandler(handler)
 
-    def info(self, log_str):
-        """Print information to logger"""
+        if args.use_wandb:
+            self.use_wandb = args.use_wandb
+            wandb.init(project=args.project_name, config=args)
+
+    def debug(self, log_str: str) -> None:
+        self.logger.debug(log_str)
+
+    def info(self, log_str: str) -> None:
         self.logger.info(log_str)
 
-    def warning(self, warning_str):
-        """Print warning to logger"""
-        self.logger.warning(warning_str)
+    def warning(self, log_str: str) -> None:
+        self.logger.warning(log_str)
+
+    def error(self, log_str: str) -> None:
+        self.logger.error(log_str)
+
+    def to_wandb(self, log_dict: dict) -> None:
+        wandb.log(log_dict)

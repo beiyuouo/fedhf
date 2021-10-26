@@ -146,6 +146,9 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# logger
+/wandb/
+
 # dataset
 
 # tests
