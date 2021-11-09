@@ -1,0 +1,66 @@
+site_name: FedHF
+
+theme:
+  name: material
+  custom_dir: custom
+  features:
+    - navigation.indexes
+  language: en
+  palette: 
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+docs_dir: .
+site_dir: ../site
+site_author: Bingjie Yan
+site_description: >-
+  A document for FedHF
+
+site_url: https://www.bj-yan.top/FedHF/
+repo_url: https://github.com/beiyuouo/FedHF/
+
+copyright: Copyright &copy; 2021 - 2021 Bingjie Yan
+
+markdown_extensions:
+  - def_list
+  - pymdownx.tasklist:
+        custom_checkbox: true
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+plugins:
+  - same-dir
+  - search:
+      lang:
+        - en
+        - ja
+  - i18n:
+      default_language: en
+      languages:
+        en: English
+        zh: Chinese (Simplified)
+      # material_alternate: false
+
+extra:
+  #alternate:
+  #  - name: Default (en)
+  #    link: ./
+  #    lang: en
+  #  - name: English
+  #    link: ./en/
+  #    lang: en
+  #  - name: Chinese (Simplified)
+  #    link: ./zh/
+  #    lang: zh
+  analytics:
+    provider: google
+    property: UA-145083103-1

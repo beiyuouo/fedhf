@@ -1,0 +1,5 @@
+mkdocs
+mkdocs-material
+pymdown-extensions
+mkdocs-same-dir
+mkdocs-static-i18n
