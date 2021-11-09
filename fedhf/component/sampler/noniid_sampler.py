@@ -12,8 +12,8 @@ from .base_sampler import BaseSampler
 
 
 class NonIIDSampler(BaseSampler):
-    def __init__(self) -> None:
-        pass
+    def __init__(self, args) -> None:
+        self.args = args
 
-    def sample(self, dataset, args):
+    def sample(self, dataset):
         pass

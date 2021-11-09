@@ -22,7 +22,7 @@ sampler_factory = {
 
 def build_sampler(sam_name: str):
     if sam_name not in sampler_factory.keys():
-        raise NotImplementedError
+        raise ValueError(f'Sampler {sam_name} not found.')
 
     sampler = sampler_factory[sam_name]
 

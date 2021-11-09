@@ -22,6 +22,10 @@ class opts(object):
                                  help='load config from file.')
 
         # basic experiment setting
+        self.parser.add_argument('--name', default='experiment',
+                                    help='name of the experiment.')
+        self.parser.add_argument('--deploy_type', default='simulated',
+                                    help='type of deployment. [ simulated, standalone, distributed ]')
         self.parser.add_argument('--dataset', default='mnist',
                                  help='see fedhf/dataset for available datasets')
         self.parser.add_argument('--load_model', default='',

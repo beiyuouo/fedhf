@@ -23,6 +23,12 @@ setup(
                       'numpy',
                       'pandas',
                       'tqdm'],
+    extras_require = {
+        "dev": [ "nox",
+                 "pytest",
+                 "mkdocs"],
+
+    },
     python_requires='>=3.6',
     classifiers=[
         'Topic :: Scientific/Engineering',

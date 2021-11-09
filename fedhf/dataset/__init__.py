@@ -11,8 +11,8 @@
 __all__ = ["build_dataset", "MNISTDataset", "ClientDataset"]
 
 
-from mnist import MNISTDataset
-from client_datasest import ClientDataset
+from .mnist import MNISTDataset
+from .client_datasest import ClientDataset
 
 
 dataset_factory = {
