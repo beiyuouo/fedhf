@@ -21,7 +21,6 @@ setup(
     install_requires=['torch>=1.8.2',
                       'torchvision>=0.9.2',
                       'numpy',
-                      'pandas',
                       'tqdm'],
     extras_require = {
         "dev": [ "nox",

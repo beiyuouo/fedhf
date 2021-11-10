@@ -22,6 +22,8 @@ class opts(object):
                                  help='load config from file.')
 
         # basic experiment setting
+        self.parser.add_argument('--project_name', default='fedhf', type=str,
+                                 help='using for save result.')
         self.parser.add_argument('--name', default='experiment',
                                     help='name of the experiment.')
         self.parser.add_argument('--deploy_type', default='simulated',
@@ -47,8 +49,8 @@ class opts(object):
         # log setting
         self.parser.add_argument('--use_wandb', action='store_true',
                                  help='using wandb to store result')
-        self.parser.add_argument('--project_name', default='fedhf', type=str,
-                                 help='using for save result.')
+        self.parser.add_argument('--wandb_reinit', action='store_true',
+                                help='reinit wandb')
         self.parser.add_argument('--log_name', default='logger', type=str,
                                  help='logger name')
         self.parser.add_argument('--log_file', default=None, type=str,
@@ -77,7 +79,7 @@ class opts(object):
                                  help='clients number.')
         self.parser.add_argument('--num_local_epochs', type=int, default=3,
                                  help='local training epochs.')
-        self.parser.add_argument('--batch_size', type=int, default=32,
+        self.parser.add_argument('--batch_size', type=int, default=16,
                                  help='batch size')
         self.parser.add_argument('--num_rounds', type=int, default=10,
                                  help='server round.')

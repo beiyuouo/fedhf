@@ -8,19 +8,46 @@
 @License :   Apache License 2.0
 """
 
+import re
+from torch.utils.data import DataLoader
+
+from fedhf.component.evaluator import Evaluator
+from fedhf.component.logger import Logger
+from fedhf.component.trainer import Trainer
+from fedhf.model import build_criterion, build_model, build_optimizer
 
 from .base_client import BaseClient
-from fedhf.component.evaluator import Evaluator
-from fedhf.component.trainer import Trainer
-from fedhf.model import build_loss, build_model, build_optimizer
-
 
 class SimulatedClient(BaseClient):
-    def __init__(self, args) -> None:
+    def __init__(self, args, client_id) -> None:
         self.args = args
+        self.client_id = client_id
 
-        self.trainer = Trainer(args)
-        self.evaluator = Evaluator(args)
+        self.trainer = Trainer()
+        self.evaluator = Evaluator()
 
-    def train(self, data, model):
-        self.trainer.train(data, model)
+        self.logger = Logger()
+
+    def train(self, data, model, device):
+        self.optim = build_optimizer(self.optim)(model.parameters(), self.args.lr)
+        self.crit = build_criterion(self.args.loss)()
+        dataloader = DataLoader(data, batch_size=self.args.batch_size)
+
+        result = self.trainer.train(dataloader = dataloader, model = model, optim = self.optim, crit = self.crit, 
+                            num_epochs = self.args.local_num_epochs, client_id=self.client_id, device=device)
+        train_loss = result['train_loss']
+        model = result['model']
+        
+        self.logger.info(f'Finish training on client {self.client_id}, train_loss: {train_loss}')
+        return model
+
+    
+    def evaluate(self, data, model, device):
+        self.optim = build_optimizer(self.optim)(model.parameters(), self.args.lr)
+        self.crit = build_criterion(self.args.loss)()
+        dataloader = DataLoader(data, batch_size=self.args.batch_size)
+
+        result = self.evaluator.evaluate(dataloader = dataloader, model=model, optim = self.optim, crit = self.crit,
+                                client_id=self.client_id, device=device)
+
+        self.logger.info(f'Finish evaluating on client {self.client_id}, test_loss: {result["test_loss"]}')

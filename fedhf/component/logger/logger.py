@@ -55,7 +55,7 @@ class Logger(BaseLogger):
 
         if args.use_wandb:
             self.use_wandb = args.use_wandb
-            wandb.init(project=args.project_name, config=args)
+            wandb.init(project=args.project_name, config=args, reinit=args.wandb_reinit)
 
     def debug(self, log_str: str) -> None:
         self.logger.debug(log_str)

@@ -10,13 +10,13 @@
 
 __all__ = ['build_aggregator']
 
-from .sync_aggregator import SyncAggregator
-from .async_aggregator import AsyncAggregator
+from .fedasync_aggregator import FedAsyncAggregator
+from .fedavg_aggregator import FedAvgAggregator
 
 
 aggregator_factory = {
-    'fedavg': SyncAggregator,
-    'fedasync': AsyncAggregator,
+    'fedavg': FedAvgAggregator,
+    'fedasync': FedAsyncAggregator,
 }
 
 

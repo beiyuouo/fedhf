@@ -27,7 +27,7 @@ model_factory = {
 
 def build_model(model_name: str):
     if model_name not in model_factory.keys():
-        raise NotImplementedError
+        raise ValueError(f'Unknown model name: {model_name}')
 
     model = model_factory[model_name]
 
@@ -43,14 +43,14 @@ optimizer_factory = {
 
 def build_optimizer(optim_name: str):
     if optim_name not in optimizer_factory.keys():
-        raise NotImplementedError
+        raise ValueError(f'Unknown optimizer name: {optim_name}')
 
     optimizer = optimizer_factory[optim_name]
 
     return optimizer
 
 
-loss_factory = {
+criterion_factory = {
     'l1': nn.L1Loss,
     'mse': nn.MSELoss,
     'ce': nn.CrossEntropyLoss,
@@ -58,9 +58,9 @@ loss_factory = {
 }
 
 
-def build_loss(loss_name: str):
-    if loss_name not in loss_factory.keys():
-        raise NotImplementedError
+def build_criterion(criter_name: str):
+    if criter_name not in criterion_factory.keys():
+        raise ValueError(f'Unknown criterion name: {criter_name}')
 
-    loss = loss_factory[loss_name]
-    return loss
+    cirter = criterion_factory[criter_name]
+    return cirter
