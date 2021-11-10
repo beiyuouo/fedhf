@@ -150,6 +150,7 @@ cython_debug/
 /wandb/
 
 # dataset
+/dataset
 
 # tests
 /temp

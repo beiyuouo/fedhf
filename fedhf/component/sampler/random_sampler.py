@@ -10,7 +10,6 @@
 
 import numpy as np
 
-
 from fedhf.dataset import ClientDataset
 from .base_sampler import BaseSampler
 
@@ -26,4 +25,8 @@ class RandomSampler(BaseSampler):
             client_data_dict[i] = list(
                 np.random.choice(all_idxs, num_items, replace=False))
             all_idxs = list(set(all_idxs) - set(client_data_dict[i]))
-        return [ClientDataset(dataset, client_data_dict[i]) for i in range(self.args.num_clients)]
+
+        return [
+            ClientDataset(dataset, client_data_dict[i])
+            for i in range(self.args.num_clients)
+        ]

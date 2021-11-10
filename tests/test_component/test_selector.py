@@ -11,14 +11,16 @@
 from fedhf.component.selector import build_selector
 from fedhf.api import opts
 
+
 class TestSelector(object):
     client_list = [i for i in range(10)]
-    args = opts().parse()
+    args = opts().parse(['--num_clients', '10', '--select_ratio', '0.5'])
 
     def test_random_selector(self):
         selector = build_selector('random')(self.args)
-        
+
         assert selector is not None
         assert selector.__class__.__name__ == 'RandomSelector'
         assert selector.select(self.client_list) is not None
-        assert len(selector.select(self.client_list)) == int(self.args.num_clients * self.args.select_ratio)
+        assert len(selector.select(self.client_list)) == int(
+            self.args.num_clients * self.args.select_ratio)

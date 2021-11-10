@@ -18,9 +18,17 @@ class MNISTDataset(object):
 
         self.args = args
         self.num_classes = 10
-        self.transform = Compose([ToTensor(), Normalize((0.1307,), (0.3081,))])
+        self.transform = Compose(
+            [ToTensor(), Normalize((0.1307, ), (0.3081, ))])
 
-        self.trainset = MNIST(root=args.dataset_root, train=True,
-                              download=True, transform=self.transform)
-        self.testset = MNIST(root=args.dataset_root, train=False,
-                             download=True, transform=self.transform)
+        self.trainset = MNIST(root=args.dataset_root,
+                              train=True,
+                              download=True,
+                              transform=self.transform)
+        self.testset = MNIST(root=args.dataset_root,
+                             train=False,
+                             download=True,
+                             transform=self.transform)
+
+        self.trainset.num_classes = self.num_classes
+        self.testset.num_classes = self.num_classes
