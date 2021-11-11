@@ -8,35 +8,51 @@
 @License :   Apache License 2.0
 """
 
-import tqdm
+from tqdm import tqdm
 import wandb
 from torch.utils.data import DataLoader
 from fedhf.component.logger import Logger
+from fedhf.model import build_criterion, build_optimizer
 from .base_train import BaseTrainer
 
 
 class Trainer(BaseTrainer):
-    def __init__(self) -> None:
-        pass
+    def __init__(self, args) -> None:
+        super().__init__()
+        self.args = args
+        self.optim = build_optimizer(self.args.optim)
+        self.crit = build_criterion(self.args.loss)
+        self.logger = Logger(self.args)
 
-    @staticmethod
-    def train(dataloader,
+    def set_device(self, gpus, device):
+        if len(gpus) > 1:
+            pass
+        else:
+            pass
+
+    def train(self,
+              dataloader,
               model,
-              optim,
-              crit,
               num_epochs,
               client_id=None,
+              gpus=[],
               device='cpu'):
+        if len(gpus) > 1:
+            pass
+        else:
+            pass
+
         model = model.to(device)
-        optim = optim.to(device)
-        crit = crit.to(device)
+        optim = self.optim(params=model.parameters(), lr=self.args.lr)
+        crit = self.crit()
 
         train_loss = []
         for epoch in range(num_epochs):
             model.train()
             losses = []
-            for inputs, labels in tqdm(dataloader,
-                                       desc=f'Epoch {epoch+1}/{num_epochs}'):
+            for inputs, labels in tqdm(
+                    dataloader,
+                    desc=f'Client:{client_id} Epoch:{epoch+1}/{num_epochs}'):
                 inputs = inputs.to(device)
                 labels = labels.to(device)
 

@@ -15,13 +15,11 @@ import torch.nn as nn
 import torch.optim as optim
 from .resnet import ResNet
 from .mlp import MLP
-from .cnn import CNN
 
 model_factory = {
     'resnet': ResNet,
     'resnet18': ResNet,
     'mlp': MLP,
-    'cnn': CNN
 }
 
 

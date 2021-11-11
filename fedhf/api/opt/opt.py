@@ -10,6 +10,7 @@
 
 import argparse
 import os
+import torch
 
 
 class opts(object):
@@ -49,7 +50,7 @@ class opts(object):
 
         # system setting
         self.parser.add_argument(
-            '--device',
+            '--gpus',
             default='0',
             help='-1 for cpu, use comma for multiple gpus')
         self.parser.add_argument(
@@ -186,12 +187,13 @@ class opts(object):
         if opt.from_file:
             opt = self.load_from_file(args)
 
-        opt.gpus_str = opt.device
-        opt.device = [int(gpu) for gpu in opt.device.split(',')]
-        opt.device = [i for i in range(len(opt.device))
-                      ] if opt.device[0] >= 0 else [-1]
+        opt.gpus_str = opt.gpus
+        opt.gpus = [int(gpu) for gpu in opt.gpus.split(',')]
+        opt.gpus = [i for i in range(len(opt.gpus))
+                    ] if opt.gpus[0] >= 0 else [-1]
+        opt.device = torch.device('cuda' if opt.gpus[0] >= 0 else 'cpu')
 
-        opt.num_workers = max(opt.num_workers, 2 * len(opt.device))
+        opt.num_workers = max(opt.num_workers, 2 * len(opt.gpus))
 
         # make dirs
         # TODO

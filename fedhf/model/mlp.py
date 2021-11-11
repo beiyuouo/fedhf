@@ -13,15 +13,16 @@ import torch.nn as nn
 
 
 class MLP(nn.Module):
-    def __init__(self, dim_in, dim_hidden, dim_out):
+    def __init__(self, args, input_dim=28 * 28, hidden_dim=128, output_dim=10):
         super().__init__()
-        self.layer_input = nn.Linear(dim_in, dim_hidden)
+        self.args = args
+        self.layer_input = nn.Linear(input_dim, hidden_dim)
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout()
-        self.layer_hidden = nn.Linear(dim_hidden, dim_out)
+        self.layer_hidden = nn.Linear(hidden_dim, output_dim)
 
     def forward(self, x):
-        x = x.view(-1, x.shape[1]*x.shape[-2]*x.shape[-1])
+        x = x.view(-1, x.shape[1] * x.shape[-2] * x.shape[-1])
         x = self.layer_input(x)
         x = self.dropout(x)
         x = self.relu(x)

@@ -33,15 +33,20 @@ class SimulatedClient(BaseClient):
         self.crit = build_criterion(self.args.loss)()
         dataloader = DataLoader(data, batch_size=self.args.batch_size)
 
-        result = self.trainer.train(dataloader = dataloader, model = model, optim = self.optim, crit = self.crit, 
-                            num_epochs = self.args.local_num_epochs, client_id=self.client_id, device=device)
+        result = self.trainer.train(dataloader=dataloader,
+                                    model=model,
+                                    optim=self.optim,
+                                    crit=self.crit,
+                                    num_epochs=self.args.num_local_epochs,
+                                    client_id=self.client_id,
+                                    device=device)
         train_loss = result['train_loss']
         model = result['model']
-        
+
         self.logger.info(f'Finish training on client {self.client_id}, train_loss: {train_loss}')
         return model
 
-    
+
     def evaluate(self, data, model, device):
         self.optim = build_optimizer(self.optim)(model.parameters(), self.args.lr)
         self.crit = build_criterion(self.args.loss)()
