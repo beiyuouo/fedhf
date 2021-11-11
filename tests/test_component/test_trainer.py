@@ -8,6 +8,7 @@
 @License :   Apache License 2.0 
 """
 
+import torch
 from torch.utils.data import DataLoader
 
 from fedhf.api import opts
@@ -24,6 +25,34 @@ class TestTrainer(object):
     ])
 
     def test_trainer(self):
+        dataset = build_dataset(self.args.dataset)(self.args)
+
+        client_id = 0
+
+        model = build_model(self.args.model)(self.args)
+
+        client_dataset = ClientDataset(dataset.trainset,
+                                       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+        dataloader = DataLoader(client_dataset,
+                                batch_size=self.args.batch_size)
+
+        trainer = Trainer(self.args)
+        result = trainer.train(dataloader=dataloader,
+                               model=model,
+                               num_epochs=self.args.num_local_epochs,
+                               client_id=client_id,
+                               device=self.args.device)
+        train_loss = result['train_loss']
+        model = result['model']
+        print(train_loss)
+
+    def test_trainer_on_gpu(self):
+        if not torch.cuda.is_available():
+            return
+
+        self.args.gpus = '0'
+        self.args.device = torch.device('cuda:0')
+
         dataset = build_dataset(self.args.dataset)(self.args)
 
         client_id = 0

@@ -8,6 +8,7 @@
 @License :   Apache License 2.0 
 """
 
+import torch
 from torch.utils.data import DataLoader
 
 from fedhf.api import opts
@@ -24,6 +25,28 @@ class TestEvaluator:
     ])
 
     def test_evaluate(self):
+        dataset = build_dataset(self.args.dataset)(self.args)
+
+        client_id = 0
+
+        model = build_model(self.args.model)(self.args)
+
+        client_dataset = ClientDataset(dataset.trainset,
+                                       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+        dataloader = DataLoader(client_dataset,
+                                batch_size=self.args.batch_size)
+
+        evaluator = Evaluator(self.args)
+        evaluator.evaluate(dataloader=dataloader,
+                           model=model,
+                           device=self.args.device)
+
+    def test_evaluator_on_gpu(self):
+        if not torch.cuda.is_available():
+            return
+
+        self.args.gpus = '0'
+        self.args.device = torch.device('cuda:0')
         dataset = build_dataset(self.args.dataset)(self.args)
 
         client_id = 0
