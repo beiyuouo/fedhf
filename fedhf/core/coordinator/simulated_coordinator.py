@@ -10,13 +10,14 @@
 
 from copy import deepcopy
 
+from fedhf.core.server import build_server
+from fedhf.core.client import build_client
+
 from fedhf.component.aggregator import build_aggregator
-from fedhf.component.client import build_client
 from fedhf.component.logger import Logger
 from fedhf.component.sampler import build_sampler
 from fedhf.component.selector import build_selector
-from fedhf.component.server import build_server
-from fedhf.model import build_loss, build_model, build_optimizer
+from fedhf.model import build_criterion, build_model, build_optimizer
 from fedhf.dataset import build_dataset
 
 from .base_coordinator import BaseCoordinator
@@ -27,7 +28,6 @@ class SimulatedCoordinator(BaseCoordinator):
         In simulated scheme, the data and model belong to coordinator and there is no need communicator.
         Also, there is no need to instantiate every client.
     """
-
     def __init__(self, args) -> None:
         self.args = args
 
@@ -44,7 +44,6 @@ class SimulatedCoordinator(BaseCoordinator):
 
         self.logger = Logger(self.args)
 
-
     def main(self) -> None:
         for i in range(self.args.num_rounds):
             selected_client = self.server.select(self.client_list)
@@ -57,7 +56,7 @@ class SimulatedCoordinator(BaseCoordinator):
     def finish(self) -> None:
         for client in self.client_list:
             self.client.evaluate(self.data[client], self.server.model)
-        
+
         self.server.evaluate(self.data[self.client_list[0]], self.server.model)
 
     def run(self) -> None:

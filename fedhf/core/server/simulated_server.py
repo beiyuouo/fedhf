@@ -8,15 +8,16 @@
 @License :   Apache License 2.0
 """
 
-
 from torch.utils.data.dataloader import DataLoader
+from fedhf.component import evaluator
 from fedhf.component.aggregator import build_aggregator
 from fedhf.component.selector import build_selector
 from fedhf.component.evaluator import Evaluator
 from fedhf.component.serializer.serializer import Serializer
-from fedhf.model import build_loss, build_model, build_optimizer
+from fedhf.model import build_criterion, build_model, build_optimizer
 
 from .base_server import BaseServer
+
 
 class SimulatedServer(BaseServer):
     def __init__(self, args) -> None:
@@ -25,15 +26,24 @@ class SimulatedServer(BaseServer):
         self.selector = build_selector(self.args.selector)()
         self.aggregator = build_aggregator(self.args.agg)(self.args)
 
-        self.model = build_model(self.args.model)()
+        self.model = build_model(self.args.model)(self.args)
         self.evaluator = Evaluator()
 
     def select(self, client_list: list):
         return self.selector.select(client_list)
 
     def update(self, model):
-        self.aggregator.aggregate(Serializer.serialize_model(self.model), Serializer.serialize_model(model))
+        self.aggregator.aggregate(Serializer.serialize_model(self.model),
+                                  Serializer.serialize_model(model))
 
     def evaluate(self, dataset):
-        dataloader = DataLoader(dataset, batch_size=self.args.batch_size, shuffle=False, num_workers=self.args.num_workers)
-        
+        dataloader = DataLoader(dataset,
+                                batch_size=self.args.batch_size,
+                                shuffle=False,
+                                num_workers=self.args.num_workers)
+        self.evaluator.evaluate(self.model,
+                                dataloader=dataloader,
+                                model=self.model,
+                                optim=self.optim,
+                                crit=self.crit,
+                                device=self.args.device)

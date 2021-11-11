@@ -18,14 +18,16 @@ class Evaluator(BaseEvaluator):
         self.args = args
 
     def evaluate(dataloader, model, optim, crit, client_id=None, device='cpu'):
+        if not client_id:
+            client_id = -1
         model = model.to(device)
         optim = optim.to(device)
         crit = crit.to(device)
 
         model.eval()
         losses = 0.0
-        for inputs, labels in tqdm(dataloader
-                                    , desc=f'Test on client{client_id}'):
+        for inputs, labels in tqdm(dataloader,
+                                   desc=f'Test on client {client_id}'):
             inputs = inputs.to(device)
             labels = labels.to(device)
 
@@ -37,7 +39,7 @@ class Evaluator(BaseEvaluator):
             optim.step()
 
             losses += loss.item()
-        
+
         losses /= len(dataloader)
-        
+
         return {'test_loss': losses}

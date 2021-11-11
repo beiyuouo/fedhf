@@ -12,9 +12,6 @@ import tqdm
 import wandb
 from torch.utils.data import DataLoader
 from fedhf.component.logger import Logger
-
-from fedhf.model import build_loss, build_model, build_optimizer
-
 from .base_train import BaseTrainer
 
 
@@ -23,7 +20,13 @@ class Trainer(BaseTrainer):
         pass
 
     @staticmethod
-    def train(dataloader, model, optim, crit, num_epochs, client_id=None, device='cpu'):
+    def train(dataloader,
+              model,
+              optim,
+              crit,
+              num_epochs,
+              client_id=None,
+              device='cpu'):
         model = model.to(device)
         optim = optim.to(device)
         crit = crit.to(device)
@@ -32,8 +35,8 @@ class Trainer(BaseTrainer):
         for epoch in range(num_epochs):
             model.train()
             losses = []
-            for inputs, labels in tqdm(dataloader
-                                       , desc=f'Epoch {epoch+1}/{num_epochs}'):
+            for inputs, labels in tqdm(dataloader,
+                                       desc=f'Epoch {epoch+1}/{num_epochs}'):
                 inputs = inputs.to(device)
                 labels = labels.to(device)
 
@@ -45,8 +48,7 @@ class Trainer(BaseTrainer):
                 optim.step()
 
                 losses.append(loss.item())
-            
-            train_loss.append(sum(losses) / len(losses))
-        
-        return {'train_loss': train_loss, 'model': model}
 
+            train_loss.append(sum(losses) / len(losses))
+
+        return {'train_loss': train_loss, 'model': model}

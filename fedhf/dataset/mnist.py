@@ -1,25 +1,33 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-"""
-@File    :   fedhf\dataset\mnist.py
-@Time    :   2021-11-08 22:41:04
-@Author  :   Bingjie Yan
-@Email   :   bj.yan.pa@qq.com
-@License :   Apache License 2.0
+""" 
+@File    :   fedhf\dataset\mnist.py 
+@Time    :   2021-11-11 12:09:01 
+@Author  :   Bingjie Yan 
+@Email   :   bj.yan.pa@qq.com 
+@License :   Apache License 2.0 
 """
 
 from torchvision.datasets import MNIST
-from torchvision.transforms import Compose, ToTensor, Normalize
+from torchvision.transforms import Compose, ToTensor, Normalize, Resize
+import torch
 
 
 class MNISTDataset(object):
-    def __init__(self, args) -> None:
+    def __init__(self, args, resize=False) -> None:
         super().__init__()
 
         self.args = args
         self.num_classes = 10
-        self.transform = Compose(
-            [ToTensor(), Normalize((0.1307, ), (0.3081, ))])
+        if resize:
+            self.transform = Compose([
+                Resize(args.image_size),
+                ToTensor(),
+                Normalize((0.5, ), (0.5, ))
+            ])
+        else:
+            self.transform = Compose(
+                [ToTensor(), Normalize((0.1307, ), (0.3081, ))])
 
         self.trainset = MNIST(root=args.dataset_root,
                               train=True,
@@ -32,3 +40,15 @@ class MNISTDataset(object):
 
         self.trainset.num_classes = self.num_classes
         self.testset.num_classes = self.num_classes
+
+    def get_train_norm(self) -> float:
+        """Never used"""
+        means = []
+        stds = []
+        for img, label in self.trainset:
+            means.append(torch.mean(img))
+            stds.append(torch.std(img))
+
+        mean = torch.mean(torch.tensor(means))
+        std = torch.mean(torch.tensor(stds))
+        return {'mean': mean, 'std': std}

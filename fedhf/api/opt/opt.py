@@ -49,9 +49,9 @@ class opts(object):
 
         # system setting
         self.parser.add_argument(
-            '--gpus',
+            '--device',
             default='0',
-            help='-1 for CPU, use comma for multiple gpus')
+            help='-1 for cpu, use comma for multiple gpus')
         self.parser.add_argument(
             '--num_workers',
             type=int,
@@ -88,12 +88,29 @@ class opts(object):
         self.parser.add_argument(
             '--task',
             type=str,
-            default='lr',
+            default='classification',
             help='type of task, lr | classification | nlp')
         self.parser.add_argument('--model',
                                  type=str,
                                  default='resnet',
                                  help='model name.')
+
+        self.parser.add_argument('--model_pretrained',
+                                 type=bool,
+                                 default=True,
+                                 help='load pretrained model or not')
+        self.parser.add_argument('--model_dir',
+                                 default='./model',
+                                 type=str,
+                                 help='path to download model')  # Never used
+        self.parser.add_argument('--input_c',
+                                 type=int,
+                                 default=1,
+                                 help='input channel')
+        self.parser.add_argument('--image_size',
+                                 type=int,
+                                 default=224,
+                                 help='image_size')
         self.parser.add_argument('--num_classes',
                                  type=int,
                                  default=2,
@@ -169,12 +186,12 @@ class opts(object):
         if opt.from_file:
             opt = self.load_from_file(args)
 
-        opt.gpus_str = opt.gpus
-        opt.gpus = [int(gpu) for gpu in opt.gpus.split(',')]
-        opt.gpus = [i for i in range(len(opt.gpus))
-                    ] if opt.gpus[0] >= 0 else [-1]
+        opt.gpus_str = opt.device
+        opt.device = [int(gpu) for gpu in opt.device.split(',')]
+        opt.device = [i for i in range(len(opt.device))
+                      ] if opt.device[0] >= 0 else [-1]
 
-        opt.num_workers = max(opt.num_workers, 2 * len(opt.gpus))
+        opt.num_workers = max(opt.num_workers, 2 * len(opt.device))
 
         # make dirs
         # TODO

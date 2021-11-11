@@ -11,7 +11,7 @@
 from .base_aggregator import BaseAggregator
 
 
-class SyncAggregator(BaseAggregator):
+class FedAvgAggregator(BaseAggregator):
     def __init__(self, args) -> None:
         self.args = args
 

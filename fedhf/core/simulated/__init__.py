@@ -8,7 +8,6 @@
 @License :   Apache License 2.0
 """
 
-from fedhf.component.coordinator.simulated_coordinator import SimulatedCoordinator
-
+from fedhf.core.coordinator import SimulatedCoordinator
 
 coordinator = SimulatedCoordinator

@@ -154,6 +154,7 @@ cython_debug/
 
 # tests
 /temp
+.VSCodeCounter
 
 # release cache
 /raw_image
