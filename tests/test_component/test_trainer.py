@@ -29,9 +29,6 @@ class TestTrainer(object):
         client_id = 0
 
         model = build_model(self.args.model)(self.args)
-        optim = build_optimizer(self.args.optim)(model.parameters(),
-                                                 self.args.lr)
-        crit = build_criterion(self.args.loss)()
 
         client_dataset = ClientDataset(dataset.trainset,
                                        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])

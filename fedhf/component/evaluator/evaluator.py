@@ -8,21 +8,41 @@
 @License :   Apache License 2.0
 """
 
-import tqdm
+from tqdm import tqdm
 
 from .base_evaluator import BaseEvaluator
+from fedhf.model import build_criterion, build_optimizer
+from fedhf.component.logger import Logger
 
 
 class Evaluator(BaseEvaluator):
     def __init__(self, args) -> None:
         self.args = args
+        self.optim = build_optimizer(self.args.optim)
+        self.crit = build_criterion(self.args.loss)
+        self.logger = Logger(self.args)
 
-    def evaluate(dataloader, model, optim, crit, client_id=None, device='cpu'):
+    def set_device(self, gpus, device):
+        if len(gpus) > 1:
+            pass
+        else:
+            pass
+
+    def evaluate(self,
+                 dataloader,
+                 model,
+                 client_id=None,
+                 gpus=[],
+                 device='cpu'):
+        if len(gpus) > 1:
+            pass
+        else:
+            pass
         if not client_id:
             client_id = -1
         model = model.to(device)
-        optim = optim.to(device)
-        crit = crit.to(device)
+        optim = self.optim(params=model.parameters(), lr=self.args.lr)
+        crit = self.crit()
 
         model.eval()
         losses = 0.0
