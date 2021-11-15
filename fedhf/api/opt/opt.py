@@ -157,7 +157,7 @@ class opts(object):
                                  help='data sample strategy')
         self.parser.add_argument('--selector',
                                  type=str,
-                                 default='random',
+                                 default='random_async',
                                  help='client select strategy')
         self.parser.add_argument('--select_ratio',
                                  type=float,
@@ -178,6 +178,9 @@ class opts(object):
                                  help='fedasync aggregate alpha')
 
         # test setting
+        self.parser.add_argument('--test',
+                                 action='store_true',
+                                 help='test mode')
 
         # custom dataset
         self.parser.add_argument('--dataset_root',

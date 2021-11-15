@@ -8,12 +8,18 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ["build_selector"]
+__all__ = [
+    "build_selector",
+    "RandomAsyncSelector",
+    "RandomSelector",
+]
 
+from .random_async_selector import RandomAsyncSelector
 from .random_selector import RandomSelector
 
 selector_factory = {
-    'random': RandomSelector
+    'random': RandomSelector,
+    'random_async': RandomAsyncSelector
 }
 
 

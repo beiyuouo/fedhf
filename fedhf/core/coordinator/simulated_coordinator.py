@@ -18,6 +18,7 @@ from fedhf.component.aggregator import build_aggregator
 from fedhf.component.logger import Logger
 from fedhf.component.sampler import build_sampler
 from fedhf.component.selector import build_selector
+from fedhf.dataset.client_datasest import ClientDataset
 from fedhf.model import build_criterion, build_model, build_optimizer
 from fedhf.dataset import build_dataset
 
@@ -35,7 +36,18 @@ class SimulatedCoordinator(BaseCoordinator):
     def prepare(self) -> None:
         self.dataset = build_dataset(self.args.dataset)(self.args)
         self.sampler = build_sampler(self.args.sampler)(self.args)
-        self.data = self.sampler.sample(self.dataset.trainset)
+
+        if self.args.test:
+            # reduce data for test
+            self.data = [
+                ClientDataset(
+                    self.dataset.trainset,
+                    range(i * self.args.batch_size,
+                          (i + 1) * self.args.batch_size))
+                for i in range(self.args.num_clients)
+            ]
+        else:
+            self.data = self.sampler.sample(self.dataset.trainset)
 
         self.client_list = [i for i in range(self.args.num_clients)]
         self.server = build_server('simulated')(self.args)
