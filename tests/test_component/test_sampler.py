@@ -8,7 +8,7 @@
 @License :   Apache License 2.0
 """
 
-from fedhf.component.sampler import build_sampler
+from fedhf.component import build_sampler
 from fedhf.api import opts
 from fedhf.dataset import build_dataset
 

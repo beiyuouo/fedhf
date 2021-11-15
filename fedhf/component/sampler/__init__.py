@@ -8,16 +8,12 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ['build_sampler']
+__all__ = ["build_sampler", "RandomSampler", "NonIIDSampler"]
 
 from .random_sampler import RandomSampler
 from .noniid_sampler import NonIIDSampler
 
-
-sampler_factory = {
-    'random': RandomSampler,
-    'non-iid': NonIIDSampler
-}
+sampler_factory = {'random': RandomSampler, 'non-iid': NonIIDSampler}
 
 
 def build_sampler(sam_name: str):

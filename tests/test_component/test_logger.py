@@ -9,7 +9,7 @@
 """
 
 from fedhf.api import opts
-from fedhf.component.logger import Logger
+from fedhf.component import Logger
 
 
 class TestLogger:

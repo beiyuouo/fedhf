@@ -11,7 +11,7 @@
 from torch.utils.data import DataLoader
 
 from fedhf.api import opts
-from fedhf.core.client import SimulatedClient
+from fedhf.core import SimulatedClient
 from fedhf.model import build_model
 from fedhf.dataset import build_dataset, ClientDataset
 

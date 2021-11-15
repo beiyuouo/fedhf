@@ -11,9 +11,7 @@
 import re
 from torch.utils.data import DataLoader
 
-from fedhf.component.evaluator import Evaluator
-from fedhf.component.logger import Logger
-from fedhf.component.trainer import Trainer
+from fedhf.component import Evaluator, Logger, Trainer
 from fedhf.model import build_criterion, build_model, build_optimizer
 
 from .base_client import BaseClient

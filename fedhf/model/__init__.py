@@ -8,7 +8,7 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ['build_model', 'build_optimizer', 'build_loss']
+__all__ = ["build_model", "build_optimizer", "build_loss", "ResNet", "MLP"]
 
 import torch
 import torch.nn as nn

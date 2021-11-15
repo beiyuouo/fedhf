@@ -8,8 +8,7 @@
 @License :   Apache License 2.0
 """
 
-from fedhf.component import selector
-from fedhf.component.selector import build_selector
+from fedhf.component import build_selector
 from fedhf.api import opts
 
 

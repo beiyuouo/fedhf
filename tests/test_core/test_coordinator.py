@@ -9,7 +9,7 @@
 """
 
 from fedhf.api import opts
-from fedhf.core.coordinator import SimulatedCoordinator
+from fedhf.core import SimulatedCoordinator
 
 
 class TestCoordinator(object):

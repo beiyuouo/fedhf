@@ -12,7 +12,7 @@ import torch
 from torch.utils.data import DataLoader
 
 from fedhf.api import opts
-from fedhf.component.trainer import Trainer
+from fedhf.component import Trainer
 from fedhf.model import build_model, build_criterion, build_optimizer
 from fedhf.dataset import build_dataset, ClientDataset
 

@@ -8,6 +8,6 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ['Trainer']
+__all__ = ["Trainer"]
 
 from .trainer import Trainer

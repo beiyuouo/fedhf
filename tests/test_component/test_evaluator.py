@@ -12,7 +12,7 @@ import torch
 from torch.utils.data import DataLoader
 
 from fedhf.api import opts
-from fedhf.component.evaluator import Evaluator
+from fedhf.component import Evaluator
 from fedhf.dataset import build_dataset, ClientDataset
 from fedhf.model import build_model
 

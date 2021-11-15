@@ -9,7 +9,7 @@
 """
 
 from fedhf.api import opts
-from fedhf.core.server import SimulatedServer
+from fedhf.core import SimulatedServer
 from fedhf.dataset import build_dataset, ClientDataset
 from fedhf.model import build_model
 

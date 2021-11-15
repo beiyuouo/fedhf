@@ -9,18 +9,12 @@
 """
 
 from copy import deepcopy
-from fedhf.component import logger
 
-from fedhf.core.server import build_server
-from fedhf.core.client import build_client
+from fedhf.core import build_server, build_client
 
-from fedhf.component.aggregator import build_aggregator
-from fedhf.component.logger import Logger
-from fedhf.component.sampler import build_sampler
-from fedhf.component.selector import build_selector
-from fedhf.dataset.client_datasest import ClientDataset
+from fedhf.component import build_aggregator, Logger, build_sampler, build_selector
+from fedhf.dataset import ClientDataset, build_dataset
 from fedhf.model import build_criterion, build_model, build_optimizer
-from fedhf.dataset import build_dataset
 
 from .base_coordinator import BaseCoordinator
 

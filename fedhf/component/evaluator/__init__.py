@@ -8,7 +8,6 @@
 @License :   Apache License 2.0
 """
 
-
-__all__ = ['Evaluator']
+__all__ = ["Evaluator"]
 
 from .evaluator import Evaluator

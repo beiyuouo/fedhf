@@ -10,9 +10,8 @@
 
 from fedhf import model
 from fedhf.api import opts
-from fedhf.component.serializer.serializer import Serializer
+from fedhf.component import Serializer, build_aggregator
 from fedhf.model import build_model
-from fedhf.component.aggregator import build_aggregator
 
 
 class TestAggregator(object):

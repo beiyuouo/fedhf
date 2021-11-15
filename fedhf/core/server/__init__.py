@@ -8,13 +8,12 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ["SimulatedServer"]
+__all__ = ["SimulatedServer", "build_server"]
 
 from .simulated_server import SimulatedServer
 
-server_factory = {
-    "simulated": SimulatedServer
-}
+server_factory = {"simulated": SimulatedServer}
+
 
 def build_server(server_type: str):
     if server_type not in server_factory:

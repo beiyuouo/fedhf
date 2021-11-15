@@ -8,13 +8,13 @@
 @License :   Apache License 2.0
 """
 
-from fedhf.api.opt.opt import opts
-from fedhf.core.simulated import coordinator
+from fedhf.api import opts
+from fedhf.core import SimulatedCoordinator
 
 
 def main():
     args = opts().parse()
-    coo = coordinator(args)
+    coo = SimulatedCoordinator(args)
     coo.run()
 
 

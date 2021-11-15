@@ -9,7 +9,6 @@
 """
 
 from tqdm import tqdm
-import wandb
 from torch.utils.data import DataLoader
 from fedhf.component.logger import Logger
 from fedhf.model import build_criterion, build_optimizer

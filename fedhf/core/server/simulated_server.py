@@ -12,12 +12,9 @@ from copy import deepcopy
 import re
 
 from torch.utils.data.dataloader import DataLoader
-from fedhf.component.aggregator import build_aggregator
-from fedhf.component.selector import build_selector
-from fedhf.component.evaluator import Evaluator
-from fedhf.component.serializer import Serializer, Deserializer
+
+from fedhf.component import build_aggregator, build_selector, Evaluator, Serializer, Deserializer, Logger
 from fedhf.model import build_criterion, build_model, build_optimizer
-from fedhf.component.logger import Logger
 
 from .base_server import BaseServer
 

@@ -12,7 +12,7 @@ import torch
 from torch.utils.data import DataLoader
 
 from fedhf.api import opts
-from fedhf.component.serializer import Serializer, Deserializer
+from fedhf.component import Serializer, Deserializer
 from fedhf.model import build_model
 
 

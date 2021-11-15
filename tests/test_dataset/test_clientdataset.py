@@ -12,7 +12,7 @@ import torch
 
 from fedhf.api import opts
 from fedhf.dataset import ClientDataset, build_dataset
-from fedhf.component.sampler import build_sampler
+from fedhf.component import build_sampler
 
 
 class TestClientDataset(object):
