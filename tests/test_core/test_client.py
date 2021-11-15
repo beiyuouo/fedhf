@@ -20,15 +20,16 @@ class TestClient(object):
     args = opts().parse([
         '--num_classes', '10', '--model', 'mlp', '--dataset', 'mnist',
         '--num_local_epochs', '1', '--batch_size', '1', '--optim', 'sgd',
-        '--lr', '0.01', '--loss', 'ce', '--gpus', '-1'
+        '--lr', '0.01', '--loss', 'ce', '--gpus', '-1', '--resize', False
     ])
 
-    def test_simluated_client(self):
+    def test_simulated_client(self):
+        self.args.model = 'mlp'
+
         client_id = 0
 
         client = SimulatedClient(self.args, client_id=client_id)
 
-        self.args.model = 'mlp'
         dataset = build_dataset(self.args.dataset)(self.args)
 
         model = build_model(self.args.model)(self.args)

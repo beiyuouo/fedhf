@@ -25,7 +25,7 @@ class TestEvaluator:
     ])
 
     def test_evaluate(self):
-        dataset = build_dataset(self.args.dataset)(self.args)
+        dataset = build_dataset(self.args.dataset)(self.args, resize=False)
 
         client_id = 0
 
@@ -47,7 +47,7 @@ class TestEvaluator:
 
         self.args.gpus = '0'
         self.args.device = torch.device('cuda:0')
-        dataset = build_dataset(self.args.dataset)(self.args)
+        dataset = build_dataset(self.args.dataset)(self.args, resize=False)
 
         client_id = 0
 

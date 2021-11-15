@@ -17,11 +17,13 @@ from fedhf.api import opts
 class TestMNIST(object):
     args = opts().parse([
         '--num_classes', '10', '--dataset_root', './dataset',
-        '--dataset_download', 'True', '--dataset', 'mnist'
+        '--dataset_download', 'True', '--dataset', 'mnist', '--resize', False
     ])
 
     def test_mnist(self):
         dataset = build_dataset(self.args.dataset)(self.args)
+
+        print(self.args.resize)
 
         assert dataset.num_classes == 10
         assert dataset.trainset.num_classes == 10

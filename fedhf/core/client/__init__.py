@@ -8,17 +8,16 @@
 @License :   Apache License 2.0
 """
 
-
 __all__ = []
 
 from .simulated_client import SimulatedClient
 
-client_factory = {
-    'simluated': SimulatedClient
-}
+client_factory = {'simulated': SimulatedClient}
+
 
 def build_client(client_type):
     if client_type not in client_factory.keys():
-        raise ValueError('client_type {} not in {}'.format(client_type, client_factory.keys()))
+        raise ValueError('client_type {} not in {}'.format(
+            client_type, client_factory.keys()))
     client = client_factory[client_type]
     return client

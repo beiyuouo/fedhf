@@ -14,16 +14,18 @@ import torch
 
 
 class MNISTDataset(object):
-    def __init__(self, args, resize=False) -> None:
+    def __init__(self, args, resize=None) -> None:
         super().__init__()
 
         self.args = args
         self.num_classes = 10
+        resize = args.resize if resize is None else resize
+
         if resize:
             self.transform = Compose([
                 Resize(args.image_size),
                 ToTensor(),
-                Normalize((0.5, ), (0.5, ))
+                Normalize((0.1307, ), (0.3081, ))
             ])
         else:
             self.transform = Compose(

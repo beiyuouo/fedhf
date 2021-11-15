@@ -16,7 +16,7 @@ class BaseCoordinator(ABC):
         super().__init__()
 
     @abstractmethod
-    def init(self) -> None:
+    def prepare(self) -> None:
         raise NotImplementedError
 
     @abstractmethod

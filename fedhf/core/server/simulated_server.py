@@ -12,12 +12,12 @@ from copy import deepcopy
 import re
 
 from torch.utils.data.dataloader import DataLoader
-from fedhf.component import evaluator
 from fedhf.component.aggregator import build_aggregator
 from fedhf.component.selector import build_selector
 from fedhf.component.evaluator import Evaluator
 from fedhf.component.serializer import Serializer, Deserializer
 from fedhf.model import build_criterion, build_model, build_optimizer
+from fedhf.component.logger import Logger
 
 from .base_server import BaseServer
 
@@ -31,6 +31,7 @@ class SimulatedServer(BaseServer):
 
         self.model = build_model(self.args.model)(self.args)
         self.evaluator = Evaluator(self.args)
+        self.logger = Logger(self.args)
 
     def select(self, client_list: list):
         return self.selector.select(client_list)
@@ -42,11 +43,14 @@ class SimulatedServer(BaseServer):
             server_model_version=self.model.get_model_version(),
             client_model_version=model.get_model_version())
 
-        print(self.model.get_model_version(), model.get_model_version())
+        # print(self.model.get_model_version(), model.get_model_version())
         Deserializer.deserialize_model(self.model, result['param'])
         self.model.set_model_version(result['model_version'])
         self.model.set_model_time(result['model_time'])
-        print(result['model_version'], result['model_time'])
+        # print(result['model_version'], result['model_time'])
+        self.logger.info(
+            f'get model version{result["model_version"]} at time {result["model_time"]}'
+        )
         return deepcopy(self.model)
 
     def evaluate(self, dataset):

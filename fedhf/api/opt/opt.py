@@ -114,7 +114,7 @@ class opts(object):
                                  help='image_size')
         self.parser.add_argument('--num_classes',
                                  type=int,
-                                 default=2,
+                                 default=10,
                                  help='number of classes')
         self.parser.add_argument('--optim',
                                  type=str,
@@ -126,7 +126,7 @@ class opts(object):
                                  help='learning rate.')
         self.parser.add_argument('--loss',
                                  type=str,
-                                 default='l1',
+                                 default='ce',
                                  help='loss function.')
 
         # training setting
@@ -145,11 +145,11 @@ class opts(object):
                                  help='local training epochs.')
         self.parser.add_argument('--batch_size',
                                  type=int,
-                                 default=16,
+                                 default=8,
                                  help='batch size')
         self.parser.add_argument('--num_rounds',
                                  type=int,
-                                 default=10,
+                                 default=5,
                                  help='server round.')
         self.parser.add_argument('--sampler',
                                  type=str,
@@ -184,8 +184,13 @@ class opts(object):
                                  default='./dataset',
                                  help='custom dataset root')
         self.parser.add_argument('--dataset_download',
+                                 type=bool,
                                  default=True,
                                  help='dataset download')
+        self.parser.add_argument('--resize',
+                                 type=bool,
+                                 default=True,
+                                 help='resize or not')
 
     def parse(self, args=''):
         if args == '':

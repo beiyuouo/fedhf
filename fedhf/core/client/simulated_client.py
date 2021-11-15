@@ -45,7 +45,7 @@ class SimulatedClient(BaseClient):
         )
         return model
 
-    def evaluate(self, data, model, device):
+    def evaluate(self, data, model, device='cpu'):
         dataloader = DataLoader(data, batch_size=self.args.batch_size)
 
         result = self.evaluator.evaluate(dataloader=dataloader,

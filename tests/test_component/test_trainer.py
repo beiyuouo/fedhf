@@ -26,6 +26,7 @@ class TestTrainer(object):
 
     def test_trainer_mlp(self):
         self.args.model = 'mlp'
+        self.args.resize = False
         dataset = build_dataset(self.args.dataset)(self.args)
 
         client_id = 0
@@ -49,6 +50,7 @@ class TestTrainer(object):
 
     def test_trainer_on_gpu_mlp(self):
         self.args.model = 'mlp'
+        self.args.resize = False
         if not torch.cuda.is_available():
             return
 
