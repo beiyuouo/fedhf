@@ -40,3 +40,5 @@ class TestSerializer(object):
             param2 = param2_kv[1]
             # print(param1_kv[0], param2_kv[0])
             assert torch.all(param1 == param2)
+
+        assert model.get_model_version() == model_.get_model_version()

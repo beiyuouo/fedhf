@@ -35,22 +35,23 @@ class FedAsyncAggregator(BaseAggregator):
             if "client_model_version" not in kwargs.keys():
                 raise ValueError("Missing key: client_model_version")
 
-        if kwargs["server_model_version"] < kwargs["client_model_version"]:
-            raise ValueError("server_model_version < client_model_version")
+            if kwargs["server_model_version"] < kwargs["client_model_version"]:
+                raise ValueError("server_model_version < client_model_version")
 
         alpha = self._get_alpha(**kwargs)
         new_param = torch.mul(1 - alpha, server_param) + \
                                 torch.mul(alpha, client_param)
 
-        return {
+        result = {
             'param':
             new_param,
             'model_version':
             kwargs["server_model_version"] +
-            1 if kwargs["server_model_version"] else 0,
+            1 if "server_model_version" in kwargs.keys() else 0,
             'model_time':
             time.time()
         }
+        return result
 
     def _get_alpha(self, **kwargs):
         time_delta = kwargs["server_model_version"] - kwargs[

@@ -56,7 +56,7 @@ class opts(object):
         self.parser.add_argument(
             '--num_workers',
             type=int,
-            default=4,
+            default=0,
             help='dataloader threads. 0 for single-thread.')
         self.parser.add_argument('--seed',
                                  type=int,
@@ -165,7 +165,7 @@ class opts(object):
                                  help='select ratio')
         self.parser.add_argument('--agg',
                                  type=str,
-                                 default='fedavg',
+                                 default='fedasync',
                                  help='aggregate strategy')
 
         self.parser.add_argument('--fedasync_strategy',

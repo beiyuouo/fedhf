@@ -8,12 +8,15 @@
 @License :   Apache License 2.0
 """
 
+from copy import deepcopy
+import re
+
 from torch.utils.data.dataloader import DataLoader
 from fedhf.component import evaluator
 from fedhf.component.aggregator import build_aggregator
 from fedhf.component.selector import build_selector
 from fedhf.component.evaluator import Evaluator
-from fedhf.component.serializer.serializer import Serializer
+from fedhf.component.serializer import Serializer, Deserializer
 from fedhf.model import build_criterion, build_model, build_optimizer
 
 from .base_server import BaseServer
@@ -23,27 +26,33 @@ class SimulatedServer(BaseServer):
     def __init__(self, args) -> None:
         self.args = args
 
-        self.selector = build_selector(self.args.selector)()
+        self.selector = build_selector(self.args.selector)(self.args)
         self.aggregator = build_aggregator(self.args.agg)(self.args)
 
         self.model = build_model(self.args.model)(self.args)
-        self.evaluator = Evaluator()
+        self.evaluator = Evaluator(self.args)
 
     def select(self, client_list: list):
         return self.selector.select(client_list)
 
     def update(self, model):
-        self.aggregator.aggregate(Serializer.serialize_model(self.model),
-                                  Serializer.serialize_model(model))
+        result = self.aggregator.agg(
+            Serializer.serialize_model(self.model),
+            Serializer.serialize_model(model),
+            server_model_version=self.model.get_model_version(),
+            client_model_version=model.get_model_version())
+
+        print(self.model.get_model_version(), model.get_model_version())
+        Deserializer.deserialize_model(self.model, result['param'])
+        self.model.set_model_version(result['model_version'])
+        self.model.set_model_time(result['model_time'])
+        print(result['model_version'], result['model_time'])
+        return deepcopy(self.model)
 
     def evaluate(self, dataset):
         dataloader = DataLoader(dataset,
                                 batch_size=self.args.batch_size,
-                                shuffle=False,
-                                num_workers=self.args.num_workers)
-        self.evaluator.evaluate(self.model,
-                                dataloader=dataloader,
-                                model=self.model,
-                                optim=self.optim,
-                                crit=self.crit,
-                                device=self.args.device)
+                                shuffle=False)
+        return self.evaluator.evaluate(dataloader=dataloader,
+                                       model=self.model,
+                                       device=self.args.device)

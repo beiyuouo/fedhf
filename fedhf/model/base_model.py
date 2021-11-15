@@ -7,16 +7,17 @@
 @Email   :   bj.yan.pa@qq.com 
 @License :   Apache License 2.0 
 """
-
+import time
 import torch
 import torch.nn as nn
 
 
 class BaseModel(nn.Module):
-    def __init__(self, args, model_time=0):
+    def __init__(self, args, model_time=None, model_version=0):
         super().__init__()
         self.args = args
-        self.model_time = model_time
+        self.model_time = model_time if model_time else time.time()
+        self.model_version = model_version
 
     def get_model_time(self):
         return self.model_time
@@ -25,4 +26,7 @@ class BaseModel(nn.Module):
         self.model_time = model_time
 
     def get_model_version(self):
-        return self.model_time
+        return self.model_version
+
+    def set_model_version(self, model_version):
+        self.model_version = model_version

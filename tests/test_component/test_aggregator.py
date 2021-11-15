@@ -37,3 +37,5 @@ class TestAggregator(object):
                          client_model_version=1)
 
         param = result['param']
+
+        assert result['model_version'] == 3

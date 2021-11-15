@@ -18,41 +18,41 @@ from fedhf.model import build_criterion, build_model, build_optimizer
 
 from .base_client import BaseClient
 
+
 class SimulatedClient(BaseClient):
     def __init__(self, args, client_id) -> None:
         self.args = args
         self.client_id = client_id
 
-        self.trainer = Trainer()
-        self.evaluator = Evaluator()
+        self.trainer = Trainer(args)
+        self.evaluator = Evaluator(args)
 
-        self.logger = Logger()
+        self.logger = Logger(args)
 
-    def train(self, data, model, device):
-        self.optim = build_optimizer(self.optim)(model.parameters(), self.args.lr)
-        self.crit = build_criterion(self.args.loss)()
+    def train(self, data, model, device='cpu'):
         dataloader = DataLoader(data, batch_size=self.args.batch_size)
 
         result = self.trainer.train(dataloader=dataloader,
                                     model=model,
-                                    optim=self.optim,
-                                    crit=self.crit,
                                     num_epochs=self.args.num_local_epochs,
                                     client_id=self.client_id,
                                     device=device)
         train_loss = result['train_loss']
         model = result['model']
 
-        self.logger.info(f'Finish training on client {self.client_id}, train_loss: {train_loss}')
+        self.logger.info(
+            f'Finish training on client {self.client_id}, train_loss: {train_loss}'
+        )
         return model
 
-
     def evaluate(self, data, model, device):
-        self.optim = build_optimizer(self.optim)(model.parameters(), self.args.lr)
-        self.crit = build_criterion(self.args.loss)()
         dataloader = DataLoader(data, batch_size=self.args.batch_size)
 
-        result = self.evaluator.evaluate(dataloader = dataloader, model=model, optim = self.optim, crit = self.crit,
-                                client_id=self.client_id, device=device)
+        result = self.evaluator.evaluate(dataloader=dataloader,
+                                         model=model,
+                                         client_id=self.client_id,
+                                         device=device)
 
-        self.logger.info(f'Finish evaluating on client {self.client_id}, test_loss: {result["test_loss"]}')
+        self.logger.info(
+            f'Finish evaluating on client {self.client_id}, test_loss: {result["test_loss"]}'
+        )
