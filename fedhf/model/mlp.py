@@ -11,11 +11,17 @@
 import torch
 import torch.nn as nn
 
+from .base_model import BaseModel
 
-class MLP(nn.Module):
-    def __init__(self, args, input_dim=28 * 28, hidden_dim=128, output_dim=10):
-        super().__init__()
-        self.args = args
+
+class MLP(BaseModel):
+    def __init__(self,
+                 args,
+                 model_time=0,
+                 input_dim=28 * 28,
+                 hidden_dim=128,
+                 output_dim=10):
+        super().__init__(args, model_time)
         self.layer_input = nn.Linear(input_dim, hidden_dim)
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout()

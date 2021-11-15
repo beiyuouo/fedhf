@@ -20,5 +20,5 @@ class BaseAggregator(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def check_agg(self):
+    def _check_agg(self):
         raise NotImplementedError

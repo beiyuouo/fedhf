@@ -18,5 +18,5 @@ class FedAvgAggregator(BaseAggregator):
     def agg(self, model, grads):
         pass
 
-    def check_agg(self):
+    def _check_agg(self):
         pass

@@ -13,11 +13,12 @@ import torch.nn as nn
 
 from torchvision import models
 
+from .base_model import BaseModel
 
-class ResNet(nn.Module):
-    def __init__(self, args):
-        super().__init__()
-        self.args = args
+
+class ResNet(BaseModel):
+    def __init__(self, args, model_time=0):
+        super().__init__(args, model_time)
         self.input_size = (args.input_c, args.image_size, args.image_size)
         self.num_classes = args.num_classes
 

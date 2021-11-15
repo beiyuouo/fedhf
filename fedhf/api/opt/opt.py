@@ -166,7 +166,16 @@ class opts(object):
         self.parser.add_argument('--agg',
                                  type=str,
                                  default='fedavg',
-                                 help='aggreate strategy')
+                                 help='aggregate strategy')
+
+        self.parser.add_argument('--fedasync_strategy',
+                                 type=str,
+                                 default='constant',
+                                 help='fedasync aggregate strategy')
+        self.parser.add_argument('--fedasync_alpha',
+                                 type=float,
+                                 default=0.5,
+                                 help='fedasync aggregate alpha')
 
         # test setting
 
