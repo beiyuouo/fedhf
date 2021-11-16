@@ -1,16 +1,21 @@
 # FedHF
 A Federated Learning Framework which is Heterogeneous and Flexible.
 
+[[ Document ](https://www.bj-yan.top/FedHF/)]
 
 ## Feature
 
 
-## Start to use
+# Getting Start
 
 ```sh
-pip install wandb
+pip install fedhf
+
+# If you want to use wandb to view log, please login first
 wandb login
 ```
+
+# Licence
 
 
 # Reference
