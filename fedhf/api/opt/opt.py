@@ -204,6 +204,25 @@ class opts(object):
         if opt.from_file:
             opt = self.load_from_file(args)
 
+        name_ = [
+            'experiment',
+            f'{opt.model}',
+            f'{opt.dataset}',
+            f'{opt.task}',
+            f'{opt.optim}',
+            f'{opt.loss}',
+            f'{opt.lr}',
+            f'{opt.batch_size}',
+            f'{opt.num_rounds}',
+            f'{opt.num_clients}',
+            f'{opt.num_local_epochs}',
+            f'{opt.sampler}',
+            f'{opt.selector}',
+            f'{opt.agg}',
+        ]
+
+        opt.name = '-'.join(name_)
+
         opt.gpus_str = opt.gpus
         opt.gpus = [int(gpu) for gpu in opt.gpus.split(',')]
         opt.gpus = [i for i in range(len(opt.gpus))

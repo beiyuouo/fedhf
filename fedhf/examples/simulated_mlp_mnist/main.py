@@ -13,7 +13,10 @@ from fedhf.core import SimulatedCoordinator
 
 
 def main():
-    args = opts().parse()
+    args = opts().parse([
+        '--use_wandb', '--wandb_reinit', '--gpus', '0', '--batch_size', '16',
+        '--resize', False, '--model', 'mlp'
+    ])
     coo = SimulatedCoordinator(args)
     coo.run()
 

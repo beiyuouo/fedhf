@@ -8,6 +8,8 @@
 @License :   Apache License 2.0
 """
 
+import wandb
+
 from tqdm import tqdm
 from torch.utils.data import DataLoader
 from fedhf.component.logger import Logger
@@ -45,6 +47,8 @@ class Trainer(BaseTrainer):
         optim = self.optim(params=model.parameters(), lr=self.args.lr)
         crit = self.crit()
 
+        self.logger.info(f'Start training on {client_id}')
+
         train_loss = []
         for epoch in range(num_epochs):
             model.train()
@@ -65,5 +69,21 @@ class Trainer(BaseTrainer):
                 losses.append(loss.item())
 
             train_loss.append(sum(losses) / len(losses))
+            self.logger.info(
+                f'Client:{client_id} Epoch:{epoch+1}/{num_epochs} Loss:{train_loss[-1]}'
+            )
+
+        self.logger.info(f'Client:{client_id} Train Loss:{train_loss}')
+        if self.args.use_wandb:
+            data = [[x, y]
+                    for (x, y) in zip(range(1, num_epochs + 1), train_loss)]
+            table = wandb.Table(data=data, columns=["epoch", "train_loss"])
+            self.logger.to_wandb({
+                f"train at client {client_id} model_version {model.get_model_version()}":
+                wandb.plot.line(table,
+                                "epoch",
+                                "train_loss",
+                                title=f"train loss at client {client_id}")
+            })
 
         return {'train_loss': train_loss, 'model': model}

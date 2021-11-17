@@ -10,9 +10,9 @@
 
 from tqdm import tqdm
 
-from .base_evaluator import BaseEvaluator
 from fedhf.model import build_criterion, build_optimizer
 from fedhf.component.logger import Logger
+from .base_evaluator import BaseEvaluator
 
 
 class Evaluator(BaseEvaluator):
@@ -44,6 +44,8 @@ class Evaluator(BaseEvaluator):
         optim = self.optim(params=model.parameters(), lr=self.args.lr)
         crit = self.crit()
 
+        self.logger.info(f'Start evaluation on {client_id}')
+
         model.eval()
         losses = 0.0
         for inputs, labels in tqdm(dataloader,
@@ -61,5 +63,11 @@ class Evaluator(BaseEvaluator):
             losses += loss.item()
 
         losses /= len(dataloader)
+
+        self.logger.info(f'Evaluation on {client_id} finished')
+
+        if self.args.use_wandb:
+            if client_id == -1:
+                self.logger.to_wandb({f'loss on server': losses})
 
         return {'test_loss': losses}

@@ -12,9 +12,8 @@ from copy import deepcopy
 
 from fedhf.core import build_server, build_client
 
-from fedhf.component import build_aggregator, Logger, build_sampler, build_selector
+from fedhf.component import Logger, build_sampler
 from fedhf.dataset import ClientDataset, build_dataset
-from fedhf.model import build_criterion, build_model, build_optimizer
 
 from .base_coordinator import BaseCoordinator
 
@@ -52,11 +51,19 @@ class SimulatedCoordinator(BaseCoordinator):
     def main(self) -> None:
         for i in range(self.args.num_rounds):
             selected_client = self.server.select(self.client_list)
+
+            self.logger.info(f'Round {i} selected client: {selected_client}')
+
             for client_id in selected_client:
                 model = deepcopy(self.server.model)
                 client = build_client('simulated')(self.args, client_id)
                 model = client.train(self.data[client_id], model)
                 self.server.update(model)
+
+                result = self.server.evaluate(self.dataset.testset)
+                self.logger.info(f'Server result: {result}')
+
+        self.logger.info(f'All rounds finished.')
 
     def finish(self) -> None:
         for client_id in self.client_list:
