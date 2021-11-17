@@ -17,6 +17,10 @@ from .base_model import BaseModel
 class AlexNetCIFAR10(BaseModel):
     def __init__(self, args, model_time=0):
         super().__init__(args, model_time)
+
+        self.args = args
+        self.num_classes = args.num_classes
+
         self.features = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=3, stride=2, padding=1),
             nn.ReLU(inplace=True),

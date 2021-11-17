@@ -94,6 +94,10 @@ class SimulatedAsyncCoordinator(BaseCoordinator):
 
         result = self.server.evaluate(self.dataset.testset)
         self.logger.info(f'Server result: {result}')
+        self.logger.info(
+            f'Final server model version: {self.server.model.get_model_version()}'
+        )
+        self.logger.info(f'Finish.')
 
     def run(self) -> None:
         self.prepare()
