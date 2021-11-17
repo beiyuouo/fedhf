@@ -16,6 +16,8 @@ setup(name="fedhf",
       maintainer_email="bj.yan.pa@qq.com",
       description=
       "A Federated Learning Framework which is Heterogeneous and Flexible.",
+      long_description=open(os_path.join(this_directory, "README.md")).read(),
+      long_description_content_type="text/markdown",
       license="Apache-2.0 License",
       url="https://github.com/beiyuouo/FedHF",
       packages=find_packages(include=['fedhf', 'fedhf.*', 'LICENSE']),

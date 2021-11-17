@@ -37,9 +37,13 @@ class TestEvaluator:
                                 batch_size=self.args.batch_size)
 
         evaluator = Evaluator(self.args)
-        evaluator.evaluate(dataloader=dataloader,
-                           model=model,
-                           device=self.args.device)
+        result = evaluator.evaluate(dataloader=dataloader,
+                                    model=model,
+                                    device=self.args.device)
+
+        assert 'test_loss' in result.keys()
+        assert 'test_acc' in result.keys()
+        assert result['test_acc'] < 1.0
 
     def test_evaluator_on_gpu(self):
         if not torch.cuda.is_available():
@@ -59,6 +63,10 @@ class TestEvaluator:
                                 batch_size=self.args.batch_size)
 
         evaluator = Evaluator(self.args)
-        evaluator.evaluate(dataloader=dataloader,
-                           model=model,
-                           device=self.args.device)
+        result = evaluator.evaluate(dataloader=dataloader,
+                                    model=model,
+                                    device=self.args.device)
+
+        assert 'test_loss' in result.keys()
+        assert 'test_acc' in result.keys()
+        assert result['test_acc'] < 1.0

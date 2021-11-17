@@ -46,7 +46,7 @@ class SimulatedServer(BaseServer):
         self.model.set_model_time(result['model_time'])
         # print(result['model_version'], result['model_time'])
         self.logger.info(
-            f'get model version{result["model_version"]} at time {result["model_time"]}'
+            f'get model version {result["model_version"]} at time {result["model_time"]}'
         )
         return deepcopy(self.model)
 

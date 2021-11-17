@@ -10,14 +10,15 @@
 
 import wandb
 
+from copy import deepcopy
+
 from tqdm import tqdm
-from torch.utils.data import DataLoader
 from fedhf.component.logger import Logger
 from fedhf.model import build_criterion, build_optimizer
 from .base_train import BaseTrainer
 
 
-class Trainer(BaseTrainer):
+class AsyncTrainer(BaseTrainer):
     def __init__(self, args) -> None:
         super().__init__()
         self.args = args
@@ -43,6 +44,7 @@ class Trainer(BaseTrainer):
         else:
             pass
 
+        model_ = deepcopy(model)
         model = model.to(device)
         optim = self.optim(params=model.parameters(), lr=self.args.lr)
         crit = self.crit()
@@ -60,7 +62,11 @@ class Trainer(BaseTrainer):
                 labels = labels.to(device)
 
                 outputs = model(inputs)
-                loss = crit(outputs, labels)
+
+                l2_reg = self._calc_l2_reg(model_, model)
+
+                loss = crit(outputs,
+                            labels) + l2_reg * self.args.fedasync_rho / 2
 
                 optim.zero_grad()
                 loss.backward()
@@ -80,13 +86,16 @@ class Trainer(BaseTrainer):
             table = wandb.Table(data=data, columns=["epoch", "train_loss"])
             self.logger.to_wandb({
                 f"train at client {client_id} model_version {model.get_model_version()}":
-                wandb.plot.line(
-                    table,
-                    "epoch",
-                    "train_loss",
-                    title=
-                    f"train loss at client {client_id} model_version {model.get_model_version()}"
-                )
+                wandb.plot.line(table,
+                                "epoch",
+                                "train_loss",
+                                title=f"train loss at client {client_id}")
             })
 
         return {'train_loss': train_loss, 'model': model}
+
+    def _calc_l2_reg(self, global_model, model):
+        l2_reg = 0
+        for p1, p2 in zip(global_model.parameters(), model.parameters()):
+            l2_reg += (p1 - p2).norm(2)
+        return l2_reg

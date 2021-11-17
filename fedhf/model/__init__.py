@@ -15,11 +15,13 @@ import torch.nn as nn
 import torch.optim as optim
 from .resnet import ResNet
 from .mlp import MLP
+from .alexnet_cifar10 import AlexNetCIFAR10
 
 model_factory = {
     'resnet': ResNet,
     'resnet18': ResNet,
     'mlp': MLP,
+    'alexnet_cifar10': AlexNetCIFAR10,
 }
 
 
@@ -35,7 +37,7 @@ def build_model(model_name: str):
 optimizer_factory = {
     'sgd': optim.SGD,
     'adam': optim.Adam,
-    'adagrad': optim.Adagrad
+    'adagrad': optim.Adagrad,
 }
 
 
@@ -52,7 +54,7 @@ criterion_factory = {
     'l1': nn.L1Loss,
     'mse': nn.MSELoss,
     'ce': nn.CrossEntropyLoss,
-    'bce': nn.BCELoss
+    'bce': nn.BCELoss,
 }
 
 

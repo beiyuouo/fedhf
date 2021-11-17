@@ -50,7 +50,8 @@ class Logger(BaseLogger):
                 self.use_wandb = args.use_wandb
                 wandb.init(project=args.project_name,
                            config=args,
-                           reinit=args.wandb_reinit)
+                           reinit=args.wandb_reinit,
+                           name=args.name)
 
         def debug(self, log_str: str) -> None:
             self.logger.debug(log_str)
@@ -87,4 +88,5 @@ class Logger(BaseLogger):
         self.__instance.error(log_str)
 
     def to_wandb(self, log_dict: dict) -> None:
-        self.__instance.to_wandb(log_dict)
+        if self.__instance.use_wandb:
+            self.__instance.to_wandb(log_dict)

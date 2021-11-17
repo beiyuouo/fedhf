@@ -9,6 +9,9 @@
 """
 
 from copy import deepcopy
+import heapq
+
+import numpy as np
 
 from fedhf.core import build_server, build_client
 
@@ -18,7 +21,7 @@ from fedhf.dataset import ClientDataset, build_dataset
 from .base_coordinator import BaseCoordinator
 
 
-class SimulatedCoordinator(BaseCoordinator):
+class SimulatedAsyncCoordinator(BaseCoordinator):
     """Simulated Coordinator
         In simulated scheme, the data and model belong to coordinator and there is no need communicator.
         Also, there is no need to instantiate every client.
@@ -48,9 +51,15 @@ class SimulatedCoordinator(BaseCoordinator):
 
         self.logger = Logger(self.args)
 
+        self._model_pool = []
+        self._model_heap = None
+
     def main(self) -> None:
+
         for i in range(self.args.num_rounds):
             selected_client = self.server.select(self.client_list)
+            self._model_pool = []
+            self._model_heap = []
 
             self.logger.info(f'Round {i} selected client: {selected_client}')
 
@@ -58,6 +67,17 @@ class SimulatedCoordinator(BaseCoordinator):
                 model = deepcopy(self.server.model)
                 client = build_client('simulated')(self.args, client_id)
                 model = client.train(self.data[client_id], model)
+
+                self._model_pool.append(model)
+                heapq.heappush(
+                    self._model_heap,
+                    (model.get_model_version() +
+                     np.random.randint(0, self.args.fedasync_max_staleness),
+                     np.random.rand(), model))
+
+            while len(self._model_heap) > 0:
+                _, _, model = self._model_heap.pop()
+
                 self.server.update(model)
 
                 result = self.server.evaluate(self.dataset.testset)
@@ -74,6 +94,10 @@ class SimulatedCoordinator(BaseCoordinator):
 
         result = self.server.evaluate(self.dataset.testset)
         self.logger.info(f'Server result: {result}')
+        self.logger.info(
+            f'Final server model version: {self.server.model.get_model_version()}'
+        )
+        self.logger.info(f'Finish.')
 
     def run(self) -> None:
         self.prepare()

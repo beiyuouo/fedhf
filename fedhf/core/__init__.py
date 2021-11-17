@@ -8,8 +8,16 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ["SimulatedServer", "SimulatedClient", "SimulatedCoordinator"]
+__all__ = []
 
-from .server import SimulatedServer, build_server
-from .client import SimulatedClient, build_client
-from .coordinator import SimulatedCoordinator, build_coordinator
+__all__ += ["build_server", "build_client", "build_coordinator"]
+
+__all__ += ["SimulatedServer"]
+
+__all__ += ["SimulatedClient"]
+
+__all__ += ["SimulatedCoordinator", "SimulatedAsyncCoordinator"]
+
+from .server import build_server, SimulatedServer
+from .client import build_client, SimulatedClient
+from .coordinator import build_coordinator, SimulatedCoordinator, SimulatedAsyncCoordinator

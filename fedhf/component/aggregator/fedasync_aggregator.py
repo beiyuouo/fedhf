@@ -13,6 +13,7 @@ import torch
 
 from fedhf import model
 
+from fedhf.component.logger import Logger
 from .base_aggregator import BaseAggregator
 
 
@@ -24,11 +25,11 @@ class FedAsyncAggregator(BaseAggregator):
         self.a = None
         self.b = None
         self.alpha = args.fedasync_alpha if args.fedasync_alpha else 0.5
+        self.logger = Logger(self.args)
 
     def agg(self, server_param, client_param, **kwargs):
         if not self._check_agg():
             return
-
         if not self.stragegy == "constant":
             if "server_model_version" not in kwargs.keys():
                 raise ValueError("Missing key: server_model_version")
@@ -41,6 +42,10 @@ class FedAsyncAggregator(BaseAggregator):
         alpha = self._get_alpha(**kwargs)
         new_param = torch.mul(1 - alpha, server_param) + \
                                 torch.mul(alpha, client_param)
+
+        self.logger.info(
+            f"FedAsyncAggregator agg: alpha: {alpha} using stragegy: {self.stragegy}"
+        )
 
         result = {
             'param':

@@ -8,11 +8,12 @@
 @License :   Apache License 2.0
 """
 
+import torch
 from tqdm import tqdm
 
-from .base_evaluator import BaseEvaluator
 from fedhf.model import build_criterion, build_optimizer
 from fedhf.component.logger import Logger
+from .base_evaluator import BaseEvaluator
 
 
 class Evaluator(BaseEvaluator):
@@ -44,8 +45,11 @@ class Evaluator(BaseEvaluator):
         optim = self.optim(params=model.parameters(), lr=self.args.lr)
         crit = self.crit()
 
+        self.logger.info(f'Start evaluation on {client_id}')
+
         model.eval()
         losses = 0.0
+        acc = 0.0
         for inputs, labels in tqdm(dataloader,
                                    desc=f'Test on client {client_id}'):
             inputs = inputs.to(device)
@@ -54,12 +58,25 @@ class Evaluator(BaseEvaluator):
             outputs = model(inputs)
             loss = crit(outputs, labels)
 
+            _, predicted = torch.max(outputs, 1)
+            acc += torch.sum(predicted == labels).item()
+
             optim.zero_grad()
             loss.backward()
             optim.step()
 
             losses += loss.item()
 
-        losses /= len(dataloader)
+        losses /= len(dataloader.dataset)
+        acc /= len(dataloader.dataset)
 
-        return {'test_loss': losses}
+        self.logger.info(f'Evaluation on {client_id} finished')
+
+        if self.args.use_wandb:
+            if client_id == -1:
+                self.logger.to_wandb({
+                    'loss on server': losses,
+                    'acc on server': acc
+                })
+
+        return {'test_loss': losses, 'test_acc': acc}

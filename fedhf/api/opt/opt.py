@@ -128,6 +128,10 @@ class opts(object):
                                  type=str,
                                  default='ce',
                                  help='loss function.')
+        self.parser.add_argument('--train_loss',
+                                 type=str,
+                                 default=None,
+                                 help='train loss function.')
 
         # training setting
         self.parser.add_argument(
@@ -168,14 +172,24 @@ class opts(object):
                                  default='fedasync',
                                  help='aggregate strategy')
 
-        self.parser.add_argument('--fedasync_strategy',
-                                 type=str,
-                                 default='constant',
-                                 help='fedasync aggregate strategy')
+        self.parser.add_argument(
+            '--fedasync_strategy',
+            type=str,
+            default='constant',
+            help='fedasync aggregate strategy | constant | hinge | polynomial')
         self.parser.add_argument('--fedasync_alpha',
                                  type=float,
                                  default=0.5,
                                  help='fedasync aggregate alpha')
+        self.parser.add_argument('--fedasync_rho',
+                                 type=float,
+                                 default=0.005,
+                                 help='fedasync aggregate reg rho')
+
+        self.parser.add_argument('--fedasync_max_staleness',
+                                 type=int,
+                                 default=4,
+                                 help='fedasync aggregate max staleness')
 
         # test setting
         self.parser.add_argument('--test',
@@ -204,6 +218,25 @@ class opts(object):
         if opt.from_file:
             opt = self.load_from_file(args)
 
+        name_ = [
+            'experiment',
+            f'{opt.model}',
+            f'{opt.dataset}',
+            f'{opt.task}',
+            f'{opt.optim}',
+            f'{opt.loss}',
+            f'{opt.lr}',
+            f'{opt.batch_size}',
+            f'{opt.num_rounds}',
+            f'{opt.num_clients}',
+            f'{opt.num_local_epochs}',
+            f'{opt.sampler}',
+            f'{opt.selector}',
+            f'{opt.agg}',
+        ]
+
+        opt.name = '-'.join(name_)
+
         opt.gpus_str = opt.gpus
         opt.gpus = [int(gpu) for gpu in opt.gpus.split(',')]
         opt.gpus = [i for i in range(len(opt.gpus))
@@ -211,6 +244,9 @@ class opts(object):
         opt.device = torch.device('cuda' if opt.gpus[0] >= 0 else 'cpu')
 
         opt.num_workers = max(opt.num_workers, 2 * len(opt.gpus))
+
+        if opt.train_loss is None:
+            opt.train_loss = opt.loss
 
         # make dirs
         # TODO

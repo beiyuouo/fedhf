@@ -1,18 +1,23 @@
 # FedHF
 A Federated Learning Framework which is Heterogeneous and Flexible.
 
+[[ Document ](https://www.bj-yan.top/FedHF/)]
 
 ## Feature
 
 
-## Start to use
+# Getting Start
 
 ```sh
-pip install wandb
+pip install fedhf
+
+# If you want to use wandb to view log, please login first
 wandb login
 ```
+
+# Licence
 
 
 # Reference
 
-Highly inspired by [FedLab](https://github.com/SMILELab-FL/FedLab)
+Highly inspired by [FedLab](https://github.com/SMILELab-FL/FedLab), thanks for their great work.
