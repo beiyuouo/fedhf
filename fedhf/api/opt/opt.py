@@ -136,9 +136,14 @@ class opts(object):
         # training setting
         self.parser.add_argument(
             '--check_point',
-            type=str,
-            default='50',
+            type=int,
+            default=50,
             help='when to save the model and result to disk.')
+        self.parser.add_argument(
+            '--save_dir',
+            type=str,
+            default='./chkp',
+            help='where to save the model and result to disk.')
         self.parser.add_argument('--num_clients',
                                  type=int,
                                  default=3,
@@ -219,7 +224,7 @@ class opts(object):
             opt = self.load_from_file(args)
 
         name_ = [
-            'experiment',
+            'experiment' if opt.test is None else 'test',
             f'{opt.model}',
             f'{opt.dataset}',
             f'{opt.task}',
@@ -249,7 +254,7 @@ class opts(object):
             opt.train_loss = opt.loss
 
         # make dirs
-        # TODO
+        os.makedirs(opt.save_dir, exist_ok=True)
 
         if opt.resume and opt.load_model == '':
             opt.load_model = os.path.join(opt.save_dir, 'model_last.pth')

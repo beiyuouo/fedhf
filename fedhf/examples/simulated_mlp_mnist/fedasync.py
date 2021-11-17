@@ -19,7 +19,7 @@ def main():
         'alexnet_cifar10', '--dataset', 'cifar10', '--fedasync_rho', '0.005',
         '--fedasync_strategy', 'constant', '--fedasync_alpha', '0.5',
         '--fedasync_max_staleness', '4', '--lr', '0.1', '--optim', 'sgd',
-        '--num_clients', '100', '--num_rounds', '20'
+        '--num_clients', '100', '--num_rounds', '5000'
     ])
     coo = SimulatedAsyncCoordinator(args)
     coo.run()

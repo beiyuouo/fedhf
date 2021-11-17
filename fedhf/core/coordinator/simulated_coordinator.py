@@ -49,21 +49,33 @@ class SimulatedCoordinator(BaseCoordinator):
         self.logger = Logger(self.args)
 
     def main(self) -> None:
-        for i in range(self.args.num_rounds):
-            selected_client = self.server.select(self.client_list)
+        try:
+            for i in range(self.args.num_rounds):
+                selected_client = self.server.select(self.client_list)
 
-            self.logger.info(f'Round {i} selected client: {selected_client}')
+                self.logger.info(
+                    f'Round {i} selected client: {selected_client}')
 
-            for client_id in selected_client:
-                model = deepcopy(self.server.model)
-                client = build_client('simulated')(self.args, client_id)
-                model = client.train(self.data[client_id], model)
-                self.server.update(model)
+                for client_id in selected_client:
+                    model = deepcopy(self.server.model)
+                    client = build_client('simulated')(self.args, client_id)
+                    model = client.train(self.data[client_id], model)
+                    self.server.update(model)
 
-                result = self.server.evaluate(self.dataset.testset)
-                self.logger.info(f'Server result: {result}')
+                    result = self.server.evaluate(self.dataset.testset)
+                    self.logger.info(f'Server result: {result}')
 
-        self.logger.info(f'All rounds finished.')
+                    if self.server.model.get_model_version(
+                    ) % self.args.check_point == 0:
+                        self.server.model.save(
+                            f'{self.args.name}-{self.server.model.get_model_version()}.pth'
+                        )
+
+            self.logger.info(f'All rounds finished.')
+
+        except KeyboardInterrupt:
+            self.server.model.save()
+            self.logger.info(f'Interrupted by user.')
 
     def finish(self) -> None:
         for client_id in self.client_list:
@@ -74,6 +86,8 @@ class SimulatedCoordinator(BaseCoordinator):
 
         result = self.server.evaluate(self.dataset.testset)
         self.logger.info(f'Server result: {result}')
+        self.server.model.save()
+        self.logger.info(f'All finished.')
 
     def run(self) -> None:
         self.prepare()
