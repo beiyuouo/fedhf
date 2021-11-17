@@ -11,3 +11,13 @@
 __all__ = ["Evaluator"]
 
 from .evaluator import Evaluator
+
+evaluator_factory = {
+    'evaluator': Evaluator,
+}
+
+
+def build_evalutor(name):
+    if name not in evaluator_factory.keys():
+        raise ValueError(f'Unknown evaluator name: {name}')
+    return evaluator_factory[name]

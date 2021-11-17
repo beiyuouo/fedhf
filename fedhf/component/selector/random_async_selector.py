@@ -20,6 +20,8 @@ class RandomAsyncSelector(BaseSelector):
     def select(self, client_list: list) -> list:
         select_ratio = np.random.rand()
         selected_clients = np.random.choice(
-            client_list, int(np.ceil(self.args.num_clients * select_ratio)))
-        np.random.shuffle(selected_clients)
+            client_list,
+            int(np.ceil(self.args.num_clients * select_ratio)),
+            replace=False)
+        # np.random.shuffle(selected_clients)
         return selected_clients

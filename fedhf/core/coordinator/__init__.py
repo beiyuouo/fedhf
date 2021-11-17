@@ -11,11 +11,13 @@
 __all__ = ["SimulatedCoordinator", "build_coordinator"]
 
 from .simulated_coordinator import SimulatedCoordinator
-
+from .simulated_async_coordinator import SimulatedAsyncCoordinator
 
 coordinator_factory = {
-    'simulated': SimulatedCoordinator
+    'simulated': SimulatedCoordinator,
+    'simulated_async': SimulatedAsyncCoordinator,
 }
+
 
 def build_coordinator(coordinator_type):
     if coordinator_type not in coordinator_factory:

@@ -10,13 +10,13 @@
 
 __all__ = ["build_dataset", "MNISTDataset", "ClientDataset"]
 
-
 from .mnist import MNISTDataset
+from .cifar10 import CIFAR10Dataset
 from .client_datasest import ClientDataset
 
-
 dataset_factory = {
-    'mnist': MNISTDataset
+    'mnist': MNISTDataset,
+    'cifar10': CIFAR10Dataset,
 }
 
 

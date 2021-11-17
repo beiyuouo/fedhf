@@ -11,3 +11,16 @@
 __all__ = ["Trainer"]
 
 from .trainer import Trainer
+from .async_trainer import AsyncTrainer
+
+trainer_factory = {
+    'trainer': Trainer,
+    'async_trainer': AsyncTrainer,
+}
+
+
+def build_trainer(trainer_type: str):
+    if trainer_type not in trainer_factory.keys():
+        raise ValueError(f'{trainer_type} is not a valid trainer name')
+
+    return trainer_factory[trainer_type]

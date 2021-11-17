@@ -20,4 +20,4 @@ wandb login
 
 # Reference
 
-Highly inspired by [FedLab](https://github.com/SMILELab-FL/FedLab)
+Highly inspired by [FedLab](https://github.com/SMILELab-FL/FedLab), thanks for their great work.
