@@ -22,8 +22,8 @@ class FedAsyncAggregator(BaseAggregator):
         super().__init__()
         self.args = args
         self.stragegy = args.fedasync_strategy
-        self.a = None
-        self.b = None
+        self.a = args.fedasync_a if args.fedasync_a else None
+        self.b = args.fedasync_b if args.fedasync_b else None
         self.alpha = args.fedasync_alpha if args.fedasync_alpha else 0.5
         self.logger = Logger(self.args)
 
@@ -59,18 +59,18 @@ class FedAsyncAggregator(BaseAggregator):
         return result
 
     def _get_alpha(self, **kwargs):
-        time_delta = kwargs["server_model_version"] - kwargs[
+        staleness = kwargs["server_model_version"] - kwargs[
             "client_model_version"]
         if self.args.fedasync_strategy == "constant":
             return torch.mul(self.alpha, 1)
-        elif self.strategy == "hinge" and self.b is not None and self.a is not None:
-            if time_delta <= self.b:
+        elif self.args.fedasync_strategy == "hinge" and self.b is not None and self.a is not None:
+            if staleness <= self.b:
                 return torch.mul(self.alpha, 1)
             else:
                 return torch.mul(self.alpha,
-                                 1 / (self.a * ((time_delta - self.b) + 1)))
-        elif self.strategy == "polynomial" and self.a is not None:
-            return (time_delta + 1)**(-self.a)
+                                 1 / (self.a * ((staleness - self.b) + 1)))
+        elif self.args.fedasync_strategy == "polynomial" and self.a is not None:
+            return torch.mul(self.alpha, (staleness + 1)**(-self.a))
         else:
             raise ValueError("Unknown strategy: {}".format(self.args.strategy))
 

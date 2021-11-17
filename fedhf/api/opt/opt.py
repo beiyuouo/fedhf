@@ -136,9 +136,14 @@ class opts(object):
         # training setting
         self.parser.add_argument(
             '--check_point',
-            type=str,
-            default='50',
+            type=int,
+            default=50,
             help='when to save the model and result to disk.')
+        self.parser.add_argument(
+            '--save_dir',
+            type=str,
+            default='./chkp',
+            help='where to save the model and result to disk.')
         self.parser.add_argument('--num_clients',
                                  type=int,
                                  default=3,
@@ -157,7 +162,7 @@ class opts(object):
                                  help='server round.')
         self.parser.add_argument('--sampler',
                                  type=str,
-                                 default='random',
+                                 default='non-iid',
                                  help='data sample strategy')
         self.parser.add_argument('--selector',
                                  type=str,
@@ -191,6 +196,15 @@ class opts(object):
                                  default=4,
                                  help='fedasync aggregate max staleness')
 
+        self.parser.add_argument('--fedasync_a',
+                                 type=int,
+                                 default=None,
+                                 help='fedasync aggregate a')
+        self.parser.add_argument('--fedasync_b',
+                                 type=int,
+                                 default=None,
+                                 help='fedasync aggregate b')
+
         # test setting
         self.parser.add_argument('--test',
                                  action='store_true',
@@ -219,7 +233,7 @@ class opts(object):
             opt = self.load_from_file(args)
 
         name_ = [
-            'experiment',
+            'experiment' if not opt.test else 'test',
             f'{opt.model}',
             f'{opt.dataset}',
             f'{opt.task}',
@@ -235,6 +249,13 @@ class opts(object):
             f'{opt.agg}',
         ]
 
+        if opt.agg == 'fedasync':
+            name_ += [
+                f'{opt.fedasync_strategy}', f'{opt.fedasync_alpha}',
+                f'{opt.fedasync_rho}', f'{opt.fedasync_max_staleness}',
+                f'{opt.fedasync_a}', f'{opt.fedasync_b}'
+            ]
+
         opt.name = '-'.join(name_)
 
         opt.gpus_str = opt.gpus
@@ -249,7 +270,7 @@ class opts(object):
             opt.train_loss = opt.loss
 
         # make dirs
-        # TODO
+        os.makedirs(opt.save_dir, exist_ok=True)
 
         if opt.resume and opt.load_model == '':
             opt.load_model = os.path.join(opt.save_dir, 'model_last.pth')

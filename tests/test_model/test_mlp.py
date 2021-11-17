@@ -41,3 +41,5 @@ class TestMLP(object):
             assert output.dtype == torch.float32
             assert output.device == torch.device('cpu')
             break
+
+        model.save()

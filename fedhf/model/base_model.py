@@ -7,7 +7,10 @@
 @Email   :   bj.yan.pa@qq.com 
 @License :   Apache License 2.0 
 """
+
 import time
+import os
+
 import torch
 import torch.nn as nn
 
@@ -30,3 +33,13 @@ class BaseModel(nn.Module):
 
     def set_model_version(self, model_version):
         self.model_version = model_version
+
+    def save(self, path: str = None):
+        if path is None:
+            path = os.path.join(self.args.save_dir, f'{self.args.name}.pth')
+        torch.save(
+            {
+                'model_version': self.model_version,
+                'model_time': self.model_time,
+                'state_dict': self.state_dict(),
+            }, path)

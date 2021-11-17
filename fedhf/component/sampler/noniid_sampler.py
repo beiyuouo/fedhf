@@ -8,6 +8,9 @@
 @License :   Apache License 2.0
 """
 
+import numpy as np
+
+from fedhf.dataset import ClientDataset
 from .base_sampler import BaseSampler
 
 
@@ -16,4 +19,17 @@ class NonIIDSampler(BaseSampler):
         self.args = args
 
     def sample(self, dataset):
-        pass
+        num_items = int(len(dataset) / self.args.num_clients)
+        client_data_dict = {}
+        for i in range(self.args.num_clients):
+            client_data_dict[i] = [
+                k
+                for k in range(i *
+                               num_items, min((i + 1) *
+                                              num_items, len(dataset)))
+            ]
+
+        return [
+            ClientDataset(dataset, client_data_dict[i])
+            for i in range(self.args.num_clients)
+        ]
