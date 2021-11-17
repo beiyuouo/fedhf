@@ -10,6 +10,7 @@
 
 from copy import deepcopy
 import heapq
+import os
 
 import numpy as np
 
@@ -55,49 +56,71 @@ class SimulatedAsyncCoordinator(BaseCoordinator):
         self._model_heap = None
 
     def main(self) -> None:
+        try:
+            for i in range(self.args.num_rounds):
+                selected_client = self.server.select(self.client_list)
+                self._model_pool = []
+                self._model_heap = []
 
-        for i in range(self.args.num_rounds):
-            selected_client = self.server.select(self.client_list)
-            self._model_pool = []
-            self._model_heap = []
+                self.logger.info(
+                    f'Round {i} selected client: {selected_client}')
 
-            self.logger.info(f'Round {i} selected client: {selected_client}')
+                for client_id in selected_client:
+                    model = deepcopy(self.server.model)
+                    client = build_client('simulated')(self.args, client_id)
+                    model = client.train(self.data[client_id], model)
 
-            for client_id in selected_client:
-                model = deepcopy(self.server.model)
-                client = build_client('simulated')(self.args, client_id)
-                model = client.train(self.data[client_id], model)
+                    self._model_pool.append(model)
+                    heapq.heappush(
+                        self._model_heap,
+                        (model.get_model_version() + np.random.randint(
+                            0, self.args.fedasync_max_staleness),
+                         np.random.rand(), model))
 
-                self._model_pool.append(model)
-                heapq.heappush(
-                    self._model_heap,
-                    (model.get_model_version() +
-                     np.random.randint(0, self.args.fedasync_max_staleness),
-                     np.random.rand(), model))
+                while len(self._model_heap) > 0:
+                    _, _, model = self._model_heap.pop()
 
-            while len(self._model_heap) > 0:
-                _, _, model = self._model_heap.pop()
+                    self.server.update(model)
 
-                self.server.update(model)
+                    result = self.server.evaluate(self.dataset.testset)
+                    self.logger.info(f'Server result: {result}')
 
-                result = self.server.evaluate(self.dataset.testset)
-                self.logger.info(f'Server result: {result}')
+                    if self.server.model.get_model_version(
+                    ) % self.args.check_point == 0:
+                        self.logger.info(
+                            f'Save model: {self.args.name}-{self.server.model.get_model_version()}.pth'
+                        )
+                        self.server.model.save(
+                            os.path.join(
+                                self.args.save_dir,
+                                f'{self.args.name}-{self.server.model.get_model_version()}.pth'
+                            ))
 
-        self.logger.info(f'All rounds finished.')
+            self.logger.info(f'All rounds finished.')
+
+        except KeyboardInterrupt:
+            self.server.model.save()
+            self.logger.info(f'Interrupted by user.')
 
     def finish(self) -> None:
-        for client_id in self.client_list:
-            client = build_client('simulated')(self.args, client_id)
-            result = client.evaluate(data=self.data[client_id],
-                                     model=self.server.model)
-            self.logger.info(f'Client {client_id} result: {result}')
+        self.server.model.save()
 
-        result = self.server.evaluate(self.dataset.testset)
-        self.logger.info(f'Server result: {result}')
-        self.logger.info(
-            f'Final server model version: {self.server.model.get_model_version()}'
-        )
-        self.logger.info(f'Finish.')
+        try:
+            for client_id in self.client_list:
+                client = build_client('simulated')(self.args, client_id)
+                result = client.evaluate(data=self.data[client_id],
+                                         model=self.server.model)
+                self.logger.info(f'Client {client_id} result: {result}')
+
+            result = self.server.evaluate(self.dataset.testset)
+            self.logger.info(f'Server result: {result}')
+            self.logger.info(
+                f'Final server model version: {self.server.model.get_model_version()}'
+            )
+        except KeyboardInterrupt:
+            self.logger.info(f'Interrupted by user.')
+
+        self.logger.info(f'All finished.')
 
     def run(self) -> None:
         self.prepare()
