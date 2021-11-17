@@ -59,7 +59,7 @@ class Evaluator(BaseEvaluator):
             loss = crit(outputs, labels)
 
             _, predicted = torch.max(outputs, 1)
-            acc += (predicted == labels).sum().item()
+            acc += torch.sum(predicted == labels).item()
 
             optim.zero_grad()
             loss.backward()
@@ -67,8 +67,8 @@ class Evaluator(BaseEvaluator):
 
             losses += loss.item()
 
-        losses /= len(dataloader)
-        acc /= len(dataloader)
+        losses /= len(dataloader.dataset)
+        acc /= len(dataloader.dataset)
 
         self.logger.info(f'Evaluation on {client_id} finished')
 

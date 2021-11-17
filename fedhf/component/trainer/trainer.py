@@ -80,10 +80,13 @@ class Trainer(BaseTrainer):
             table = wandb.Table(data=data, columns=["epoch", "train_loss"])
             self.logger.to_wandb({
                 f"train at client {client_id} model_version {model.get_model_version()}":
-                wandb.plot.line(table,
-                                "epoch",
-                                "train_loss",
-                                title=f"train loss at client {client_id}")
+                wandb.plot.line(
+                    table,
+                    "epoch",
+                    "train_loss",
+                    title=
+                    f"train loss at client {client_id} model_version {model.get_model_version()}"
+                )
             })
 
         return {'train_loss': train_loss, 'model': model}

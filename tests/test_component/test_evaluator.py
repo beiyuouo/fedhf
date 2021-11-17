@@ -43,6 +43,7 @@ class TestEvaluator:
 
         assert 'test_loss' in result.keys()
         assert 'test_acc' in result.keys()
+        assert result['test_acc'] < 1.0
 
     def test_evaluator_on_gpu(self):
         if not torch.cuda.is_available():
@@ -68,3 +69,4 @@ class TestEvaluator:
 
         assert 'test_loss' in result.keys()
         assert 'test_acc' in result.keys()
+        assert result['test_acc'] < 1.0
