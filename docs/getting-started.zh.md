@@ -1,6 +1,6 @@
-# Getting Started
+# 开始使用
 
-## Installation
+## 安装
 
 ```sh
 pip install fedhf

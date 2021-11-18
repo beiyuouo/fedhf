@@ -124,6 +124,7 @@ nav:
       - License: license.md
       - Changelog: changelog/index.md
   - User Guide:
+      - user-guide/index.md
       - API: user-guide/api.md
       - Components: user-guide/component.md
       - Core: user-guide/core.md
