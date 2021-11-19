@@ -163,6 +163,14 @@ class opts(object):
                                  type=str,
                                  default='non-iid',
                                  help='data sample strategy')
+        self.parser.add_argument('--sampler_num_classes',
+                                 type=int,
+                                 default=3,
+                                 help='number of classes for each client')
+        self.parser.add_argument('--sampler_unbalance_rate',
+                                 type=float,
+                                 default=0.1,
+                                 help='data sample unbalance')
         self.parser.add_argument('--selector',
                                  type=str,
                                  default='random_async',
