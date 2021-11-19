@@ -65,8 +65,8 @@ class Logger(BaseLogger):
         def error(self, log_str: str) -> None:
             self.logger.error(log_str)
 
-        def to_wandb(self, log_dict: dict) -> None:
-            wandb.log(log_dict)
+        def to_wandb(self, log_dict: dict, *args, **kwargs) -> None:
+            wandb.log(log_dict, *args, **kwargs)
 
     __instance = None
 
@@ -87,6 +87,6 @@ class Logger(BaseLogger):
     def error(self, log_str: str) -> None:
         self.__instance.error(log_str)
 
-    def to_wandb(self, log_dict: dict) -> None:
+    def to_wandb(self, log_dict: dict, *args, **kwargs) -> None:
         if self.__instance.use_wandb:
-            self.__instance.to_wandb(log_dict)
+            self.__instance.to_wandb(log_dict, args, kwargs)
