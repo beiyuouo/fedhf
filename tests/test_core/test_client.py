@@ -20,7 +20,7 @@ class TestClient(object):
     args = opts().parse([
         '--num_classes', '10', '--model', 'mlp', '--dataset', 'mnist',
         '--num_local_epochs', '1', '--batch_size', '1', '--optim', 'sgd',
-        '--lr', '0.01', '--loss', 'ce', '--gpus', '-1', '--resize', False
+        '--lr', '0.01', '--loss', 'ce', '--gpus', '-1'
     ])
 
     def test_simulated_client(self):

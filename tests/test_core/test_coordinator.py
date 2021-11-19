@@ -14,9 +14,8 @@ from fedhf.core import SimulatedCoordinator
 
 class TestCoordinator(object):
     args = opts().parse([
-        '--model', 'mlp', '--resize', False, '--num_rounds', '3',
-        '--num_local_epochs', '1', '--num_clients', '3', '--gpus', '-1',
-        '--test'
+        '--model', 'mlp', '--num_rounds', '3', '--num_local_epochs', '1',
+        '--num_clients', '3', '--gpus', '-1', '--test'
     ])
 
     def test_simulated_coordinator(self):

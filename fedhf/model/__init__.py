@@ -16,12 +16,14 @@ import torch.optim as optim
 from .resnet import ResNet
 from .mlp import MLP
 from .alexnet_cifar10 import AlexNetCIFAR10
+from .cnn_cifar10 import CNNCIFAR10
 
 model_factory = {
     'resnet': ResNet,
     'resnet18': ResNet,
     'mlp': MLP,
     'alexnet_cifar10': AlexNetCIFAR10,
+    'cnn_cifar10': CNNCIFAR10,
 }
 
 

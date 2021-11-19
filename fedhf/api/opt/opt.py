@@ -97,8 +97,7 @@ class opts(object):
                                  help='model name.')
 
         self.parser.add_argument('--model_pretrained',
-                                 type=bool,
-                                 default=True,
+                                 action='store_false',
                                  help='load pretrained model or not')
         self.parser.add_argument('--model_dir',
                                  default='./model',
@@ -164,6 +163,14 @@ class opts(object):
                                  type=str,
                                  default='non-iid',
                                  help='data sample strategy')
+        self.parser.add_argument('--sampler_num_classes',
+                                 type=int,
+                                 default=3,
+                                 help='number of classes for each client')
+        self.parser.add_argument('--sampler_unbalance_rate',
+                                 type=float,
+                                 default=0.1,
+                                 help='data sample unbalance')
         self.parser.add_argument('--selector',
                                  type=str,
                                  default='random_async',
@@ -214,13 +221,8 @@ class opts(object):
         self.parser.add_argument('--dataset_root',
                                  default='./dataset',
                                  help='custom dataset root')
-        self.parser.add_argument('--dataset_download',
-                                 type=bool,
-                                 default=True,
-                                 help='dataset download')
         self.parser.add_argument('--resize',
-                                 type=bool,
-                                 default=True,
+                                 action='store_true',
                                  help='resize or not')
 
     def parse(self, args=''):

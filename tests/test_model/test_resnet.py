@@ -20,8 +20,8 @@ from fedhf.dataset import build_dataset
 class TestResnet(object):
     args = opts().parse([
         '--model', 'resnet', '--num_classes', '10', '--model_pretrained',
-        'True', '--dataset', 'mnist', '--gpus', '-1', '--task',
-        'classification'
+        '--dataset', 'mnist', '--gpus', '-1', '--task', 'classification',
+        '--resize', '--input_c', '1', '--image_size', '224'
     ])
 
     def test_resnet(self):
@@ -32,7 +32,7 @@ class TestResnet(object):
         assert model.num_classes == 10
         assert model.cnn.fc.out_features == 10
 
-        dataset = build_dataset(self.args.dataset)(self.args, resize=True)
+        dataset = build_dataset(self.args.dataset)(self.args)
         dataloader = DataLoader(dataset.trainset, batch_size=1, shuffle=False)
 
         model = model.to(self.args.device)

@@ -16,7 +16,7 @@ from fedhf.dataset import build_dataset
 class TestSampler(object):
     args = opts().parse([
         '--num_clients', '10', '--dataset', 'mnist', '--num_classes', '10',
-        '--dataset_root', './dataset', '--dataset_download', 'True'
+        '--dataset_root', './dataset'
     ])
 
     def test_random_sampler(self):

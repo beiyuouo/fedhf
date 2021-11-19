@@ -18,8 +18,7 @@ class TestServer(object):
     args = opts().parse([
         '--num_clients', '10', '--select_ratio', '0.5', '--num_classes', '10',
         '--model', 'mlp', '--dataset', 'mnist', '--batch_size', '1', '--optim',
-        'sgd', '--lr', '0.01', '--loss', 'ce', '--gpus', '-1', '--resize',
-        False, '--test'
+        'sgd', '--lr', '0.01', '--loss', 'ce', '--gpus', '-1', '--test'
     ])
 
     def test_simulated_server(self):

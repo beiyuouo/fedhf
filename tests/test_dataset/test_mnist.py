@@ -16,11 +16,12 @@ from fedhf.api import opts
 
 class TestMNIST(object):
     args = opts().parse([
-        '--num_classes', '10', '--dataset_root', './dataset',
-        '--dataset_download', 'True', '--dataset', 'mnist', '--resize', False
+        '--num_classes', '10', '--dataset_root', './dataset', '--dataset',
+        'mnist'
     ])
 
     def test_mnist(self):
+        print(self.args)
         dataset = build_dataset(self.args.dataset)(self.args)
 
         print(self.args.resize)

@@ -14,16 +14,15 @@ import torch
 
 
 class CIFAR10Dataset(object):
-    def __init__(self, args, resize=None) -> None:
+    def __init__(self, args) -> None:
         super().__init__()
 
         self.args = args
         self.num_classes = 10
-        resize = args.resize if resize is None else resize
 
-        if resize:
+        if args.resize:
             self.transform = Compose([
-                Resize(args.image_size),
+                Resize([args.image_size, args.image_size]),
                 ToTensor(),
                 Normalize((0.49139968, 0.48215841, 0.44653091),
                           (0.24703223, 0.24348513, 0.26158784))
