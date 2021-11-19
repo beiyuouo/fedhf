@@ -57,13 +57,10 @@ class SimulatedAsyncCoordinator(BaseCoordinator):
 
     def main(self) -> None:
         try:
-            for i in range(self.args.num_rounds):
+            while True:
                 selected_client = self.server.select(self.client_list)
                 self._model_pool = []
                 self._model_heap = []
-
-                self.logger.info(
-                    f'Round {i} selected client: {selected_client}')
 
                 for client_id in selected_client:
                     model = deepcopy(self.server.model)
@@ -75,15 +72,19 @@ class SimulatedAsyncCoordinator(BaseCoordinator):
                         self._model_heap,
                         (model.get_model_version() + np.random.randint(
                             0, self.args.fedasync_max_staleness),
-                         np.random.rand(), model))
+                         np.random.rand(), client_id, model))
 
                 while len(self._model_heap) > 0:
-                    _, _, model = self._model_heap.pop()
+                    _, _, client_id, model = self._model_heap.pop()
 
+                    self.logger.info(
+                        f'server update model from client {client_id}')
                     self.server.update(model)
 
                     result = self.server.evaluate(self.dataset.testset)
-                    self.logger.info(f'Server result: {result}')
+                    self.logger.info(
+                        f'Server model version {self.server.model.get_model_version()} result: {result}'
+                    )
 
                     if self.server.model.get_model_version(
                     ) % self.args.check_point == 0:
@@ -95,6 +96,15 @@ class SimulatedAsyncCoordinator(BaseCoordinator):
                                 self.args.save_dir,
                                 f'{self.args.name}-{self.server.model.get_model_version()}.pth'
                             ))
+
+                    if self.server.model.get_model_version(
+                    ) * self.args.num_local_epochs >= self.args.num_rounds:
+                        break
+                if self.server.model.get_model_version(
+                ) * self.args.num_local_epochs >= self.args.num_rounds:
+                    break
+
+        except KeyboardInterrupt:
 
             self.logger.info(f'All rounds finished.')
 

@@ -97,8 +97,7 @@ class opts(object):
                                  help='model name.')
 
         self.parser.add_argument('--model_pretrained',
-                                 type=bool,
-                                 default=True,
+                                 action='store_false',
                                  help='load pretrained model or not')
         self.parser.add_argument('--model_dir',
                                  default='./model',
@@ -214,13 +213,8 @@ class opts(object):
         self.parser.add_argument('--dataset_root',
                                  default='./dataset',
                                  help='custom dataset root')
-        self.parser.add_argument('--dataset_download',
-                                 type=bool,
-                                 default=True,
-                                 help='dataset download')
         self.parser.add_argument('--resize',
-                                 type=bool,
-                                 default=True,
+                                 action='store_true',
                                  help='resize or not')
 
     def parse(self, args=''):

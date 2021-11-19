@@ -15,12 +15,13 @@ from fedhf.core import SimulatedAsyncCoordinator
 def main():
     args = opts().parse([
         '--use_wandb', '--wandb_reinit', '--gpus', '0', '--batch_size', '50',
-        '--num_local_epochs', '5', '--resize', False, '--model',
-        'alexnet_cifar10', '--dataset', 'cifar10', '--lr', '0.1', '--optim',
-        'sgd', '--num_clients', '100', '--num_rounds', '13', '--fedasync_rho',
-        '0.005', '--fedasync_strategy', 'constant', '--fedasync_alpha', '0.5',
-        '--fedasync_max_staleness', '4', '--fedasync_a', '10', '--fedasync_b',
-        '4'
+        '--num_local_epochs', '10', '--resize', '--input_c', '3',
+        '--image_size', '24', '--model', 'cnn_cifar10', '--dataset', 'cifar10',
+        '--lr', '0.1', '--optim', 'sgd', '--num_clients', '100',
+        '--num_rounds', '2000', '--selector', 'random_async', '--sampler',
+        'non-iid', '--fedasync_rho', '0.005', '--fedasync_strategy',
+        'constant', '--fedasync_alpha', '0.6', '--fedasync_max_staleness', '4',
+        '--fedasync_a', '10', '--fedasync_b', '4'
     ])
     coo = SimulatedAsyncCoordinator(args)
     coo.run()

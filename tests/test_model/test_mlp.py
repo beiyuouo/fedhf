@@ -18,8 +18,8 @@ from fedhf.dataset import build_dataset
 
 class TestMLP(object):
     args = opts().parse([
-        '--model', 'mlp', '--num_classes', '10', '--model_pretrained', 'True',
-        '--dataset', 'mnist', '--gpus', '-1', '--task', 'classification'
+        '--model', 'mlp', '--num_classes', '10', '--dataset', 'mnist',
+        '--gpus', '-1', '--task', 'classification'
     ])
 
     def test_mlp(self):
@@ -29,7 +29,7 @@ class TestMLP(object):
         assert model.__class__.__name__ == 'MLP'
         assert model.layer_hidden.out_features == 10
 
-        dataset = build_dataset(self.args.dataset)(self.args, resize=False)
+        dataset = build_dataset(self.args.dataset)(self.args)
         dataloader = DataLoader(dataset.trainset, batch_size=1, shuffle=False)
 
         model = model.to(self.args.device)

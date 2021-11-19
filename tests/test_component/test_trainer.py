@@ -9,6 +9,7 @@
 """
 
 import torch
+from torch.nn.modules.module import T
 from torch.utils.data import DataLoader
 
 from fedhf.api import opts
@@ -80,7 +81,8 @@ class TestTrainer(object):
 
     def test_trainer_resnet(self):
         self.args.model = 'resnet'
-        dataset = build_dataset(self.args.dataset)(self.args, resize=True)
+        self.args.resize = True
+        dataset = build_dataset(self.args.dataset)(self.args)
 
         client_id = 0
 
@@ -108,8 +110,9 @@ class TestTrainer(object):
 
         self.args.gpus = '0'
         self.args.device = torch.device('cuda:0')
+        self.args.resize = True
 
-        dataset = build_dataset(self.args.dataset)(self.args, resize=True)
+        dataset = build_dataset(self.args.dataset)(self.args)
 
         client_id = 0
 

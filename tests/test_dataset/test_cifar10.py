@@ -16,8 +16,8 @@ from fedhf.api import opts
 
 class TestCIFAR10(object):
     args = opts().parse([
-        '--num_classes', '10', '--dataset_root', './dataset',
-        '--dataset_download', 'True', '--dataset', 'cifar10', '--resize', False
+        '--num_classes', '10', '--dataset_root', './dataset', '--dataset',
+        'cifar10'
     ])
 
     def test_cifar10(self):

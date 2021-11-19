@@ -17,8 +17,8 @@ from fedhf.component import build_sampler
 
 class TestClientDataset(object):
     args = opts().parse([
-        '--num_classes', '10', '--dataset_root', './dataset',
-        '--dataset_download', 'True', '--dataset', 'mnist'
+        '--num_classes', '10', '--dataset_root', './dataset', '--dataset',
+        'mnist'
     ])
 
     def test_clientdataset_mnist(self):
