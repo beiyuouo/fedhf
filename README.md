@@ -41,7 +41,7 @@ You can see the [Document](https://www.bj-yan.top/FedHF/) for more details.
 
 ## Contributing
 
-For more information, please see the [Contributing](http://127.0.0.1:8000/FedHF/contributing/) page.
+For more information, please see the [Contributing](https://www.bj-yan.top/FedHF/contributing/) page.
 
 ## Citation
 
