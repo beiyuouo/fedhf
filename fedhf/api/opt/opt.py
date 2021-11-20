@@ -159,11 +159,11 @@ class opts(object):
                                  help='fedasync aggregate max staleness')
 
         self.parser.add_argument('--fedasync_a',
-                                 type=int,
+                                 type=float,
                                  default=None,
                                  help='fedasync aggregate a')
         self.parser.add_argument('--fedasync_b',
-                                 type=int,
+                                 type=float,
                                  default=None,
                                  help='fedasync aggregate b')
 
