@@ -8,8 +8,8 @@
 @License :   Apache License 2.0 
 """
 
-from .trainer import Trainer
-from .evaluator import Evaluator
+from .trainer import build_trainer, Trainer, AsyncTrainer
+from .evaluator import build_evalutor, Evaluator
 
 from .aggregator import build_aggregator, FedAsyncAggregator, FedAvgAggregator
 

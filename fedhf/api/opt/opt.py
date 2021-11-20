@@ -115,6 +115,10 @@ class opts(object):
                                  type=int,
                                  default=10,
                                  help='number of classes')
+        self.parser.add_argument('--trainer',
+                                 type=str,
+                                 default='trainer',
+                                 help='trainer.')
         self.parser.add_argument('--optim',
                                  type=str,
                                  default='adam',

@@ -19,7 +19,6 @@ from .base_evaluator import BaseEvaluator
 class Evaluator(BaseEvaluator):
     def __init__(self, args) -> None:
         self.args = args
-        self.optim = build_optimizer(self.args.optim)
         self.crit = build_criterion(self.args.loss)
         self.logger = Logger(self.args)
 
@@ -42,7 +41,6 @@ class Evaluator(BaseEvaluator):
         if not client_id:
             client_id = -1
         model = model.to(device)
-        optim = self.optim(params=model.parameters(), lr=self.args.lr)
         crit = self.crit()
 
         self.logger.info(f'Start evaluation on {client_id}')
@@ -60,10 +58,6 @@ class Evaluator(BaseEvaluator):
 
             _, predicted = torch.max(outputs, 1)
             acc += torch.sum(predicted == labels).item()
-
-            optim.zero_grad()
-            loss.backward()
-            optim.step()
 
             losses += loss.item()
 

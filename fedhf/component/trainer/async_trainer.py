@@ -46,6 +46,7 @@ class AsyncTrainer(BaseTrainer):
 
         model_ = deepcopy(model)
         model = model.to(device)
+        model_ = model_.to(device)
         optim = self.optim(params=model.parameters(), lr=self.args.lr)
         crit = self.crit()
 

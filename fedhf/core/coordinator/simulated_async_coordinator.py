@@ -9,7 +9,7 @@
 """
 
 from copy import deepcopy
-import heapq
+from queue import Queue
 import os
 
 import numpy as np
@@ -52,40 +52,46 @@ class SimulatedAsyncCoordinator(BaseCoordinator):
 
         self.logger = Logger(self.args)
 
-        self._model_pool = []
-        self._model_heap = None
+        self._model_queue = []
 
     def main(self) -> None:
         try:
-            while True:
-                selected_client = self.server.select(self.client_list)
-                self._model_pool = []
-                self._model_heap = []
+            self._model_queue.append(deepcopy(self.server.model))
 
-                for client_id in selected_client:
-                    model = deepcopy(self.server.model)
+            for i in range(self.args.num_rounds):
+                # self.logger.info(f'{self.server.model.get_model_version()}')
+
+                selected_clients = self.server.select(self.client_list)
+
+                self.logger.info(
+                    f'Round {i} Selected clients: {selected_clients}')
+
+                for client_id in selected_clients:
                     client = build_client('simulated')(self.args, client_id)
-                    model = client.train(self.data[client_id], model)
 
-                    self._model_pool.append(model)
-                    heapq.heappush(
-                        self._model_heap,
-                        (model.get_model_version() + np.random.randint(
-                            0, self.args.fedasync_max_staleness),
-                         np.random.rand(), client_id, model))
+                    staleness = np.random.randint(
+                        low=1,
+                        high=min(self.args.fedasync_max_staleness,
+                                 self.server.model.get_model_version() + 1) +
+                        1)
 
-                while len(self._model_heap) > 0:
-                    _, _, client_id, model = self._model_heap.pop()
+                    assert staleness <= self.server.model.get_model_version(
+                    ) + 1
+                    assert staleness <= len(self._model_queue)
 
                     self.logger.info(
-                        f'server update model from client {client_id}')
+                        f'Client {client_id} staleness: {staleness} start train from model version : {self._model_queue[-staleness].get_model_version()}'
+                    )
+
+                    model = client.train(data=self.data[client_id],
+                                         model=self._model_queue[-staleness])
+
                     self.server.update(model)
 
                     result = self.server.evaluate(self.dataset.testset)
                     self.logger.info(
                         f'Server model version {self.server.model.get_model_version()} result: {result}'
                     )
-
                     if self.server.model.get_model_version(
                     ) % self.args.check_point == 0:
                         self.logger.info(
@@ -97,12 +103,11 @@ class SimulatedAsyncCoordinator(BaseCoordinator):
                                 f'{self.args.name}-{self.server.model.get_model_version()}.pth'
                             ))
 
-                    if self.server.model.get_model_version(
-                    ) * self.args.num_local_epochs >= self.args.num_rounds:
-                        break
-                if self.server.model.get_model_version(
-                ) * self.args.num_local_epochs >= self.args.num_rounds:
-                    break
+                    self._model_queue.append(deepcopy(self.server.model))
+
+                    while len(self._model_queue
+                              ) > self.args.fedasync_max_staleness + 1:
+                        self._model_queue.pop(0)
 
         except KeyboardInterrupt:
 
