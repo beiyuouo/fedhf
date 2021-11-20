@@ -41,7 +41,9 @@ class AsyncTrainer(BaseTrainer):
         model_ = deepcopy(model)
         model = model.to(device)
         model_ = model_.to(device)
-        optim = self.optim(params=model.parameters(), lr=self.args.lr)
+        optim = self.optim(params=model.parameters(),
+                           lr=self.args.lr,
+                           momentum=self.args.momentum)
         crit = self.crit()
 
         self.logger.info(f'Start training on {client_id}')
@@ -75,7 +77,7 @@ class AsyncTrainer(BaseTrainer):
 
                 pbar.update(1)
 
-            train_loss.append(sum(losses) / len(losses))
+            train_loss.append(sum(losses) / len(dataloader.dataset))
             # self.logger.info(
             #    f'Client:{client_id} Epoch:{epoch+1}/{num_epochs} Loss:{train_loss[-1]}'
             #)

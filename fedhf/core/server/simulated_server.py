@@ -10,6 +10,7 @@
 
 from copy import deepcopy
 import re
+import torch
 
 from torch.utils.data.dataloader import DataLoader
 
@@ -34,11 +35,10 @@ class SimulatedServer(BaseServer):
         return self.selector.select(client_list)
 
     def update(self, model):
-        result = self.aggregator.agg(
-            Serializer.serialize_model(self.model),
-            Serializer.serialize_model(model),
-            server_model_version=self.model.get_model_version(),
-            client_model_version=model.get_model_version())
+        result = self.aggregator.agg(Serializer.serialize_model(self.model),
+                                     Serializer.serialize_model(model),
+                                     server_model_version=self.model.get_model_version(),
+                                     client_model_version=model.get_model_version())
 
         # print(self.model.get_model_version(), model.get_model_version())
         Deserializer.deserialize_model(self.model, result['param'])
@@ -46,14 +46,11 @@ class SimulatedServer(BaseServer):
         self.model.set_model_time(result['model_time'])
         # print(result['model_version'], result['model_time'])
         self.logger.info(
-            f'get model version {result["model_version"]} at time {result["model_time"]}'
-        )
+            f'get model version {result["model_version"]} at time {result["model_time"]}')
         return deepcopy(self.model)
 
     def evaluate(self, dataset):
-        dataloader = DataLoader(dataset,
-                                batch_size=self.args.batch_size,
-                                shuffle=False)
+        dataloader = DataLoader(dataset, batch_size=self.args.batch_size, shuffle=False)
         return self.evaluator.evaluate(dataloader=dataloader,
                                        model=self.model,
                                        device=self.args.device)

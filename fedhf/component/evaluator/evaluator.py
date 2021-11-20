@@ -28,12 +28,7 @@ class Evaluator(BaseEvaluator):
         else:
             pass
 
-    def evaluate(self,
-                 dataloader,
-                 model,
-                 client_id=None,
-                 gpus=[],
-                 device='cpu'):
+    def evaluate(self, dataloader, model, client_id=None, gpus=[], device='cpu'):
         if len(gpus) > 1:
             pass
         else:
@@ -48,8 +43,7 @@ class Evaluator(BaseEvaluator):
         model.eval()
         losses = 0.0
         acc = 0.0
-        for inputs, labels in tqdm(dataloader,
-                                   desc=f'Test on client {client_id}'):
+        for inputs, labels in tqdm(dataloader, desc=f'Test on client {client_id}'):
             inputs = inputs.to(device)
             labels = labels.to(device)
 
@@ -62,6 +56,7 @@ class Evaluator(BaseEvaluator):
             losses += loss.item()
 
         losses /= len(dataloader.dataset)
+        # self.logger.info(f'Client {client_id} test loss: {losses:.4f}, acc: {acc}')
         acc /= len(dataloader.dataset)
 
         self.logger.info(f'Evaluation on {client_id} finished')
