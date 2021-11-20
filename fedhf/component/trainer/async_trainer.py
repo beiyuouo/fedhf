@@ -32,13 +32,7 @@ class AsyncTrainer(BaseTrainer):
         else:
             pass
 
-    def train(self,
-              dataloader,
-              model,
-              num_epochs,
-              client_id=None,
-              gpus=[],
-              device='cpu'):
+    def train(self, dataloader, model, num_epochs, client_id=None, gpus=[], device='cpu'):
         if len(gpus) > 1:
             pass
         else:
@@ -53,21 +47,25 @@ class AsyncTrainer(BaseTrainer):
         self.logger.info(f'Start training on {client_id}')
 
         train_loss = []
+        pbar = tqdm(total=num_epochs * len(dataloader))
+        model.train()
         for epoch in range(num_epochs):
-            model.train()
             losses = []
-            for inputs, labels in tqdm(
-                    dataloader,
-                    desc=f'Client:{client_id} Epoch:{epoch+1}/{num_epochs}'):
+            pbar.set_description(f'Client:{client_id} Training on Epoch {epoch+1}/{num_epochs}')
+            for idx, (inputs, labels) in enumerate(dataloader):
                 inputs = inputs.to(device)
                 labels = labels.to(device)
 
                 outputs = model(inputs)
 
+                # self.logger.info(f'labels: {labels}, outputs: {outputs}')
+
                 l2_reg = self._calc_l2_reg(model_, model)
 
-                loss = crit(outputs,
-                            labels) + l2_reg * self.args.fedasync_rho / 2
+                loss = crit(outputs, labels) + l2_reg * self.args.fedasync_rho / 2
+
+                # self.logger.info(
+                #    f'ce: {crit(outputs, labels)}, l2_reg: {l2_reg}, loss: {loss.item()}')
 
                 optim.zero_grad()
                 loss.backward()
@@ -75,15 +73,16 @@ class AsyncTrainer(BaseTrainer):
 
                 losses.append(loss.item())
 
+                pbar.update(1)
+
             train_loss.append(sum(losses) / len(losses))
-            self.logger.info(
-                f'Client:{client_id} Epoch:{epoch+1}/{num_epochs} Loss:{train_loss[-1]}'
-            )
+            # self.logger.info(
+            #    f'Client:{client_id} Epoch:{epoch+1}/{num_epochs} Loss:{train_loss[-1]}'
+            #)
 
         self.logger.info(f'Client:{client_id} Train Loss:{train_loss}')
         if self.args.use_wandb:
-            data = [[x, y]
-                    for (x, y) in zip(range(1, num_epochs + 1), train_loss)]
+            data = [[x, y] for (x, y) in zip(range(1, num_epochs + 1), train_loss)]
             table = wandb.Table(data=data, columns=["epoch", "train_loss"])
             self.logger.to_wandb({
                 f"train at client {client_id} model_version {model.get_model_version()}":

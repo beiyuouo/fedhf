@@ -37,10 +37,8 @@ class SimulatedAsyncCoordinator(BaseCoordinator):
         if self.args.test:
             # reduce data for test
             self.data = [
-                ClientDataset(
-                    self.dataset.trainset,
-                    range(i * self.args.batch_size,
-                          (i + 1) * self.args.batch_size))
+                ClientDataset(self.dataset.trainset,
+                              range(i * self.args.batch_size, (i + 1) * self.args.batch_size))
                 for i in range(self.args.num_clients)
             ]
         else:
@@ -63,8 +61,7 @@ class SimulatedAsyncCoordinator(BaseCoordinator):
 
                 selected_clients = self.server.select(self.client_list)
 
-                self.logger.info(
-                    f'Round {i} Selected clients: {selected_clients}')
+                self.logger.info(f'Round {i} Selected clients: {selected_clients}')
 
                 for client_id in selected_clients:
                     client = build_client('simulated')(self.args, client_id)
@@ -72,11 +69,9 @@ class SimulatedAsyncCoordinator(BaseCoordinator):
                     staleness = np.random.randint(
                         low=1,
                         high=min(self.args.fedasync_max_staleness,
-                                 self.server.model.get_model_version() + 1) +
-                        1)
+                                 self.server.model.get_model_version() + 1) + 1)
 
-                    assert staleness <= self.server.model.get_model_version(
-                    ) + 1
+                    assert staleness <= self.server.model.get_model_version() + 1
                     assert staleness <= len(self._model_queue)
 
                     self.logger.info(
@@ -84,7 +79,7 @@ class SimulatedAsyncCoordinator(BaseCoordinator):
                     )
 
                     model = client.train(data=self.data[client_id],
-                                         model=self._model_queue[-staleness])
+                                         model=deepcopy(self._model_queue[-staleness]))
 
                     self.server.update(model)
 
@@ -92,21 +87,19 @@ class SimulatedAsyncCoordinator(BaseCoordinator):
                     self.logger.info(
                         f'Server model version {self.server.model.get_model_version()} result: {result}'
                     )
-                    if self.server.model.get_model_version(
-                    ) % self.args.check_point == 0:
+                    if self.server.model.get_model_version() % self.args.check_point == 0:
                         self.logger.info(
                             f'Save model: {self.args.name}-{self.server.model.get_model_version()}.pth'
                         )
                         self.server.model.save(
                             os.path.join(
                                 self.args.save_dir,
-                                f'{self.args.name}-{self.server.model.get_model_version()}.pth'
-                            ))
+                                f'{self.args.name}-{self.server.model.get_model_version()}.pth')
+                        )
 
                     self._model_queue.append(deepcopy(self.server.model))
 
-                    while len(self._model_queue
-                              ) > self.args.fedasync_max_staleness + 1:
+                    while len(self._model_queue) > self.args.fedasync_max_staleness + 1:
                         self._model_queue.pop(0)
 
         except KeyboardInterrupt:
@@ -123,15 +116,13 @@ class SimulatedAsyncCoordinator(BaseCoordinator):
         try:
             for client_id in self.client_list:
                 client = build_client('simulated')(self.args, client_id)
-                result = client.evaluate(data=self.data[client_id],
-                                         model=self.server.model)
+                result = client.evaluate(data=self.data[client_id], model=self.server.model)
                 self.logger.info(f'Client {client_id} result: {result}')
 
             result = self.server.evaluate(self.dataset.testset)
             self.logger.info(f'Server result: {result}')
             self.logger.info(
-                f'Final server model version: {self.server.model.get_model_version()}'
-            )
+                f'Final server model version: {self.server.model.get_model_version()}')
         except KeyboardInterrupt:
             self.logger.info(f'Interrupted by user.')
 

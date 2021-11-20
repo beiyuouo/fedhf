@@ -24,17 +24,17 @@ class CNNCIFAR10(BaseModel):
 
         self.num_classes = args.num_classes
 
-        self.cnn = nn.Sequential(nn.Conv2d(3, 64, kernel_size=3, padding=1),
-                                 nn.ReLU(), nn.BatchNorm2d(64),
-                                 nn.Conv2d(64, 64, kernel_size=3, padding=1),
-                                 nn.ReLU(), nn.BatchNorm2d(64),
-                                 nn.MaxPool2d(kernel_size=2), nn.Dropout(0.25),
-                                 nn.Conv2d(64, 128, kernel_size=3, padding=1),
+        self.cnn = nn.Sequential(nn.Conv2d(3, 64, kernel_size=3, padding=1), nn.ReLU(),
+                                 nn.BatchNorm2d(64), nn.Conv2d(64, 64, kernel_size=3,
+                                                               padding=1), nn.ReLU(),
+                                 nn.BatchNorm2d(64), nn.MaxPool2d(kernel_size=2),
+                                 nn.Dropout(0.25), nn.Conv2d(64, 128, kernel_size=3, padding=1),
                                  nn.ReLU(), nn.BatchNorm2d(128),
-                                 nn.MaxPool2d(kernel_size=2), nn.Dropout(0.25),
-                                 nn.Flatten(), nn.Linear(128 * 6 * 6, 512),
-                                 nn.ReLU(), nn.Dropout(0.5),
-                                 nn.Linear(512, 10), nn.Softmax(dim=1))
+                                 nn.Conv2d(128, 128, kernel_size=3, padding=1), nn.ReLU(),
+                                 nn.BatchNorm2d(128), nn.MaxPool2d(kernel_size=2),
+                                 nn.Dropout(0.25), nn.Flatten(), nn.Linear(128 * 6 * 6, 512),
+                                 nn.ReLU(), nn.Dropout(0.5), nn.Linear(512, 10),
+                                 nn.Softmax(dim=1))
 
     def forward(self, x):
         return self.cnn(x)
