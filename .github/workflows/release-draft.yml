@@ -1,6 +1,9 @@
 name: Release Draft
 
-on: [push]
+on:
+  # workflow_dispatch
+  push:
+    branches: [main]
 
 jobs:
   update_release_draft:
