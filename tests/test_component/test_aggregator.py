@@ -18,7 +18,7 @@ from fedhf.model import build_model
 class TestAggregator(object):
     args = opts().parse([
         '--num_classes', '10', '--model', 'mlp', '--gpus', '-1', '--agg', 'fedasync',
-        '--fedasync_strategy', 'constant', '--fedasync_alpha', '0.5'
+        '--fedasync_strategy', 'constant', '--fedasync_alpha', '0.5', '--select_ratio', '1'
     ])
 
     def test_fedasync_aggregator(self):

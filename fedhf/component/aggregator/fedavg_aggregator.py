@@ -35,10 +35,7 @@ class FedAvgAggregator(BaseAggregator):
         if "weight" not in kwargs.keys():
             kwargs["weight"] = 1 / self.num_clients_per_round
 
-        if "client_id" not in kwargs.keys():
-            raise ValueError("Missing key: client_id")
-
-        self._model_weight[kwargs["client_id"]] = kwargs["weight"]
+        self._model_weight[self._model_counter - 1] = kwargs["weight"]
 
         if not self._check_agg():
             return
