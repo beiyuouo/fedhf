@@ -139,6 +139,7 @@ class opts(object):
                                  default='fedasync',
                                  help='aggregate strategy')
 
+        # fedasync setting
         self.parser.add_argument(
             '--fedasync_strategy',
             type=str,

@@ -10,6 +10,7 @@
 import time
 
 import torch
+import torch.nn as nn
 
 from fedhf import model
 
@@ -27,7 +28,7 @@ class FedAsyncAggregator(BaseAggregator):
         self.alpha = args.fedasync_alpha if args.fedasync_alpha else 0.5
         self.logger = Logger(self.args)
 
-    def agg(self, server_param, client_param, **kwargs):
+    def agg(self, server_param: torch.Tensor, client_param: torch.Tensor, **kwargs):
         if not self._check_agg():
             return
         if not self.stragegy == "constant":
