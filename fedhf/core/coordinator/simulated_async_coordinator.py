@@ -9,12 +9,11 @@
 """
 
 from copy import deepcopy
-from queue import Queue
 import os
 
 import numpy as np
 
-from fedhf.core import build_server, build_client, server
+from fedhf.core import build_server, build_client
 
 from fedhf.component import Logger, build_sampler
 from fedhf.dataset import ClientDataset, build_dataset

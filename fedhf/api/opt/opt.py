@@ -11,6 +11,8 @@
 import argparse
 import os
 import torch
+import torch.nn as nn
+import numpy as np
 
 
 class opts(object):
@@ -185,6 +187,9 @@ class opts(object):
 
         if opt.from_file:
             opt = self.load_from_file(args)
+
+        np.random.seed(opt.seed)
+        torch.manual_seed(opt.seed)
 
         name_ = [
             'experiment' if not opt.test else 'test',

@@ -20,8 +20,8 @@ def main():
         '--resize', '--input_c', '3', '--image_size', '24', '--model', 'cnn_cifar10',
         '--dataset', 'cifar10', '--trainer', 'trainer', '--lr', '0.01', '--optim', 'sgd',
         '--momentum', '0.75', '--num_clients', '10', '--num_rounds', '40', '--selector',
-        'random', '--select_ratio', '1', '--sampler', 'random', '--sampler_num_classes', '2',
-        '--sampler_num_samples', '250', '--agg', 'fedavg'
+        'random', '--select_ratio', '1', '--sampler', 'non-iid', '--sampler_num_classes', '2',
+        '--sampler_num_samples', '2500', '--agg', 'fedavg'
     ])
     coo = SimulatedCoordinator(args)
     coo.run()
