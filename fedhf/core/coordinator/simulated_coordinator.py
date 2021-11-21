@@ -33,10 +33,8 @@ class SimulatedCoordinator(BaseCoordinator):
         if self.args.test:
             # reduce data for test
             self.data = [
-                ClientDataset(
-                    self.dataset.trainset,
-                    range(i * self.args.batch_size,
-                          (i + 1) * self.args.batch_size))
+                ClientDataset(self.dataset.trainset,
+                              range(i * self.args.batch_size, (i + 1) * self.args.batch_size))
                 for i in range(self.args.num_clients)
             ]
         else:
@@ -53,23 +51,23 @@ class SimulatedCoordinator(BaseCoordinator):
             for i in range(self.args.num_rounds):
                 selected_client = self.server.select(self.client_list)
 
-                self.logger.info(
-                    f'Round {i} selected client: {selected_client}')
+                self.logger.info(f'Round {i} selected client: {selected_client}')
 
                 for client_id in selected_client:
                     model = deepcopy(self.server.model)
                     client = build_client('simulated')(self.args, client_id)
                     model = client.train(self.data[client_id], model)
-                    self.server.update(model)
+                    self.server.update(
+                        model,
+                        server_model_version=self.server.model.get_model_version(),
+                        client_id=client_id)
 
-                    result = self.server.evaluate(self.dataset.testset)
-                    self.logger.info(f'Server result: {result}')
+                result = self.server.evaluate(self.dataset.testset)
+                self.logger.info(f'Server result: {result}')
 
-                    if self.server.model.get_model_version(
-                    ) % self.args.check_point == 0:
-                        self.server.model.save(
-                            f'{self.args.name}-{self.server.model.get_model_version()}.pth'
-                        )
+                if self.server.model.get_model_version() % self.args.check_point == 0:
+                    self.server.model.save(
+                        f'{self.args.name}-{self.server.model.get_model_version()}.pth')
 
             self.logger.info(f'All rounds finished.')
 
@@ -80,8 +78,7 @@ class SimulatedCoordinator(BaseCoordinator):
     def finish(self) -> None:
         for client_id in self.client_list:
             client = build_client('simulated')(self.args, client_id)
-            result = client.evaluate(data=self.data[client_id],
-                                     model=self.server.model)
+            result = client.evaluate(data=self.data[client_id], model=self.server.model)
             self.logger.info(f'Client {client_id} result: {result}')
 
         result = self.server.evaluate(self.dataset.testset)

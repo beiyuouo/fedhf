@@ -28,4 +28,4 @@ class ClientDataset(Dataset):
         return len(self.data_dict)
 
     def __getitem__(self, index):
-        return self.dataset[int(self.data_dict[index])]
+        return self.dataset[self.data_dict[index]]

@@ -9,7 +9,6 @@
 """
 
 from copy import deepcopy
-from queue import Queue
 import os
 
 import numpy as np
@@ -81,7 +80,10 @@ class SimulatedAsyncCoordinator(BaseCoordinator):
                     model = client.train(data=self.data[client_id],
                                          model=deepcopy(self._model_queue[-staleness]))
 
-                    self.server.update(model)
+                    self.server.update(
+                        model,
+                        server_model_version=self.server.model.get_model_version(),
+                        client_model_version=model.get_model_version())
 
                     result = self.server.evaluate(self.dataset.testset)
                     self.logger.info(

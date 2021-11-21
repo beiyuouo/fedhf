@@ -16,17 +16,16 @@ from fedhf.model import build_model
 
 class TestServer(object):
     args = opts().parse([
-        '--num_clients', '10', '--select_ratio', '0.5', '--num_classes', '10',
-        '--model', 'mlp', '--dataset', 'mnist', '--batch_size', '1', '--optim',
-        'sgd', '--lr', '0.01', '--loss', 'ce', '--gpus', '-1', '--test'
+        '--num_clients', '10', '--select_ratio', '0.5', '--num_classes', '10', '--model', 'mlp',
+        '--dataset', 'mnist', '--batch_size', '1', '--optim', 'sgd', '--lr', '0.01', '--loss',
+        'ce', '--gpus', '-1', '--test'
     ])
 
     def test_simulated_server(self):
         self.args.model = 'mlp'
         server = SimulatedServer(self.args)
 
-        selected_clients = server.select(
-            client_list=[i for i in range(self.args.num_clients)])
+        selected_clients = server.select(client_list=[i for i in range(self.args.num_clients)])
 
         assert len(selected_clients) > 0
 
@@ -36,12 +35,13 @@ class TestServer(object):
         assert server.model.get_model_version() == 0
         assert model.get_model_version() == 0
 
-        model = server.update(model)
+        server.update(model,
+                      server_model_version=0,
+                      client_model_version=model.get_model_version())
 
         assert server.model.get_model_version() == 1
 
         dataset = build_dataset(self.args.dataset)(self.args)
-        dataset_small = ClientDataset(dataset.testset,
-                                      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+        dataset_small = ClientDataset(dataset.testset, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
         result = server.evaluate(dataset=dataset_small)
         assert 'test_loss' in result.keys()

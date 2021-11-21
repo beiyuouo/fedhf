@@ -9,6 +9,7 @@
 """
 
 import numpy as np
+from torch._C import dtype
 
 from fedhf.dataset import ClientDataset
 from .base_sampler import BaseSampler
@@ -35,7 +36,7 @@ class NonIIDSampler(BaseSampler):
 
         idx_shard = [i for i in range(num_shards)]
 
-        idxs = np.arange(self.args.num_clients * num_items)
+        idxs = np.arange(self.args.num_clients * num_items, dtype=np.int32)
         labels = np.array(dataset.targets)
         idx_label = np.vstack((idxs, labels))
         idx_label = idx_label[:, idx_label[1, :].argsort()]
@@ -49,7 +50,7 @@ class NonIIDSampler(BaseSampler):
             idx_shard = list(set(idx_shard) - rand_set)
 
             unbalance_flag = 0
-            client_data_dict[i] = []
+            client_data_dict[i] = np.array([], dtype=np.int32)
 
             for rand in rand_set:
                 if unbalance_flag == 0:
