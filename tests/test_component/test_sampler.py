@@ -15,8 +15,8 @@ from fedhf.dataset import build_dataset
 
 class TestSampler(object):
     args = opts().parse([
-        '--num_clients', '10', '--dataset', 'mnist', '--num_classes', '10',
-        '--dataset_root', './dataset'
+        '--num_clients', '100', '--dataset', 'mnist', '--num_classes', '10', '--dataset_root',
+        './dataset', '--sampler_num_classes', '2', '--sampler_num_samples', '300'
     ])
 
     def test_random_sampler(self):
@@ -29,8 +29,7 @@ class TestSampler(object):
         train_data = sampler.sample(dataset.trainset)
 
         assert len(train_data) == self.args.num_clients
-        assert len(
-            train_data[0]) == len(dataset.trainset) // self.args.num_clients
+        assert len(train_data[0]) == len(dataset.trainset) // self.args.num_clients
 
     def test_noniid_sampler(self):
         sampler = build_sampler('non-iid')(self.args)
@@ -41,6 +40,7 @@ class TestSampler(object):
         dataset = build_dataset(self.args.dataset)(self.args)
         train_data = sampler.sample(dataset.trainset)
 
+        print(train_data[0])
+
         assert len(train_data) == self.args.num_clients
-        assert len(
-            train_data[0]) == len(dataset.trainset) // self.args.num_clients
+        assert len(train_data[0]) == len(dataset.trainset) // self.args.num_clients

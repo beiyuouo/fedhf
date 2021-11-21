@@ -43,9 +43,14 @@ class FedAsyncAggregator(BaseAggregator):
         new_param = torch.mul(1 - alpha, server_param) + \
                                 torch.mul(alpha, client_param)
 
+        # assert torch.equal(new_param, server_param) == False
+        # assert torch.equal(new_param, client_param) == False
+
         self.logger.info(
-            f"FedAsyncAggregator agg: alpha: {alpha} using stragegy: {self.stragegy}"
+            f"Aggregated server model version: {kwargs['server_model_version']}, client model version: {kwargs['client_model_version']}"
         )
+        self.logger.info(
+            f"FedAsyncAggregator agg: alpha: {alpha} using stragegy: {self.stragegy}")
 
         result = {
             'param':
@@ -59,16 +64,14 @@ class FedAsyncAggregator(BaseAggregator):
         return result
 
     def _get_alpha(self, **kwargs):
-        staleness = kwargs["server_model_version"] - kwargs[
-            "client_model_version"]
+        staleness = kwargs["server_model_version"] - kwargs["client_model_version"]
         if self.args.fedasync_strategy == "constant":
             return torch.mul(self.alpha, 1)
         elif self.args.fedasync_strategy == "hinge" and self.b is not None and self.a is not None:
             if staleness <= self.b:
                 return torch.mul(self.alpha, 1)
             else:
-                return torch.mul(self.alpha,
-                                 1 / (self.a * ((staleness - self.b) + 1)))
+                return torch.mul(self.alpha, 1 / (self.a * ((staleness - self.b) + 1)))
         elif self.args.fedasync_strategy == "polynomial" and self.a is not None:
             return torch.mul(self.alpha, (staleness + 1)**(-self.a))
         else:

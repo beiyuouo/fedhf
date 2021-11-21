@@ -11,7 +11,7 @@
 import re
 from torch.utils.data import DataLoader
 
-from fedhf.component import Evaluator, Logger, Trainer
+from fedhf.component import Evaluator, Logger, build_trainer
 from fedhf.model import build_criterion, build_model, build_optimizer
 
 from .base_client import BaseClient
@@ -22,7 +22,7 @@ class SimulatedClient(BaseClient):
         self.args = args
         self.client_id = client_id
 
-        self.trainer = Trainer(args)
+        self.trainer = build_trainer(self.args.trainer)(self.args)
         self.evaluator = Evaluator(args)
 
         self.logger = Logger(args)

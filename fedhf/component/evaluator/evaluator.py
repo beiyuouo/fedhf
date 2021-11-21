@@ -19,7 +19,6 @@ from .base_evaluator import BaseEvaluator
 class Evaluator(BaseEvaluator):
     def __init__(self, args) -> None:
         self.args = args
-        self.optim = build_optimizer(self.args.optim)
         self.crit = build_criterion(self.args.loss)
         self.logger = Logger(self.args)
 
@@ -29,12 +28,7 @@ class Evaluator(BaseEvaluator):
         else:
             pass
 
-    def evaluate(self,
-                 dataloader,
-                 model,
-                 client_id=None,
-                 gpus=[],
-                 device='cpu'):
+    def evaluate(self, dataloader, model, client_id=None, gpus=[], device='cpu'):
         if len(gpus) > 1:
             pass
         else:
@@ -42,7 +36,6 @@ class Evaluator(BaseEvaluator):
         if not client_id:
             client_id = -1
         model = model.to(device)
-        optim = self.optim(params=model.parameters(), lr=self.args.lr)
         crit = self.crit()
 
         self.logger.info(f'Start evaluation on {client_id}')
@@ -50,8 +43,7 @@ class Evaluator(BaseEvaluator):
         model.eval()
         losses = 0.0
         acc = 0.0
-        for inputs, labels in tqdm(dataloader,
-                                   desc=f'Test on client {client_id}'):
+        for inputs, labels in tqdm(dataloader, desc=f'Test on client {client_id}'):
             inputs = inputs.to(device)
             labels = labels.to(device)
 
@@ -61,13 +53,10 @@ class Evaluator(BaseEvaluator):
             _, predicted = torch.max(outputs, 1)
             acc += torch.sum(predicted == labels).item()
 
-            optim.zero_grad()
-            loss.backward()
-            optim.step()
-
             losses += loss.item()
 
         losses /= len(dataloader.dataset)
+        # self.logger.info(f'Client {client_id} test loss: {losses:.4f}, acc: {acc}')
         acc /= len(dataloader.dataset)
 
         self.logger.info(f'Evaluation on {client_id} finished')

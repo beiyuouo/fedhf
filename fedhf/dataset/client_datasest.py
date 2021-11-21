@@ -8,11 +8,12 @@
 @License :   Apache License 2.0 
 """
 
+from typing import List
 from torch.utils.data import Dataset
 
 
 class ClientDataset(Dataset):
-    def __init__(self, dataset, data_dict) -> None:
+    def __init__(self, dataset, data_dict: List) -> None:
         super().__init__()
         self.dataset = dataset
         self.data_dict = data_dict
@@ -27,4 +28,4 @@ class ClientDataset(Dataset):
         return len(self.data_dict)
 
     def __getitem__(self, index):
-        return self.dataset[self.data_dict[index]]
+        return self.dataset[int(self.data_dict[index])]
