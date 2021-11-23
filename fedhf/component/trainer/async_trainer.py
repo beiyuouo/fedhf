@@ -41,9 +41,14 @@ class AsyncTrainer(BaseTrainer):
         model_ = deepcopy(model)
         model = model.to(device)
         model_ = model_.to(device)
-        optim = self.optim(params=model.parameters(),
-                           lr=self.args.lr,
-                           momentum=self.args.momentum)
+        if self.args.optim == 'sgd':
+            optim = self.optim(params=model.parameters(),
+                               lr=self.args.lr /
+                               (model.get_model_version() * 2 // self.args.num_clients + 1),
+                               momentum=self.args.momentum,
+                               weight_decay=self.args.weight_decay)
+        else:
+            optim = self.optim(params=model.parameters(), lr=self.args.lr)
         crit = self.crit()
 
         self.logger.info(f'Start training on {client_id}')
@@ -77,13 +82,14 @@ class AsyncTrainer(BaseTrainer):
 
                 pbar.update(1)
 
-            train_loss.append(sum(losses) / len(dataloader.dataset))
+            train_loss.append(sum(losses) / len(losses))
             # self.logger.info(
             #    f'Client:{client_id} Epoch:{epoch+1}/{num_epochs} Loss:{train_loss[-1]}'
             #)
-
+        pbar.update(1)
         self.logger.info(f'Client:{client_id} Train Loss:{train_loss}')
-        if self.args.use_wandb:
+
+        if self.args.use_wandb and self.args.log_train_client:
             data = [[x, y] for (x, y) in zip(range(1, num_epochs + 1), train_loss)]
             table = wandb.Table(data=data, columns=["epoch", "train_loss"])
             self.logger.to_wandb({

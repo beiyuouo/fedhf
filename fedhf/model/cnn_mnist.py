@@ -15,7 +15,7 @@ from torch.nn.modules.activation import Softmax
 from .base_model import BaseModel
 
 
-class CNNCIFAR10(BaseModel):
+class CNNMNIST(BaseModel):
     """
     Implentation of the cnn described in the fedasync
     """
@@ -25,14 +25,14 @@ class CNNCIFAR10(BaseModel):
         self.num_classes = args.num_classes
 
         self.cnn = nn.Sequential(
-            nn.Conv2d(3, 32, kernel_size=3, padding=1),
+            nn.Conv2d(1, 32, kernel_size=3, padding=1),
             nn.ReLU(),
             nn.MaxPool2d(2),
             nn.Conv2d(32, 64, kernel_size=3, padding=1),
             nn.ReLU(),
             nn.MaxPool2d(2),
             nn.Flatten(),
-            nn.Linear(64 * 6 * 6, 128),
+            nn.Linear(64 * 7 * 7, 128),
             nn.ReLU(),
             nn.Linear(128, self.num_classes),
         )
