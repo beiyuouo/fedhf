@@ -55,7 +55,7 @@ class Evaluator(BaseEvaluator):
 
             losses += loss.item()
 
-        losses /= len(dataloader.dataset)
+        losses /= len(dataloader)
         # self.logger.info(f'Client {client_id} test loss: {losses:.4f}, acc: {acc}')
         acc /= len(dataloader.dataset)
 

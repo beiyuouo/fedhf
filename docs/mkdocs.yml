@@ -128,6 +128,8 @@ nav:
       - API: user-guide/api.md
       - Components: user-guide/component.md
       - Core: user-guide/core.md
+  - Benchmark:
+      - benchmark/index.md
 
   - Blog:
       - blog/index.md

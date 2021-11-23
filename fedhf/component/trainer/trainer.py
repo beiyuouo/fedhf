@@ -31,13 +31,7 @@ class Trainer(BaseTrainer):
         else:
             pass
 
-    def train(self,
-              dataloader,
-              model,
-              num_epochs,
-              client_id=None,
-              gpus=[],
-              device='cpu'):
+    def train(self, dataloader, model, num_epochs, client_id=None, gpus=[], device='cpu'):
         if len(gpus) > 1:
             pass
         else:
@@ -53,9 +47,8 @@ class Trainer(BaseTrainer):
         for epoch in range(num_epochs):
             model.train()
             losses = []
-            for inputs, labels in tqdm(
-                    dataloader,
-                    desc=f'Client:{client_id} Epoch:{epoch+1}/{num_epochs}'):
+            for inputs, labels in tqdm(dataloader,
+                                       desc=f'Client:{client_id} Epoch:{epoch+1}/{num_epochs}'):
                 inputs = inputs.to(device)
                 labels = labels.to(device)
 
@@ -69,14 +62,13 @@ class Trainer(BaseTrainer):
                 losses.append(loss.item())
 
             train_loss.append(sum(losses) / len(losses))
-            self.logger.info(
-                f'Client:{client_id} Epoch:{epoch+1}/{num_epochs} Loss:{train_loss[-1]}'
-            )
+        #self.logger.info(
+        #    f'Client:{client_id} Epoch:{epoch+1}/{num_epochs} Loss:{train_loss[-1]}'
+        #)
 
         self.logger.info(f'Client:{client_id} Train Loss:{train_loss}')
         if self.args.use_wandb:
-            data = [[x, y]
-                    for (x, y) in zip(range(1, num_epochs + 1), train_loss)]
+            data = [[x, y] for (x, y) in zip(range(1, num_epochs + 1), train_loss)]
             table = wandb.Table(data=data, columns=["epoch", "train_loss"])
             self.logger.to_wandb({
                 f"train at client {client_id} model_version {model.get_model_version()}":

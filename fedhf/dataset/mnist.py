@@ -21,14 +21,9 @@ class MNISTDataset(object):
         self.num_classes = 10
 
         if args.resize:
-            self.transform = Compose([
-                Resize([args.image_size, args.image_size]),
-                ToTensor(),
-                Normalize((0.1307, ), (0.3081, ))
-            ])
+            self.transform = Compose([Resize([args.image_size, args.image_size]), ToTensor()])
         else:
-            self.transform = Compose(
-                [ToTensor(), Normalize((0.1307, ), (0.3081, ))])
+            self.transform = Compose([ToTensor()])
 
         self.trainset = MNIST(root=args.dataset_root,
                               train=True,

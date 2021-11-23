@@ -66,6 +66,7 @@ class NonIIDSampler(BaseSampler):
                             self.args.sampler_num_samples)]),
                         axis=0)
                 unbalance_flag = 1
+            all_idxs = list(set(all_idxs) - set(client_data_dict[i]))
 
         return [
             ClientDataset(dataset, list(client_data_dict[i]))

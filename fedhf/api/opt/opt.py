@@ -57,6 +57,9 @@ class opts(object):
         self.parser.add_argument('--use_wandb',
                                  action='store_true',
                                  help='using wandb to store result')
+        self.parser.add_argument('--log_train_client',
+                                 action='store_true',
+                                 help='log train on client or not')
         self.parser.add_argument('--wandb_reinit', action='store_true', help='reinit wandb')
         self.parser.add_argument('--log_name', default='logger', type=str, help='logger name')
         self.parser.add_argument('--log_file', default=None, type=str, help='where to save log')
@@ -89,6 +92,10 @@ class opts(object):
         self.parser.add_argument('--trainer', type=str, default='trainer', help='trainer.')
         self.parser.add_argument('--optim', type=str, default='adam', help='optimizer.')
         self.parser.add_argument('--momentum', type=float, default=0.75, help='momentum.')
+        self.parser.add_argument('--weight_decay',
+                                 type=float,
+                                 default=0.001,
+                                 help='weight decay.')
 
         self.parser.add_argument('--lr', type=float, default=1.25e-4, help='learning rate.')
         self.parser.add_argument('--loss', type=str, default='ce', help='loss function.')
