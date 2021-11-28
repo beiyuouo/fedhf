@@ -16,7 +16,7 @@ import torch.optim as optim
 from .resnet import ResNet
 from .mlp import MLP
 from .alexnet_cifar10 import AlexNetCIFAR10
-from .cnn_cifar10 import CNNCIFAR10
+from .cnn_cifar10 import CNN2CIFAR10, CNN4CIFAR10
 from .cnn_mnist import CNNMNIST
 
 model_factory = {
@@ -24,7 +24,9 @@ model_factory = {
     'resnet18': ResNet,
     'mlp': MLP,
     'alexnet_cifar10': AlexNetCIFAR10,
-    'cnn_cifar10': CNNCIFAR10,
+    'cnn_cifar10': CNN2CIFAR10,
+    'cnn2_cifar10': CNN2CIFAR10,
+    'cnn4_cifar10': CNN4CIFAR10,
     'cnn_mnist': CNNMNIST,
 }
 

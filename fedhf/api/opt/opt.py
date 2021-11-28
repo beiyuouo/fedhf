@@ -40,8 +40,8 @@ class opts(object):
                                  action='store_true',
                                  help='resume an experiment. '
                                  'Reloaded the optimizer parameter and '
-                                 'set load_model to model_last.pth '
-                                 'in the exp dir if load_model is empty.')
+                                 'set load_model to args.name.pth '
+                                 'in the save dir if load_model is empty.')
 
         # system setting
         self.parser.add_argument('--gpus',
@@ -227,6 +227,8 @@ class opts(object):
         opt.gpus = [int(gpu) for gpu in opt.gpus.split(',')]
         opt.gpus = [i for i in range(len(opt.gpus))] if opt.gpus[0] >= 0 else [-1]
         opt.device = torch.device('cuda' if opt.gpus[0] >= 0 else 'cpu')
+        if opt.device != 'cpu':
+            torch.backends.cudnn.benchmark = True
 
         opt.num_workers = max(opt.num_workers, 2 * len(opt.gpus))
 
@@ -237,7 +239,7 @@ class opts(object):
         os.makedirs(opt.save_dir, exist_ok=True)
 
         if opt.resume and opt.load_model == '':
-            opt.load_model = os.path.join(opt.save_dir, 'model_last.pth')
+            opt.load_model = os.path.join(opt.save_dir, f'{opt.name}.pth')
         return opt
 
     def load_from_file(self, args):

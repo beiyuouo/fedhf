@@ -39,8 +39,7 @@ class SimulatedClient(BaseClient):
         model = result['model']
 
         self.logger.info(
-            f'Finish training on client {self.client_id}, train_loss: {train_loss}'
-        )
+            f'Finish training on client {self.client_id}, train_loss: {train_loss}')
         return model
 
     def evaluate(self, data, model, device='cpu'):
@@ -52,5 +51,5 @@ class SimulatedClient(BaseClient):
                                          device=device)
 
         self.logger.info(
-            f'Finish evaluating on client {self.client_id}, test_loss: {result["test_loss"]}'
+            f'Finish evaluating on client {self.client_id}, test_loss: {result["test_loss"]} test_acc: {result["test_acc"]}'
         )

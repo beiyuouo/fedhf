@@ -15,7 +15,45 @@ from torch.nn.modules.activation import Softmax
 from .base_model import BaseModel
 
 
-class CNNCIFAR10(BaseModel):
+class CNN4CIFAR10(BaseModel):
+    """
+    Implentation of the cnn described in the fedasync
+    """
+    def __init__(self, args, model_time=0):
+        super().__init__(args, model_time)
+
+        self.num_classes = args.num_classes
+
+        self.cnn = nn.Sequential(
+            nn.Conv2d(3, 64, kernel_size=3, padding=1),
+            nn.LeakyReLU(0.1),
+            nn.BatchNorm2d(64),
+            nn.Conv2d(64, 64, kernel_size=3, padding=1),
+            nn.LeakyReLU(0.1),
+            nn.BatchNorm2d(64),
+            nn.MaxPool2d(2),
+            nn.Dropout(0.25),
+            nn.Conv2d(64, 128, kernel_size=3, padding=1),
+            nn.LeakyReLU(0.1),
+            nn.BatchNorm2d(128),
+            nn.Conv2d(128, 128, kernel_size=3, padding=1),
+            nn.LeakyReLU(0.1),
+            nn.BatchNorm2d(128),
+            nn.MaxPool2d(2),
+            nn.Dropout(0.25),
+            nn.Flatten(),
+            nn.Linear(128 * 8 * 8, 512),
+            nn.ReLU(0.1),
+            nn.Dropout(0.25),
+            nn.Linear(512, self.num_classes),
+            nn.Softmax(dim=1),
+        )
+
+    def forward(self, x):
+        return self.cnn(x)
+
+
+class CNN2CIFAR10(BaseModel):
     """
     Implentation of the cnn described in the fedasync
     """
@@ -32,9 +70,10 @@ class CNNCIFAR10(BaseModel):
             nn.ReLU(),
             nn.MaxPool2d(2),
             nn.Flatten(),
-            nn.Linear(64 * 6 * 6, 128),
+            nn.Linear(64 * 8 * 8, 128),
             nn.ReLU(),
             nn.Linear(128, self.num_classes),
+            nn.Softmax(dim=1),
         )
 
     def forward(self, x):

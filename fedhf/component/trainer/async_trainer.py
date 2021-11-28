@@ -43,8 +43,7 @@ class AsyncTrainer(BaseTrainer):
         model_ = model_.to(device)
         if self.args.optim == 'sgd':
             optim = self.optim(params=model.parameters(),
-                               lr=self.args.lr /
-                               (model.get_model_version() * 2 // self.args.num_clients + 1),
+                               lr=self.args.lr,
                                momentum=self.args.momentum,
                                weight_decay=self.args.weight_decay)
         else:
@@ -58,7 +57,9 @@ class AsyncTrainer(BaseTrainer):
         model.train()
         for epoch in range(num_epochs):
             losses = []
-            pbar.set_description(f'Client:{client_id} Training on Epoch {epoch+1}/{num_epochs}')
+            pbar.set_description(
+                f'Client:{client_id} Training on Epoch {epoch+1}/{num_epochs} Loss: {0 if len(train_loss)==0 else train_loss[-1]:.5f}'
+            )
             for idx, (inputs, labels) in enumerate(dataloader):
                 inputs = inputs.to(device)
                 labels = labels.to(device)
