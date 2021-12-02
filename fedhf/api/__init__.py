@@ -10,3 +10,4 @@
 __all__ = ["opts"]
 
 from .opt import opts
+from .injector import Injector

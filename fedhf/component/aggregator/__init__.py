@@ -8,7 +8,7 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ["build_aggregator", "FedAsyncAggregator", "FedAvgAggregator"]
+__all__ = ["build_aggregator", "FedAsyncAggregator", "FedAvgAggregator", "aggregator_factory"]
 
 from .fedasync_aggregator import FedAsyncAggregator
 from .fedavg_aggregator import FedAvgAggregator

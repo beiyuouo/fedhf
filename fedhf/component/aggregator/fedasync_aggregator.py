@@ -22,11 +22,12 @@ class FedAsyncAggregator(BaseAggregator):
     def __init__(self, args) -> None:
         super().__init__()
         self.args = args
+        self.logger = Logger(self.args)
+
         self.stragegy = args.fedasync_strategy
         self.a = args.fedasync_a if args.fedasync_a else None
         self.b = args.fedasync_b if args.fedasync_b else None
         self.alpha = args.fedasync_alpha if args.fedasync_alpha else 0.5
-        self.logger = Logger(self.args)
 
     def agg(self, server_param: torch.Tensor, client_param: torch.Tensor, **kwargs):
         if not self._check_agg():

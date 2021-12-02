@@ -8,7 +8,7 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ["SimulatedServer", "build_server"]
+__all__ = ["SimulatedServer", "build_server", "server_factory"]
 
 from .simulated_server import SimulatedServer
 

@@ -8,7 +8,7 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ["Trainer"]
+__all__ = ["Trainer", "build_trainer", "trainer_factory"]
 
 from .trainer import Trainer
 from .async_trainer import AsyncTrainer

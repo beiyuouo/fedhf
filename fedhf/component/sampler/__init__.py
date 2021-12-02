@@ -8,7 +8,7 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ["build_sampler", "RandomSampler", "NonIIDSampler"]
+__all__ = ["build_sampler", "RandomSampler", "NonIIDSampler", "sampler_factory"]
 
 from .random_sampler import RandomSampler
 from .noniid_sampler import NonIIDSampler
