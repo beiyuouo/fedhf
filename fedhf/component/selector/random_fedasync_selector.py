@@ -13,7 +13,7 @@ import numpy as np
 from .base_selector import BaseSelector
 
 
-class RandomAsyncSelector(BaseSelector):
+class RandomFedAsyncSelector(BaseSelector):
     def __init__(self, args) -> None:
         self.args = args
 
@@ -22,8 +22,6 @@ class RandomAsyncSelector(BaseSelector):
         select_ratio = self.args.select_ratio
         select_count = min(int(self.args.num_clients * select_ratio),
                            self.args.fedasync_max_staleness)
-        selected_clients = np.random.choice(client_list,
-                                            select_count,
-                                            replace=False)
+        selected_clients = np.random.choice(client_list, select_count, replace=False)
         # np.random.shuffle(selected_clients)
         return selected_clients

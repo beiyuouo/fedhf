@@ -16,15 +16,15 @@ from fedhf.core import SimulatedAsyncCoordinator
 
 def main():
     args = opts().parse([
-        '--use_wandb', '--wandb_reinit', '--gpus', '0', '--batch_size', '50',
-        '--num_local_epochs', '5', '--resize', '--input_c', '3', '--image_size', '32',
-        '--model', 'cnn4_cifar10', '--dataset', 'cifar10', '--trainer', 'async_trainer', '--lr',
-        '0.001', '--optim', 'sgd', '--momentum', '0.9', '--weight_decay', '0.00001',
-        '--num_clients', '100', '--num_rounds', '10000', '--selector', 'random_async',
-        '--select_ratio', '0.01', '--sampler', 'non-iid', '--sampler_num_classes', '2',
-        '--sampler_num_samples', '250', '--fedasync_rho', '0.005', '--fedasync_strategy',
-        'polynomial', '--fedasync_alpha', '0.6', '--fedasync_max_staleness', '4',
-        '--fedasync_a', '0.5', '--fedasync_b', '4'
+        '--wandb_reinit', '--gpus', '0', '--deploy_mode', 'simulated', '--scheme', 'async',
+        '--batch_size', '50', '--num_local_epochs', '5', '--resize', '--input_c', '3',
+        '--image_size', '32', '--model', 'cnn2_cifar10', '--dataset', 'cifar10', '--trainer',
+        'fedasync_trainer', '--lr', '0.001', '--optim', 'sgd', '--momentum', '0.9',
+        '--weight_decay', '0.00001', '--num_clients', '100', '--num_rounds', '50', '--selector',
+        'random_fedasync', '--select_ratio', '0.01', '--sampler', 'non-iid',
+        '--sampler_num_classes', '2', '--sampler_num_samples', '250', '--agg', 'fedasync',
+        '--fedasync_rho', '0.005', '--fedasync_strategy', 'polynomial', '--fedasync_alpha',
+        '0.6', '--fedasync_max_staleness', '4', '--fedasync_a', '0.5', '--fedasync_b', '4'
     ])
     coo = SimulatedAsyncCoordinator(args)
     coo.run()

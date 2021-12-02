@@ -19,16 +19,16 @@ from fedhf.dataset import build_dataset
 
 class TestCNNCIFAR10(object):
     args = opts().parse([
-        '--model', 'cnn_cifar10', '--num_classes', '10', '--model_pretrained',
-        '--dataset', 'cifar10', '--gpus', '-1', '--task', 'classification',
-        '--resize', '--image_size', '24', '--input_c', '3'
+        '--model', 'cnn2_cifar10', '--num_classes', '10', '--model_pretrained', '--dataset',
+        'cifar10', '--gpus', '-1', '--task', 'classification', '--resize', '--image_size', '32',
+        '--input_c', '3'
     ])
 
-    def test_cnn_cifar10(self):
+    def test_cnn2cifar10(self):
         model = build_model(self.args.model)(self.args)
         print(model)
 
-        assert model.__class__.__name__ == 'CNNCIFAR10'
+        assert model.__class__.__name__ == 'CNN2CIFAR10'
         assert model.num_classes == 10
 
         dataset = build_dataset(self.args.dataset)(self.args)

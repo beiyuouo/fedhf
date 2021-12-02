@@ -16,10 +16,10 @@ __all__ += ["SimulatedServer"]
 
 __all__ += ["SimulatedClient"]
 
-__all__ += ["SimulatedCoordinator", "SimulatedAsyncCoordinator"]
+__all__ += ["SimulatedSyncCoordinator", "SimulatedAsyncCoordinator"]
 
 __all__ += ["server_factory", "client_factory", "coordinator_factory"]
 
 from .server import build_server, SimulatedServer, server_factory
 from .client import build_client, SimulatedClient, client_factory
-from .coordinator import build_coordinator, SimulatedCoordinator, SimulatedAsyncCoordinator, coordinator_factory
+from .coordinator import build_coordinator, SimulatedSyncCoordinator, SimulatedAsyncCoordinator, coordinator_factory

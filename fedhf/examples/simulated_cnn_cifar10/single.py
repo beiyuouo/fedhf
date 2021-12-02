@@ -19,10 +19,10 @@ from fedhf.model import build_model
 
 if __name__ == '__main__':
     args = opts().parse([
-        '--wandb_reinit', '--gpus', '0', '--batch_size', '50', '--num_local_epochs', '100',
-        '--resize', '--input_c', '3', '--image_size', '32', '--model', 'cnn_cifar10',
-        '--dataset', 'cifar10', '--trainer', 'async_trainer', '--lr', '0.01', '--optim', 'sgd',
-        '--momentum', '0.9', '--weight_decay', '0.00001', '--log_train_client'
+        '--wandb_reinit', '--gpus', '0', '--batch_size', '50', '--num_local_epochs', '5',
+        '--resize', '--input_c', '3', '--image_size', '32', '--model', 'cnn2_cifar10',
+        '--dataset', 'cifar10', '--trainer', 'fedasync_trainer', '--lr', '0.01', '--optim',
+        'sgd', '--momentum', '0.9', '--weight_decay', '0.00001', '--wandb_log_client'
     ])
     client = build_client('simulated')(args, client_id=0)
     dataset = build_dataset(args.dataset)(args)

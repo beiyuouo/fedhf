@@ -8,12 +8,15 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ["build_selector", "RandomAsyncSelector", "RandomSelector", "selector_factory"]
+__all__ = ["build_selector", "RandomFedAsyncSelector", "RandomSelector", "selector_factory"]
 
-from .random_async_selector import RandomAsyncSelector
+from .random_fedasync_selector import RandomFedAsyncSelector
 from .random_selector import RandomSelector
 
-selector_factory = {'random': RandomSelector, 'random_async': RandomAsyncSelector}
+selector_factory = {
+    'random': RandomSelector,
+    'random_fedasync': RandomFedAsyncSelector,
+}
 
 
 def build_selector(sele_name: str):

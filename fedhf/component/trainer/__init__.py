@@ -8,14 +8,14 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ["Trainer", "build_trainer", "trainer_factory"]
+__all__ = ["Trainer", "FedAsyncTrainer", "build_trainer", "trainer_factory"]
 
 from .trainer import Trainer
-from .async_trainer import AsyncTrainer
+from .fedasync_trainer import FedAsyncTrainer
 
 trainer_factory = {
     'trainer': Trainer,
-    'async_trainer': AsyncTrainer,
+    'fedasync_trainer': FedAsyncTrainer,
 }
 
 

@@ -9,7 +9,7 @@
 """
 
 from fedhf.api import opts
-from fedhf.core import SimulatedCoordinator, SimulatedAsyncCoordinator
+from fedhf.core import SimulatedSyncCoordinator, SimulatedAsyncCoordinator
 
 
 class TestCoordinator(object):
@@ -22,11 +22,11 @@ class TestCoordinator(object):
         coordinator = SimulatedAsyncCoordinator(args)
         coordinator.run()
 
-    def test_simulated_coordinator(self):
+    def test_simulated_sync_coordinator(self):
         args = opts().parse([
             '--model', 'mlp', '--num_rounds', '3', '--num_local_epochs', '1', '--num_clients',
             '3', '--gpus', '-1', '--test', '--agg', 'fedavg', '--select_ratio', '0.5'
         ])
 
-        coordinator = SimulatedCoordinator(args)
+        coordinator = SimulatedSyncCoordinator(args)
         coordinator.run()

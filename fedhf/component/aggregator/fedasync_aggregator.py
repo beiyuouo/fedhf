@@ -15,14 +15,12 @@ import torch.nn as nn
 from fedhf import model
 
 from fedhf.component.logger import Logger
-from .base_aggregator import BaseAggregator
+from .async_aggregator import AsyncAggregator
 
 
-class FedAsyncAggregator(BaseAggregator):
+class FedAsyncAggregator(AsyncAggregator):
     def __init__(self, args) -> None:
-        super().__init__()
-        self.args = args
-        self.logger = Logger(self.args)
+        super(FedAsyncAggregator, self).__init__(args)
 
         self.stragegy = args.fedasync_strategy
         self.a = args.fedasync_a if args.fedasync_a else None
@@ -78,6 +76,3 @@ class FedAsyncAggregator(BaseAggregator):
             return torch.mul(self.alpha, (staleness + 1)**(-self.a))
         else:
             raise ValueError("Unknown strategy: {}".format(self.args.strategy))
-
-    def _check_agg(self):
-        return True
