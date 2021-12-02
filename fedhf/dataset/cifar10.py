@@ -24,15 +24,10 @@ class CIFAR10Dataset(object):
             self.transform = Compose([
                 Resize([args.image_size, args.image_size]),
                 ToTensor(),
-                Normalize((0.49139968, 0.48215841, 0.44653091),
-                          (0.24703223, 0.24348513, 0.26158784))
+                Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
             ])
         else:
-            self.transform = Compose([
-                ToTensor(),
-                Normalize((0.49139968, 0.48215841, 0.44653091),
-                          (0.24703223, 0.24348513, 0.26158784))
-            ])
+            self.transform = Compose([ToTensor(), Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
         self.trainset = CIFAR10(root=args.dataset_root,
                                 train=True,

@@ -12,21 +12,12 @@ import torch
 from tqdm import tqdm
 
 from fedhf.model import build_criterion, build_optimizer
-from fedhf.component.logger import Logger
 from .base_evaluator import BaseEvaluator
 
 
 class Evaluator(BaseEvaluator):
     def __init__(self, args) -> None:
-        self.args = args
-        self.crit = build_criterion(self.args.loss)
-        self.logger = Logger(self.args)
-
-    def set_device(self, gpus, device):
-        if len(gpus) > 1:
-            pass
-        else:
-            pass
+        super(Evaluator, self).__init__(args)
 
     def evaluate(self, dataloader, model, client_id=None, gpus=[], device='cpu'):
         if len(gpus) > 1:

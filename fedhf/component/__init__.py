@@ -8,15 +8,13 @@
 @License :   Apache License 2.0 
 """
 
-from .trainer import build_trainer, Trainer, AsyncTrainer
-from .evaluator import build_evalutor, Evaluator
+from .trainer import build_trainer, Trainer, FedAsyncTrainer, trainer_factory
+from .evaluator import build_evalutor, Evaluator, evaluator_factory
 
-from .aggregator import build_aggregator, FedAsyncAggregator, FedAvgAggregator
+from .aggregator import build_aggregator, FedAsyncAggregator, FedAvgAggregator, SyncAggregator, AsyncAggregator, aggregator_factory
 
-from .logger import Logger
-
-from .selector import build_selector, RandomAsyncSelector, RandomSelector
+from .selector import build_selector, RandomFedAsyncSelector, RandomSelector, selector_factory
 
 from .serializer import Serializer, Deserializer
 
-from .sampler import build_sampler, RandomSampler, NonIIDSampler
+from .sampler import build_sampler, RandomSampler, NonIIDSampler, sampler_factory

@@ -29,9 +29,12 @@ class opts(object):
                                  help='using for save result.')
         self.parser.add_argument('--name', default='experiment', help='name of the experiment.')
         self.parser.add_argument(
-            '--deploy_type',
+            '--deploy_mode',
             default='simulated',
             help='type of deployment. [ simulated, standalone, distributed ]')
+        self.parser.add_argument('--scheme',
+                                 default='async',
+                                 help='type of deployment. [ async, sync ]')
         self.parser.add_argument('--dataset',
                                  default='mnist',
                                  help='see fedhf/dataset for available datasets')
@@ -40,8 +43,11 @@ class opts(object):
                                  action='store_true',
                                  help='resume an experiment. '
                                  'Reloaded the optimizer parameter and '
-                                 'set load_model to model_last.pth '
-                                 'in the exp dir if load_model is empty.')
+                                 'set load_model to args.name.pth '
+                                 'in the save dir if load_model is empty.')
+        self.parser.add_argument('--evaluate_on_client',
+                                 action='store_true',
+                                 help='evaluate on client')
 
         # system setting
         self.parser.add_argument('--gpus',
@@ -57,7 +63,7 @@ class opts(object):
         self.parser.add_argument('--use_wandb',
                                  action='store_true',
                                  help='using wandb to store result')
-        self.parser.add_argument('--log_train_client',
+        self.parser.add_argument('--wandb_log_client',
                                  action='store_true',
                                  help='log train on client or not')
         self.parser.add_argument('--wandb_reinit', action='store_true', help='reinit wandb')
@@ -75,7 +81,6 @@ class opts(object):
                                  default='classification',
                                  help='type of task, lr | classification | nlp')
         self.parser.add_argument('--model', type=str, default='resnet', help='model name.')
-
         self.parser.add_argument('--model_pretrained',
                                  action='store_false',
                                  help='load pretrained model or not')
@@ -83,6 +88,7 @@ class opts(object):
                                  default='./model',
                                  type=str,
                                  help='path to download model')  # Never used
+
         self.parser.add_argument('--input_c', type=int, default=1, help='input channel')
         self.parser.add_argument('--image_size', type=int, default=224, help='image_size')
         self.parser.add_argument('--num_classes',
@@ -123,7 +129,7 @@ class opts(object):
 
         self.parser.add_argument('--sampler',
                                  type=str,
-                                 default='non-iid',
+                                 default='random',
                                  help='data sample strategy')
         self.parser.add_argument('--sampler_num_classes',
                                  type=int,
@@ -140,13 +146,10 @@ class opts(object):
 
         self.parser.add_argument('--selector',
                                  type=str,
-                                 default='random_async',
+                                 default='random',
                                  help='client select strategy')
         self.parser.add_argument('--select_ratio', type=float, default=0.5, help='select ratio')
-        self.parser.add_argument('--agg',
-                                 type=str,
-                                 default='fedasync',
-                                 help='aggregate strategy')
+        self.parser.add_argument('--agg', type=str, default='async', help='aggregate strategy')
 
         # fedasync setting
         self.parser.add_argument(
@@ -162,12 +165,10 @@ class opts(object):
                                  type=float,
                                  default=0.005,
                                  help='fedasync aggregate reg rho')
-
         self.parser.add_argument('--fedasync_max_staleness',
                                  type=int,
                                  default=4,
                                  help='fedasync aggregate max staleness')
-
         self.parser.add_argument('--fedasync_a',
                                  type=float,
                                  default=None,
@@ -200,6 +201,9 @@ class opts(object):
 
         name_ = [
             'experiment' if not opt.test else 'test',
+            f'{opt.deploy_mode}',
+            f'{opt.scheme}',
+            f'{opt.task}',
             f'{opt.model}',
             f'{opt.dataset}',
             f'{opt.task}',
@@ -227,6 +231,8 @@ class opts(object):
         opt.gpus = [int(gpu) for gpu in opt.gpus.split(',')]
         opt.gpus = [i for i in range(len(opt.gpus))] if opt.gpus[0] >= 0 else [-1]
         opt.device = torch.device('cuda' if opt.gpus[0] >= 0 else 'cpu')
+        if opt.device != 'cpu':
+            torch.backends.cudnn.benchmark = True
 
         opt.num_workers = max(opt.num_workers, 2 * len(opt.gpus))
 
@@ -237,7 +243,7 @@ class opts(object):
         os.makedirs(opt.save_dir, exist_ok=True)
 
         if opt.resume and opt.load_model == '':
-            opt.load_model = os.path.join(opt.save_dir, 'model_last.pth')
+            opt.load_model = os.path.join(opt.save_dir, f'{opt.name}.pth')
         return opt
 
     def load_from_file(self, args):

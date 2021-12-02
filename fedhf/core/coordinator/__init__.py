@@ -8,13 +8,13 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ["SimulatedCoordinator", "build_coordinator"]
+__all__ = ["SimulatedCoordinator", "build_coordinator", "coordinator_factory"]
 
-from .simulated_coordinator import SimulatedCoordinator
+from .simulated_sync_coordinator import SimulatedSyncCoordinator
 from .simulated_async_coordinator import SimulatedAsyncCoordinator
 
 coordinator_factory = {
-    'simulated': SimulatedCoordinator,
+    'simulated_sync': SimulatedSyncCoordinator,
     'simulated_async': SimulatedAsyncCoordinator,
 }
 

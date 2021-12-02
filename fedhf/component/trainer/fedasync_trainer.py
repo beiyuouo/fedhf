@@ -9,28 +9,16 @@
 """
 
 import wandb
-
+import time
 from copy import deepcopy
 
 from tqdm import tqdm
-from fedhf.component.logger import Logger
-from fedhf.model import build_criterion, build_optimizer
-from .base_train import BaseTrainer
+from .base_trainer import BaseTrainer
 
 
-class AsyncTrainer(BaseTrainer):
+class FedAsyncTrainer(BaseTrainer):
     def __init__(self, args) -> None:
-        super().__init__()
-        self.args = args
-        self.optim = build_optimizer(self.args.optim)
-        self.crit = build_criterion(self.args.train_loss)
-        self.logger = Logger(self.args)
-
-    def set_device(self, gpus, device):
-        if len(gpus) > 1:
-            pass
-        else:
-            pass
+        super(FedAsyncTrainer, self).__init__(args)
 
     def train(self, dataloader, model, num_epochs, client_id=None, gpus=[], device='cpu'):
         if len(gpus) > 1:
@@ -43,8 +31,7 @@ class AsyncTrainer(BaseTrainer):
         model_ = model_.to(device)
         if self.args.optim == 'sgd':
             optim = self.optim(params=model.parameters(),
-                               lr=self.args.lr /
-                               (model.get_model_version() * 2 // self.args.num_clients + 1),
+                               lr=self.args.lr,
                                momentum=self.args.momentum,
                                weight_decay=self.args.weight_decay)
         else:
@@ -58,7 +45,9 @@ class AsyncTrainer(BaseTrainer):
         model.train()
         for epoch in range(num_epochs):
             losses = []
-            pbar.set_description(f'Client:{client_id} Training on Epoch {epoch+1}/{num_epochs}')
+            pbar.set_description(
+                f'Client:{client_id} Training on Epoch {epoch+1}/{num_epochs} Loss: {0 if len(train_loss)==0 else train_loss[-1]:.5f}'
+            )
             for idx, (inputs, labels) in enumerate(dataloader):
                 inputs = inputs.to(device)
                 labels = labels.to(device)
@@ -79,17 +68,17 @@ class AsyncTrainer(BaseTrainer):
                 optim.step()
 
                 losses.append(loss.item())
-
                 pbar.update(1)
 
             train_loss.append(sum(losses) / len(losses))
             # self.logger.info(
             #    f'Client:{client_id} Epoch:{epoch+1}/{num_epochs} Loss:{train_loss[-1]}'
             #)
-        pbar.update(1)
+
+        time.sleep(0.3)
         self.logger.info(f'Client:{client_id} Train Loss:{train_loss}')
 
-        if self.args.use_wandb and self.args.log_train_client:
+        if self.args.use_wandb and self.args.wandb_log_client:
             data = [[x, y] for (x, y) in zip(range(1, num_epochs + 1), train_loss)]
             table = wandb.Table(data=data, columns=["epoch", "train_loss"])
             self.logger.to_wandb({

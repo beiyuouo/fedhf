@@ -13,9 +13,8 @@ import re
 import torch
 import torch.nn as nn
 
-from torch.utils.data.dataloader import DataLoader
-
-from fedhf.component import build_aggregator, build_selector, Evaluator, Serializer, Deserializer, Logger
+from fedhf.api import Logger
+from fedhf.component import build_aggregator, build_selector, Evaluator, Serializer, Deserializer
 from fedhf.model import build_criterion, build_model, build_optimizer
 
 from .base_server import BaseServer
@@ -23,17 +22,7 @@ from .base_server import BaseServer
 
 class SimulatedServer(BaseServer):
     def __init__(self, args) -> None:
-        self.args = args
-
-        self.selector = build_selector(self.args.selector)(self.args)
-        self.aggregator = build_aggregator(self.args.agg)(self.args)
-
-        self.model = build_model(self.args.model)(self.args)
-        self.evaluator = Evaluator(self.args)
-        self.logger = Logger(self.args)
-
-    def select(self, client_list: list):
-        return self.selector.select(client_list)
+        super(SimulatedServer, self).__init__(args)
 
     def update(self, model: nn.Module, **kwargs):
         result = self.aggregator.agg(Serializer.serialize_model(self.model),
@@ -50,9 +39,3 @@ class SimulatedServer(BaseServer):
         self.logger.info(
             f'get model version {result["model_version"]} at time {result["model_time"]}')
         return
-
-    def evaluate(self, dataset):
-        dataloader = DataLoader(dataset, batch_size=self.args.batch_size, shuffle=False)
-        return self.evaluator.evaluate(dataloader=dataloader,
-                                       model=self.model,
-                                       device=self.args.device)

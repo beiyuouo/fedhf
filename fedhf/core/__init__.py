@@ -16,8 +16,13 @@ __all__ += ["SimulatedServer"]
 
 __all__ += ["SimulatedClient"]
 
-__all__ += ["SimulatedCoordinator", "SimulatedAsyncCoordinator"]
+__all__ += ["SimulatedSyncCoordinator", "SimulatedAsyncCoordinator"]
 
-from .server import build_server, SimulatedServer
-from .client import build_client, SimulatedClient
-from .coordinator import build_coordinator, SimulatedCoordinator, SimulatedAsyncCoordinator
+__all__ += ["server_factory", "client_factory", "coordinator_factory"]
+
+__all__ += ["Injector"]
+
+from .server import build_server, SimulatedServer, server_factory
+from .client import build_client, SimulatedClient, client_factory
+from .coordinator import build_coordinator, SimulatedSyncCoordinator, SimulatedAsyncCoordinator, coordinator_factory
+from .injector import Injector

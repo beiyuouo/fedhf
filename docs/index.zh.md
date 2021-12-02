@@ -4,7 +4,7 @@
 
 *Accelerate your research*
 
-![](https://img.shields.io/github/stars/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/github/forks/beiyuouo/FedHF?style=flat-square) ![https://www.bj-yan.top/FedHF/](https://img.shields.io/badge/document-building-blue?style=flat-square) ![](https://img.shields.io/github/languages/code-size/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/bitbucket/issues/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/bitbucket/pr/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/pypi/pyversions/fedhf?style=flat-square) ![](https://img.shields.io/pypi/l/fedhf?style=flat-square) 
+![](https://img.shields.io/github/stars/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/github/forks/beiyuouo/FedHF?style=flat-square) ![https://www.bj-yan.top/FedHF/](https://img.shields.io/badge/document-building-blue?style=flat-square) ![](https://img.shields.io/github/languages/code-size/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/github/issues/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/github/issues-pr/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/pypi/pyversions/fedhf?style=flat-square) ![](https://img.shields.io/pypi/l/fedhf?style=flat-square)
 
 ## Features
 
@@ -49,7 +49,7 @@ wandb login
 
 ## Licence
 
-这个项目是 [Apache License Version 2.0](https://www.apache.org/licenses/LICENSE-2.0) 许可下的.
+这个项目是 [Apache License Version 2.0](https://www.apache.org/licenses/LICENSE-2.0) 许可下完成后续工作的。
 
 ## Acknowledgement
 

@@ -9,9 +9,10 @@
 """
 
 from abc import ABC, abstractmethod
+from fedhf.api import Logger
 
 
-class BaseAggregator(ABC):
+class AbsAggregator(ABC):
     def __init__(self) -> None:
         super().__init__()
 
@@ -22,3 +23,15 @@ class BaseAggregator(ABC):
     @abstractmethod
     def _check_agg(self):
         raise NotImplementedError
+
+
+class BaseAggregator(AbsAggregator):
+    def __init__(self, args) -> None:
+        self.args = args
+        self.logger = Logger(self.args)
+
+    def agg(self):
+        pass
+
+    def _check_agg(self):
+        pass

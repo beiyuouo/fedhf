@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 """
-@File    :   fedhf\component\evaluator\base_evaluator.py
-@Time    :   2021-10-26 20:47:02
+@File    :   fedhf\component\trainer\base_train.py
+@Time    :   2021-10-26 20:42:25
 @Author  :   Bingjie Yan
 @Email   :   bj.yan.pa@qq.com
 @License :   Apache License 2.0
@@ -10,23 +10,24 @@
 
 from abc import ABC, abstractmethod
 
-from fedhf.model import build_criterion, build_optimizer
 from fedhf.api import Logger
+from fedhf.model import build_criterion, build_optimizer
 
 
-class AbsEvaluator(ABC):
+class AbsTrainer(ABC):
     def __init__(self) -> None:
         super().__init__()
 
     @abstractmethod
-    def evaluate(self):
+    def train(self):
         raise NotImplementedError
 
 
-class BaseEvaluator(AbsEvaluator):
-    def __init__(self, args) -> None:
+class BaseTrainer(AbsTrainer):
+    def __init__(self, args):
         self.args = args
-        self.crit = build_criterion(self.args.loss)
+        self.optim = build_optimizer(self.args.optim)
+        self.crit = build_criterion(self.args.train_loss)
         self.logger = Logger(self.args)
 
     def set_device(self, gpus, device):
@@ -35,5 +36,5 @@ class BaseEvaluator(AbsEvaluator):
         else:
             pass
 
-    def evaluate(self):
-        pass
+    def train(self):
+        print("BaseTrainer")

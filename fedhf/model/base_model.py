@@ -43,3 +43,11 @@ class BaseModel(nn.Module):
                 'model_time': self.model_time,
                 'state_dict': self.state_dict(),
             }, path)
+
+    def load(self, path: str = None):
+        if path is None:
+            path = os.path.join(self.args.save_dir, f'{self.args.name}.pth')
+        checkpoint = torch.load(path)
+        self.model_version = checkpoint['model_version']
+        self.model_time = checkpoint['model_time']
+        self.load_state_dict(checkpoint['state_dict'])
