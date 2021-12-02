@@ -11,7 +11,7 @@
 from abc import ABC, abstractmethod
 
 from fedhf.model import build_criterion, build_optimizer
-from fedhf.component.logger import Logger
+from fedhf.api import Logger
 
 
 class AbsEvaluator(ABC):

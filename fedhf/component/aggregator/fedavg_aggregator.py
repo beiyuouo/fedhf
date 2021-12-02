@@ -11,8 +11,6 @@ import time
 import torch
 import torch.nn as nn
 
-from fedhf.component.logger import Logger
-
 from .sync_aggregator import SyncAggregator
 
 

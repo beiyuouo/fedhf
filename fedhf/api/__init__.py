@@ -7,7 +7,7 @@
 @Email   :   bj.yan.pa@qq.com
 """
 
-__all__ = ["opts"]
+__all__ = ["opts", "Logger"]
 
 from .opt import opts
-from .injector import Injector
+from .logger import Logger

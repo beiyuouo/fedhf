@@ -14,7 +14,6 @@ import torch.nn as nn
 
 from fedhf import model
 
-from fedhf.component.logger import Logger
 from .async_aggregator import AsyncAggregator
 
 

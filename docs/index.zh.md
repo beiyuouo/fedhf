@@ -49,7 +49,7 @@ wandb login
 
 ## Licence
 
-这个项目是 [Apache License Version 2.0](https://www.apache.org/licenses/LICENSE-2.0) 许可下的.
+这个项目是 [Apache License Version 2.0](https://www.apache.org/licenses/LICENSE-2.0) 许可下完成后续工作的。
 
 ## Acknowledgement
 

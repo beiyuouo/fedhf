@@ -13,8 +13,6 @@ from .evaluator import build_evalutor, Evaluator, evaluator_factory
 
 from .aggregator import build_aggregator, FedAsyncAggregator, FedAvgAggregator, SyncAggregator, AsyncAggregator, aggregator_factory
 
-from .logger import Logger
-
 from .selector import build_selector, RandomFedAsyncSelector, RandomSelector, selector_factory
 
 from .serializer import Serializer, Deserializer

@@ -24,7 +24,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
  - OS: [e.g. iOS]
- - Version [e.g. 22]
+ - Version [e.g. 0.1.7]
 
 **Additional context**
 Add any other context about the problem here.

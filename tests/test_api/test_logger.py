@@ -8,8 +8,7 @@
 @License :   Apache License 2.0 
 """
 
-from fedhf.api import opts
-from fedhf.component import Logger
+from fedhf.api import opts, Logger
 
 
 class TestLogger:

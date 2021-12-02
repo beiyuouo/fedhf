@@ -12,7 +12,7 @@ from copy import deepcopy
 
 from fedhf.core import build_server, build_client
 
-from fedhf.component import Logger, build_sampler
+from fedhf.component import build_sampler
 from fedhf.dataset import ClientDataset, build_dataset
 
 from .base_coordinator import SimulatedBaseCoordinator

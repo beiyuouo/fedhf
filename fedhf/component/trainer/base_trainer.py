@@ -10,7 +10,7 @@
 
 from abc import ABC, abstractmethod
 
-from fedhf.component.logger import Logger
+from fedhf.api import Logger
 from fedhf.model import build_criterion, build_optimizer
 
 

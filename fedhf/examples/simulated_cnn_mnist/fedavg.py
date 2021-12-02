@@ -17,7 +17,7 @@ from fedhf.core import SimulatedSyncCoordinator
 def main():
     args = opts().parse([
         '--wandb_reinit', '--gpus', '0', '--deploy_mode', 'simulated', '--scheme', 'sync',
-        '--batch_size', '50', '--num_local_epochs', '5', '--resize', '--input_c', '3',
+        '--batch_size', '50', '--num_local_epochs', '5', '--resize', '--input_c', '1',
         '--image_size', '28', '--model', 'cnn_mnist', '--dataset', 'mnist', '--trainer',
         'trainer', '--lr', '0.01', '--optim', 'sgd', '--momentum', '0.9', '--num_clients', '10',
         '--num_rounds', '5', '--selector', 'random', '--select_ratio', '1', '--sampler',

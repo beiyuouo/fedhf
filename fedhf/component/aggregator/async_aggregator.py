@@ -15,7 +15,7 @@ import torch.nn as nn
 
 from fedhf import model
 
-from fedhf.component.logger import Logger
+from fedhf.api import Logger
 from .base_aggregator import BaseAggregator
 
 

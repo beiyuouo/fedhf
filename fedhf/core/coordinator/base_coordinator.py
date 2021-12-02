@@ -10,9 +10,9 @@
 
 from abc import ABC, abstractmethod
 
-from fedhf.component.logger import Logger
+from fedhf.api import Logger
 from fedhf.core import build_server, build_client
-from fedhf.component import Logger, build_sampler
+from fedhf.component import build_sampler
 from fedhf.dataset import ClientDataset, build_dataset
 
 

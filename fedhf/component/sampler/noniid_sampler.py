@@ -9,7 +9,6 @@
 """
 
 import numpy as np
-from torch._C import dtype
 
 from fedhf.dataset import ClientDataset
 from .base_sampler import BaseSampler

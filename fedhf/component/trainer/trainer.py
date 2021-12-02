@@ -14,7 +14,6 @@ from copy import deepcopy
 
 from tqdm import tqdm
 from torch.utils.data import DataLoader
-from fedhf.component.logger import Logger
 from fedhf.model import build_criterion, build_optimizer
 from .base_trainer import BaseTrainer
 

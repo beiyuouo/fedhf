@@ -12,7 +12,6 @@ import torch
 from tqdm import tqdm
 
 from fedhf.model import build_criterion, build_optimizer
-from fedhf.component.logger import Logger
 from .base_evaluator import BaseEvaluator
 
 

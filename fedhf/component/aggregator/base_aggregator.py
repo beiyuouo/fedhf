@@ -9,7 +9,7 @@
 """
 
 from abc import ABC, abstractmethod
-from fedhf.component.logger import Logger
+from fedhf.api import Logger
 
 
 class AbsAggregator(ABC):
