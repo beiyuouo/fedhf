@@ -13,13 +13,15 @@
 
 `FedHF`有三个高层核心模块位于`fedhf.core`，分别是协调器(`corrdinator`)，服务器(`server`)，客户端(`client`)。其中协调器包含服务器和客户端，用于管理总体进程，其职能还包括了解决数据划分方案和分布。服务器保存服务端模型，具有采样、聚合和验证的功能。客户端则主要承担具体训练和验证的任务。
 
+另外，在`FedHF v0.1.7`以后，`injector`加入到了`fedhf.core`中，提供一个注入器可以将开发的模型和算法注入到`FedHF`中。
+
 ### `fedhf.component`
 
-接下来将依次介绍`fedhf.component`的所有组件。
+`fedhf.component`中的所有组件之间不会相互引用，是极其松耦合的。更多细节请查阅[`fedhf.component`](./component)
 
 ### `fedhf.api`
 
-
+这里提供了一些`fedhf`的底层类便于使用，并且这些类作为最底层的类不会引用其他组件。更多细节请查阅[`fedhf.api`](./api)。
 
 ### `deploy model`
 
@@ -34,7 +36,12 @@
 
 ### `fedhf.model`
 
+这里提供了一些build-in的模型，可以直接使用。
+
 ### `fedhf.dataset`
 
+这里提供了一些build-in的数据集，可以直接使用。
 
 ## Docs structure
+
+文档共分为5个部分。
