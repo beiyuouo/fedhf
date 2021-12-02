@@ -1,5 +1,7 @@
 # FedHF
 
+<img src="./docs/assets/logo.svg" alt="logo" style="width:80%;">
+
 [FedHF](https://github.com/beiyuouo/FedHF) is a loosely coupled, **H**eterogeneous resource supported, and **F**lexible federated learning framework. 
 
 *Accelerate your research*

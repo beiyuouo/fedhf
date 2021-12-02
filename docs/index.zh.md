@@ -1,5 +1,7 @@
 # FedHF
 
+<img src="./assets/logo.svg" alt="logo" style="width:80%;">
+
 [FedHF](https://github.com/beiyuouo/FedHF) 是一个松耦合的，支持异构资源的，极其灵活的联邦学习框架。希望它能够帮助您更好更快的实现联邦学习相关算法。
 
 *Accelerate your research*
