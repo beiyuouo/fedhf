@@ -15,6 +15,4 @@ from .aggregator import build_aggregator, FedAsyncAggregator, FedAvgAggregator, 
 
 from .selector import build_selector, RandomFedAsyncSelector, RandomSelector, selector_factory
 
-from .serializer import Serializer, Deserializer
-
 from .sampler import build_sampler, RandomSampler, NonIIDSampler, sampler_factory

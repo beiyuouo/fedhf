@@ -7,7 +7,8 @@
 @Email   :   bj.yan.pa@qq.com
 """
 
-__all__ = ["opts", "Logger"]
+__all__ = ["opts", "Logger", "Serializer", "Deserializer"]
 
 from .opt import opts
 from .logger import Logger
+from .serializer import Serializer, Deserializer

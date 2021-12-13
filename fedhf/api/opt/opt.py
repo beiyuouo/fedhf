@@ -57,6 +57,15 @@ class opts(object):
                                  type=int,
                                  default=0,
                                  help='dataloader threads. 0 for single-thread.')
+
+        # distributed setting
+        self.parser.add_argument('--addr', default=None, type=str, help='address')
+        self.parser.add_argument('--port', default=None, type=int, help='port')
+        self.parser.add_argument('--world_size', default=None, type=int, help='world size')
+        self.parser.add_argument('--rank', default=None, type=int, help='rank')
+        self.parser.add_argument('--backend', default=None, type=str, help='backend')
+
+        # random setting
         self.parser.add_argument('--seed', type=int, default=233, help='random seed')
 
         # log setting
@@ -247,5 +256,10 @@ class opts(object):
         return opt
 
     def load_from_file(self, args):
-        # TODO
+        pass
+
+    def save(self, opt):
+        pass
+
+    def name_generate(self, opt):
         pass

@@ -9,5 +9,4 @@
 
 __all__ = []
 
-
-from .base_message import BaseMessage
+from .base_message import BaseMessage as Message
