@@ -8,65 +8,15 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ["build_model", "build_optimizer", "build_loss", "ResNet", "MLP"]
+__all__ = [
+    "build_model", "build_optimizer", "build_criterion", "criterion_factory",
+    "optimizer_factory", "model_factory"
+]
 
-import torch
-import torch.nn as nn
-import torch.optim as optim
-from .resnet import ResNet
-from .mlp import MLP
-from .alexnet_cifar10 import AlexNetCIFAR10
-from .cnn_cifar10 import CNN2CIFAR10, CNN4CIFAR10
-from .cnn_mnist import CNNMNIST
+from .criterion import build_criterion, criterion_factory
+from .network import build_model, model_factory
+from .optimizer import build_optimizer, optimizer_factory
 
-model_factory = {
-    'resnet': ResNet,
-    'resnet18': ResNet,
-    'mlp': MLP,
-    'alexnet_cifar10': AlexNetCIFAR10,
-    'cnn_cifar10': CNN2CIFAR10,
-    'cnn2_cifar10': CNN2CIFAR10,
-    'cnn4_cifar10': CNN4CIFAR10,
-    'cnn_mnist': CNNMNIST,
-}
+__all__ += ["ResNet", "MLP", "AlexNetCIFAR10", "CNN2CIFAR10", "CNN4CIFAR10", "CNNMNIST"]
 
-
-def build_model(model_name: str):
-    if model_name not in model_factory.keys():
-        raise ValueError(f'Unknown model name: {model_name}')
-
-    model = model_factory[model_name]
-
-    return model
-
-
-optimizer_factory = {
-    'sgd': optim.SGD,
-    'adam': optim.Adam,
-    'adagrad': optim.Adagrad,
-}
-
-
-def build_optimizer(optim_name: str):
-    if optim_name not in optimizer_factory.keys():
-        raise ValueError(f'Unknown optimizer name: {optim_name}')
-
-    optimizer = optimizer_factory[optim_name]
-
-    return optimizer
-
-
-criterion_factory = {
-    'l1': nn.L1Loss,
-    'mse': nn.MSELoss,
-    'ce': nn.CrossEntropyLoss,
-    'bce': nn.BCELoss,
-}
-
-
-def build_criterion(criter_name: str):
-    if criter_name not in criterion_factory.keys():
-        raise ValueError(f'Unknown criterion name: {criter_name}')
-
-    cirter = criterion_factory[criter_name]
-    return cirter
+from .network import ResNet, MLP, AlexNetCIFAR10, CNN2CIFAR10, CNN4CIFAR10, CNNMNIST
