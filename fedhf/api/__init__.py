@@ -11,4 +11,4 @@ __all__ = ["opts", "Logger", "Serializer", "Deserializer"]
 
 from .opt import opts
 from .logger import Logger
-from .serializer import Serializer, Deserializer
+from .serial import Serializer, Deserializer

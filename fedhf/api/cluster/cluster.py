@@ -12,7 +12,7 @@ import torch
 import torch.distributed as dist
 
 
-class Network(object):
+class Cluster(object):
     def __init__(self, args):
         self.addr = args.addr
         self.port = args.port
@@ -27,3 +27,11 @@ class Network(object):
             world_size=self.world_size,
             rank=self.rank,
         )
+
+    def close(self):
+        if dist.is_initialized():
+            dist.destroy_process_group()
+
+    def __str__(self) -> str:
+        return "addr: {}, port: {}, world_size: {}, rank: {}, backend: {}".format(
+            self.addr, self.port, self.world_size, self.rank, self.backend)

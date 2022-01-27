@@ -12,6 +12,10 @@ import torch
 
 
 class Deserializer(object):
+    """
+    Deserializer
+    """
+    @staticmethod
     def deserialize_model(model: torch.nn.Module,
                           serialized_parameters: torch.Tensor,
                           mode="copy"):
@@ -26,3 +30,6 @@ class Deserializer(object):
             else:
                 raise ValueError("Unknown mode: {}".format(mode))
             cur_idx += numel
+
+    def restricted_loads(self, buf):
+        pass

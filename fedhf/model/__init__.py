@@ -14,9 +14,9 @@ __all__ = [
 ]
 
 from .criterion import build_criterion, criterion_factory
-from .network import build_model, model_factory
+from .nn import build_model, model_factory
 from .optimizer import build_optimizer, optimizer_factory
 
 __all__ += ["ResNet", "MLP", "AlexNetCIFAR10", "CNN2CIFAR10", "CNN4CIFAR10", "CNNMNIST"]
 
-from .network import ResNet, MLP, AlexNetCIFAR10, CNN2CIFAR10, CNN4CIFAR10, CNNMNIST
+from .nn import ResNet, MLP, AlexNetCIFAR10, CNN2CIFAR10, CNN4CIFAR10, CNNMNIST
