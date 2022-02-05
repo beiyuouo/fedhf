@@ -12,7 +12,7 @@ from abc import ABC, abstractmethod
 
 from fedhf.api import Logger
 from fedhf.core import build_server, build_client
-from fedhf.component import build_sampler
+from fedhf.component import build_sampler, DistributedCommunicator
 from fedhf.dataset import ClientDataset, build_dataset
 
 
@@ -94,6 +94,7 @@ class DistributedBaseCoordinator(AbsCoordinator):
         super().__init__()
         self.args = args
         self.logger = Logger(self.args)
+        self.communicator = DistributedCommunicator(self.args)
 
     def prepare(self) -> None:
         self.dataset = build_dataset(self.args.dataset)(self.args)

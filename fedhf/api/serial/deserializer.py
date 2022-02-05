@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 """
-@File    :   fedhf\component\serializer\deserivalizer.py
+@File    :   fedhf\component\serializer\deserializer.py
 @Time    :   2021-11-10 16:57:59
 @Author  :   Bingjie Yan
 @Email   :   bj.yan.pa@qq.com
 @License :   Apache License 2.0
 """
 
+import io
 import torch
+from .unpickler import Unpickler
 
 
 class Deserializer(object):
@@ -31,5 +33,7 @@ class Deserializer(object):
                 raise ValueError("Unknown mode: {}".format(mode))
             cur_idx += numel
 
-    def restricted_loads(self, buf):
-        pass
+    @staticmethod
+    def load(buf):
+        unpickler = Unpickler(io.BytesIO(buf))
+        return unpickler.load()

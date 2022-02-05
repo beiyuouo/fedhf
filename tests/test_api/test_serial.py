@@ -1,18 +1,19 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """ 
-@File    :   tests\test_api\test_serializer.py 
-@Time    :   2021-12-09 22:37:25 
+@File    :   tests\test_api\test_serial.py 
+@Time    :   2022-01-31 16:05:36 
 @Author  :   Bingjie Yan 
 @Email   :   bj.yan.pa@qq.com 
 @License :   Apache License 2.0 
 """
 
+import pickle
 import numpy as np
 import torch
 from torch.utils.data import DataLoader
 
-from fedhf.api import opts, Serializer, Deserializer
+from fedhf.api import opts, Serializer, Deserializer, Message
 from fedhf.model import build_model
 
 
@@ -41,3 +42,20 @@ class TestSerializer(object):
             assert torch.all(param1 == param2)
 
         assert model.get_model_version() == model_.get_model_version()
+
+    def test_unpickler(self):
+        obj = Message(message_from="test", content="test")
+        obj_packed = obj.pack()
+        print(obj)
+
+        buf = pickle.dumps(obj_packed)
+
+        rev = Deserializer.load(buf)
+
+        obj_ = Message()
+        obj_.unpack(rev)
+
+        assert obj_.message_from == obj.message_from
+        assert obj_.content == obj.content
+        assert obj_.message_code == obj.message_code
+        assert obj_.message_type == obj.message_type

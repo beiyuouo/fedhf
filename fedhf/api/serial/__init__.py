@@ -8,7 +8,8 @@
 @License :   Apache License 2.0 
 """
 
-__all__ = ["Serializer", "Deserializer"]
+__all__ = ["Serializer", "Deserializer", "Unpickler"]
 
 from .serializer import Serializer
-from .deserivalizer import Deserializer
+from .deserializer import Deserializer
+from .unpickler import Unpickler

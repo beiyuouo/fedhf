@@ -70,4 +70,25 @@ class BaseCommunicator(AbsCommunicator):
         data = torch.empty(size=(size, ), dtype=torch.int8)
         dist.irecv(data, src=src, group=group).wait()
         buf = data.numpy().tobytes()
-        return Deserializer.restricted_loads(buf)
+        return Deserializer.load(buf)
+
+    def broadcast_obj(self, obj, src, group=None):
+        if group is None:
+            pass
+
+        if self.rank == src:
+            buf = pickle.dumps(obj)
+            size = torch.tensor(len(buf), dtype=torch.int32)
+            arr = torch.from_numpy(np.copy(np.frombuffer(buf, dtype=np.int8)))
+
+            dist.broadcast(size, src, group=group)
+            dist.broadcast(arr, src, group=group)
+        else:
+            size = torch.tensor(1, dtype=torch.int32)
+            dist.broadcast(size, src, group=group)
+
+            data = torch.empty(size=(size, ), dtype=torch.int8)
+            dist.broadcast(data, src, group=group)
+            buf = data.numpy().tobytes()
+            obj = Deserializer.load(buf)
+        return obj
