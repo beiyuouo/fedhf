@@ -1,12 +1,12 @@
 # FedHF
 
-<img src="./docs/assets/logo.svg" alt="logo" style="width:100%;">
+<img src="https://raw.githubusercontent.com/beiyuouo/fedhf/main/docs/assets/logo.svg" alt="logo" style="width:100%;">
 
-[FedHF](https://github.com/beiyuouo/FedHF) is a loosely coupled, **H**eterogeneous resource supported, and **F**lexible federated learning framework. 
+[FedHF](https://github.com/beiyuouo/fedhf) is a loosely coupled, **H**eterogeneous resource supported, and **F**lexible federated learning framework. 
 
 *Accelerate your research*
 
-![](https://img.shields.io/github/stars/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/github/forks/beiyuouo/FedHF?style=flat-square) ![https://www.bj-yan.top/FedHF/](https://img.shields.io/badge/document-building-blue?style=flat-square) ![](https://img.shields.io/github/languages/code-size/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/github/issues/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/github/issues-pr/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/pypi/pyversions/fedhf?style=flat-square) ![](https://img.shields.io/pypi/l/fedhf?style=flat-square) [![Downloads](https://pepy.tech/badge/fedhf)](https://pepy.tech/project/fedhf)
+![](https://img.shields.io/github/stars/beiyuouo/fedhf?style=flat-square) ![](https://img.shields.io/github/forks/beiyuouo/fedhf?style=flat-square) ![https://www.bj-yan.top/fedhf/](https://img.shields.io/badge/document-building-blue?style=flat-square) ![](https://img.shields.io/github/languages/code-size/beiyuouo/fedhf?style=flat-square) ![](https://img.shields.io/github/issues/beiyuouo/fedhf?style=flat-square) ![](https://img.shields.io/github/issues-pr/beiyuouo/fedhf?style=flat-square) ![](https://img.shields.io/pypi/pyversions/fedhf?style=flat-square) ![](https://img.shields.io/pypi/l/fedhf?style=flat-square) [![Downloads](https://pepy.tech/badge/fedhf)](https://pepy.tech/project/fedhf)
 
 ## Features
 
@@ -39,11 +39,11 @@ pip install fedhf
 wandb login
 ```
 
-You can see the [Document](https://www.bj-yan.top/FedHF/) for more details.
+You can see the [Document](https://www.bj-yan.top/fedhf/) for more details.
 
 ## Contributing
 
-For more information, please see the [Contributing](https://www.bj-yan.top/FedHF/contributing/) page.
+For more information, please see the [Contributing](https://www.bj-yan.top/fedhf/contributing/) page.
 
 ## Citation
 
