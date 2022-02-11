@@ -21,6 +21,8 @@ theme:
     # - toc.integrate
 
   language: en
+  logo: assets/logo.png
+  favicon: assets/logo.png
 
   palette:
     - scheme: default
@@ -42,10 +44,10 @@ site_author: Bingjie Yan
 site_description: >-
   A document for FedHF
 
-site_url: https://www.bj-yan.top/FedHF/
-repo_url: https://github.com/beiyuouo/FedHF/
+site_url: https://www.bj-yan.top/fedhf/
+repo_url: https://github.com/beiyuouo/fedhf/
 
-copyright: Copyright &copy; 2021 - 2021 Bingjie Yan
+copyright: Copyright &copy; 2021 - 2022 Bingjie Yan
 
 # Extensions
 markdown_extensions:

@@ -8,6 +8,7 @@
 @License :   Apache License 2.0
 """
 
+INFO_CODE = "200"
 
 JOIN_CLUSTER_REQUEST_CODE = ""
 ACCEPT_REQUEST_CODE = ""

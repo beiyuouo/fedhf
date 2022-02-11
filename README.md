@@ -1,10 +1,12 @@
 # FedHF
 
+<img src="./docs/assets/logo.svg" alt="logo" style="width:100%;">
+
 [FedHF](https://github.com/beiyuouo/FedHF) is a loosely coupled, **H**eterogeneous resource supported, and **F**lexible federated learning framework. 
 
 *Accelerate your research*
 
-![](https://img.shields.io/github/stars/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/github/forks/beiyuouo/FedHF?style=flat-square) ![https://www.bj-yan.top/FedHF/](https://img.shields.io/badge/document-building-blue?style=flat-square) ![](https://img.shields.io/github/languages/code-size/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/github/issues/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/github/issues-pr/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/pypi/pyversions/fedhf?style=flat-square) ![](https://img.shields.io/pypi/l/fedhf?style=flat-square)
+![](https://img.shields.io/github/stars/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/github/forks/beiyuouo/FedHF?style=flat-square) ![https://www.bj-yan.top/FedHF/](https://img.shields.io/badge/document-building-blue?style=flat-square) ![](https://img.shields.io/github/languages/code-size/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/github/issues/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/github/issues-pr/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/pypi/pyversions/fedhf?style=flat-square) ![](https://img.shields.io/pypi/l/fedhf?style=flat-square) [![Downloads](https://pepy.tech/badge/fedhf)](https://pepy.tech/project/fedhf)
 
 ## Features
 

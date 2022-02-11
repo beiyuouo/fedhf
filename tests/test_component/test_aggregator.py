@@ -10,8 +10,8 @@
 
 import torch
 from fedhf import model
-from fedhf.api import opts
-from fedhf.component import Serializer, build_aggregator
+from fedhf.api import opts, Serializer
+from fedhf.component import build_aggregator
 from fedhf.model import build_model
 
 

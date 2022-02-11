@@ -9,6 +9,8 @@
 
 首先，`FedHF`支持3种部署模式，分别是`simulated`、`distributed`和`standalone`。目前版本只实现了`simulated`模式。对于每种部署模式提供了3种方案，分别是`sync`、`async`和`tier-based`。
 
+`FedHF`的各组件依赖关系为单向引用，`api`为最低层，随后是`component`利用`api`中的组件，最后是`core`中的组件利用`component`，`model`与`dataset`
+
 ### `fedhf.core`
 
 `FedHF`有三个高层核心模块位于`fedhf.core`，分别是协调器(`corrdinator`)，服务器(`server`)，客户端(`client`)。其中协调器包含服务器和客户端，用于管理总体进程，其职能还包括了解决数据划分方案和分布。服务器保存服务端模型，具有采样、聚合和验证的功能。客户端则主要承担具体训练和验证的任务。
@@ -44,4 +46,4 @@
 
 ## Docs structure
 
-文档共分为5个部分。
+文档共分为5个部分，分别介绍`FedHF`中的5个核心部分。

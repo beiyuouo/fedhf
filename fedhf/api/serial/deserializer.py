@@ -1,17 +1,23 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 """
-@File    :   fedhf\component\serializer\deserivalizer.py
+@File    :   fedhf\component\serializer\deserializer.py
 @Time    :   2021-11-10 16:57:59
 @Author  :   Bingjie Yan
 @Email   :   bj.yan.pa@qq.com
 @License :   Apache License 2.0
 """
 
+import io
 import torch
+from .unpickler import Unpickler
 
 
 class Deserializer(object):
+    """
+    Deserializer
+    """
+    @staticmethod
     def deserialize_model(model: torch.nn.Module,
                           serialized_parameters: torch.Tensor,
                           mode="copy"):
@@ -26,3 +32,8 @@ class Deserializer(object):
             else:
                 raise ValueError("Unknown mode: {}".format(mode))
             cur_idx += numel
+
+    @staticmethod
+    def load(buf):
+        unpickler = Unpickler(io.BytesIO(buf))
+        return unpickler.load()

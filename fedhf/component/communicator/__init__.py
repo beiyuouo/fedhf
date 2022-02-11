@@ -8,3 +8,5 @@
 @License :   Apache License 2.0
 """
 
+from .base_communicator import BaseCommunicator
+from .distributed_communicator import DistributedCommunicator
