@@ -118,23 +118,8 @@ class DistributedBaseCoordinator(AbsCoordinator):
 
     def finish(self) -> None:
         self.server.model.save()
-
-        try:
-            if self.args.evaluate_on_client:
-                self.logger.info("Evaluate on client")
-                for client_id in self.client_list:
-                    client = build_client(self.args.deploy_mode)(self.args, client_id)
-                    result = client.evaluate(data=self.data[client_id], model=self.server.model)
-                    self.logger.info(f'Client {client_id} result: {result}')
-
-            result = self.server.evaluate(self.dataset.testset)
-            self.logger.info(f'Server result: {result}')
-            self.logger.info(
-                f'Final server model version: {self.server.model.get_model_version()}')
-        except KeyboardInterrupt:
-            self.logger.info(f'Interrupted by user.')
-
         self.logger.info(f'All finished.')
+        self.communicator.finalize()
 
     def run(self) -> None:
         self.prepare()

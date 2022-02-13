@@ -14,10 +14,9 @@ import wandb
 
 from .base_logger import BaseLogger, logger_map
 
-logging.basicConfig(
-    stream=sys.stdout,
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(stream=sys.stdout,
+                    level=logging.INFO,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 logging.getLogger().setLevel(logging.INFO)
 
@@ -31,20 +30,27 @@ class Logger(BaseLogger):
                 raise "No such log level!"
 
             if args.log_name is not None:
-                self.logger = logging.getLogger(args.log_name)
+                self.logger = logging.getLogger(args.log_name).setLevel(self.log_level)
                 self.name = args.log_name
             else:
-                logging.getLogger().setLevel(logging.DEBUG)
+                logging.getLogger().setLevel(self.log_level)
                 self.logger = logging
                 self.name = "root"
 
+            formatter = logging.Formatter(
+                '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
             if args.log_file is not None:
-                handler = logging.FileHandler(args.log_file, mode='w')
-                handler.setLevel(level=logging.INFO)
-                formatter = logging.Formatter(
-                    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-                handler.setFormatter(formatter)
-                self.logger.addHandler(handler)
+                file_handler = logging.FileHandler(args.log_file, mode='w')
+                file_handler.setLevel(level=self.log_level)
+                file_handler.setFormatter(formatter)
+                self.logger.addHandler(file_handler)
+
+            # use streamHandler to print to stdout
+            stream_handler = logging.StreamHandler(sys.stdout)
+            stream_handler.setLevel(level=self.log_level)
+            stream_handler.setFormatter(formatter)
+            self.logger.addHandler(stream_handler)
 
             if args.use_wandb:
                 self.use_wandb = args.use_wandb

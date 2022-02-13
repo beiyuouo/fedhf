@@ -11,5 +11,7 @@ __all__ = ["opts", "Logger", "Serializer", "Deserializer", "Message", "Unpickler
 
 from .opt import opts
 from .logger import Logger
-from .message import Message
+from .message import Message, mc
 from .serial import Serializer, Deserializer, Unpickler
+
+from .type import *

@@ -10,3 +10,5 @@
 __all__ = []
 
 from .base_message import BaseMessage as Message
+
+import message_code as mc

@@ -8,10 +8,14 @@
 @License :   Apache License 2.0 
 """
 
+import threading
+
 import torch
 import torch.nn as nn
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
+
+from fedhf.api import mc
 
 from .base_coordinator import DistributedBaseCoordinator
 
@@ -24,14 +28,28 @@ class DistributedCoordinator(DistributedBaseCoordinator):
 
     def prepare(self) -> None:
         super().prepare()
+        # TODO: check status of all workers
 
     def main(self) -> None:
-        super().main()
+        round = 0
+
+        # if coordinator and server are on the same machine, you just need to launch coordinator
+        # self.server.launch()
+
+        self.communicator.send(mc.REQUEST_CODE, 1)  # fixme
+        msg = self.communicator.recv()
+
+        while round < self.args.rounds:
+            round += 1
+            self.logger.info("Round {} start.".format(round))
+
+            msg = self.communicator.recv()
+            # TODO: check message code
+
+            self.logger.info("Round {} end.".format(round))
 
     def finish(self) -> None:
         super().finish()
-        if dist.is_initialized():
-            dist.destroy_process_group()
 
     def run(self) -> None:
         self.prepare()

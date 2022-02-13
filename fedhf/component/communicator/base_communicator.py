@@ -35,6 +35,9 @@ class BaseCommunicator(AbsCommunicator):
     def __init__(self, args):
         self.cluster = Cluster(args)
         self.cluster.init()
+    
+    def finalize(self):
+        self.cluster.close()
 
     def send_tensor(self, tensor, dst, group=None):
         if group is None:
