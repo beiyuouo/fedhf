@@ -8,6 +8,9 @@
 
 ![](https://img.shields.io/github/stars/beiyuouo/fedhf?style=flat-square) ![](https://img.shields.io/github/forks/beiyuouo/fedhf?style=flat-square) ![https://www.bj-yan.top/fedhf/](https://img.shields.io/badge/document-building-blue?style=flat-square) ![](https://img.shields.io/github/languages/code-size/beiyuouo/fedhf?style=flat-square) ![](https://img.shields.io/github/issues/beiyuouo/fedhf?style=flat-square) ![](https://img.shields.io/github/issues-pr/beiyuouo/fedhf?style=flat-square) ![](https://img.shields.io/pypi/pyversions/fedhf?style=flat-square) ![](https://img.shields.io/pypi/l/fedhf?style=flat-square) [![Downloads](https://pepy.tech/badge/fedhf)](https://pepy.tech/project/fedhf)
 
+[![Discord](https://img.shields.io/discord/942746457855889469.svg?logo=discord&logoColor=white&logoWidth=20&labelColor=7289DA&label=Discord&style=flat-square)](https://discord.gg/AsvX9Q75)
+
+
 ## Features
 
 - [x] Losely coupled

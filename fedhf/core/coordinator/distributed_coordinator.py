@@ -24,13 +24,7 @@ class DistributedCoordinator(DistributedBaseCoordinator):
     def __init__(self, args) -> None:
         super().__init__(args)
 
-        assert self.network.rank == 0, "Only rank 0 can run this code"
-
-    def prepare(self) -> None:
-        super().prepare()
-        # TODO: check status of all workers
-
-    def main(self) -> None:
+    def main(self):
         round = 0
 
         # if coordinator and server are on the same machine, you just need to launch coordinator
@@ -47,11 +41,3 @@ class DistributedCoordinator(DistributedBaseCoordinator):
             # TODO: check message code
 
             self.logger.info("Round {} end.".format(round))
-
-    def finish(self) -> None:
-        super().finish()
-
-    def run(self) -> None:
-        self.prepare()
-        self.main()
-        self.finish()

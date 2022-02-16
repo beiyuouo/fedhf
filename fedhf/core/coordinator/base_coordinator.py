@@ -10,7 +10,9 @@
 
 from abc import ABC, abstractmethod
 
-from fedhf.api import Logger
+import threading
+
+from fedhf.api import Logger, mc
 from fedhf.core import build_server, build_client
 from fedhf.component import build_sampler, DistributedCommunicator
 from fedhf.dataset import ClientDataset, build_dataset
@@ -96,6 +98,10 @@ class DistributedBaseCoordinator(AbsCoordinator):
         self.logger = Logger(self.args)
         self.communicator = DistributedCommunicator(self.args)
 
+        self.status = mc.COORDINATOR_PREPARED
+
+        assert self.network.rank == 0, "Only rank 0 can run this code"
+
     def prepare(self) -> None:
         self.dataset = build_dataset(self.args.dataset)(self.args)
         self.sampler = build_sampler(self.args.sampler)(self.args)
@@ -111,13 +117,11 @@ class DistributedBaseCoordinator(AbsCoordinator):
             self.data = self.sampler.sample(self.dataset.trainset)
 
         self.client_list = [i for i in range(self.args.num_clients)]
-        self.server = build_server(self.args.deploy_mode)(self.args)
 
     def main(self) -> None:
-        pass
+        raise NotImplementedError
 
     def finish(self) -> None:
-        self.server.model.save()
         self.logger.info(f'All finished.')
         self.communicator.finalize()
 
@@ -125,3 +129,7 @@ class DistributedBaseCoordinator(AbsCoordinator):
         self.prepare()
         self.main()
         self.finish()
+
+    def launch(self):
+        running_thread = threading.Thread(target=self.run)
+        running_thread.start()

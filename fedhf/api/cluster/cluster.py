@@ -20,6 +20,8 @@ class Cluster(object):
         self.rank = args.rank
         self.backend = args.backend
 
+        assert self.backend in ["gloo", "mpi"], "Only support gloo and mpi backend"
+
     def init(self):
         dist.init_process_group(
             backend=self.backend,
