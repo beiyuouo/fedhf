@@ -6,4 +6,4 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-__version__ = "0.1.8"
+__version__ = "0.2.0"
