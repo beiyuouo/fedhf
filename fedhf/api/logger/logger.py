@@ -18,8 +18,6 @@ logging.basicConfig(stream=sys.stdout,
                     level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-logging.getLogger().setLevel(logging.INFO)
-
 
 class Logger(BaseLogger):
     class __Logger(BaseLogger):
@@ -30,12 +28,12 @@ class Logger(BaseLogger):
                 raise "No such log level!"
 
             if args.log_name is not None:
-                self.logger = logging.getLogger(args.log_name).setLevel(self.log_level)
-                self.name = args.log_name
+                self.log_name = args.log_name
             else:
-                logging.getLogger().setLevel(self.log_level)
-                self.logger = logging
-                self.name = "root"
+                self.log_name = "root"
+
+            self.logger = logging.getLogger(self.log_name)
+            self.logger.setLevel(self.log_level)
 
             formatter = logging.Formatter(
                 '%(asctime)s - %(name)s - %(levelname)s - %(message)s')

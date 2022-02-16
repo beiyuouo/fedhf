@@ -17,5 +17,3 @@ from .aggregator import build_aggregator, FedAsyncAggregator, FedAvgAggregator, 
 from .selector import build_selector, RandomFedAsyncSelector, RandomSelector, selector_factory
 
 from .sampler import build_sampler, RandomSampler, NonIIDSampler, sampler_factory
-
-from .communicator import BaseCommunicator, DistributedCommunicator

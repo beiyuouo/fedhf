@@ -12,4 +12,3 @@ __all__ = ["Serializer", "Deserializer", "Unpickler"]
 
 from .serializer import Serializer
 from .deserializer import Deserializer
-from .unpickler import Unpickler

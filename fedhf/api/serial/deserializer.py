@@ -10,7 +10,6 @@
 
 import io
 import torch
-from .unpickler import Unpickler
 
 
 class Deserializer(object):
@@ -32,8 +31,3 @@ class Deserializer(object):
             else:
                 raise ValueError("Unknown mode: {}".format(mode))
             cur_idx += numel
-
-    @staticmethod
-    def load(buf):
-        unpickler = Unpickler(io.BytesIO(buf))
-        return unpickler.load()

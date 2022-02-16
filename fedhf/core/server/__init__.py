@@ -8,14 +8,12 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ["SimulatedServer", "DistributedServer", "build_server", "server_factory"]
+__all__ = ["SimulatedServer", "build_server", "server_factory"]
 
-from .distributed_server import DistributedServer
 from .simulated_server import SimulatedServer
 
 server_factory = {
     "simulated": SimulatedServer,
-    'distributed': DistributedServer,
 }
 
 

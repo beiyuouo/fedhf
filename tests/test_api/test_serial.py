@@ -11,7 +11,7 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader
 
-from fedhf.api import opts, Serializer, Deserializer, Message
+from fedhf.api import opts, Serializer, Deserializer
 from fedhf.model import build_model
 
 
@@ -40,20 +40,3 @@ class TestSerializer(object):
             assert torch.all(param1 == param2)
 
         assert model.get_model_version() == model_.get_model_version()
-
-    def test_unpickler(self):
-        obj = Message(message_from="test", content="test")
-        obj_packed = obj.pack()
-        print(obj)
-
-        buf = pickle.dumps(obj_packed)
-
-        rev = Deserializer.load(buf)
-
-        obj_ = Message()
-        obj_.unpack(rev)
-
-        assert obj_.message_from == obj.message_from
-        assert obj_.content == obj.content
-        assert obj_.message_code == obj.message_code
-        assert obj_.message_type == obj.message_type

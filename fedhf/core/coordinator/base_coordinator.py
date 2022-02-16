@@ -12,9 +12,9 @@ from abc import ABC, abstractmethod
 
 import threading
 
-from fedhf.api import Logger, mc
+from fedhf.api import Logger
 from fedhf.core import build_server, build_client
-from fedhf.component import build_sampler, DistributedCommunicator
+from fedhf.component import build_sampler
 from fedhf.dataset import ClientDataset, build_dataset
 
 
@@ -89,47 +89,3 @@ class SimulatedBaseCoordinator(AbsCoordinator):
         self.prepare()
         self.main()
         self.finish()
-
-
-class DistributedBaseCoordinator(AbsCoordinator):
-    def __init__(self, args) -> None:
-        super().__init__()
-        self.args = args
-        self.logger = Logger(self.args)
-        self.communicator = DistributedCommunicator(self.args)
-
-        self.status = mc.COORDINATOR_PREPARED
-
-        assert self.network.rank == 0, "Only rank 0 can run this code"
-
-    def prepare(self) -> None:
-        self.dataset = build_dataset(self.args.dataset)(self.args)
-        self.sampler = build_sampler(self.args.sampler)(self.args)
-
-        if self.args.test:
-            # reduce data for test
-            self.data = [
-                ClientDataset(self.dataset.trainset,
-                              range(i * self.args.batch_size, (i + 1) * self.args.batch_size))
-                for i in range(self.args.num_clients)
-            ]
-        else:
-            self.data = self.sampler.sample(self.dataset.trainset)
-
-        self.client_list = [i for i in range(self.args.num_clients)]
-
-    def main(self) -> None:
-        raise NotImplementedError
-
-    def finish(self) -> None:
-        self.logger.info(f'All finished.')
-        self.communicator.finalize()
-
-    def run(self) -> None:
-        self.prepare()
-        self.main()
-        self.finish()
-
-    def launch(self):
-        running_thread = threading.Thread(target=self.run)
-        running_thread.start()

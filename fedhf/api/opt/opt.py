@@ -58,13 +58,6 @@ class opts(object):
                                  default=0,
                                  help='dataloader threads. 0 for single-thread.')
 
-        # distributed setting
-        self.parser.add_argument('--addr', default=None, type=str, help='address')
-        self.parser.add_argument('--port', default=None, type=int, help='port')
-        self.parser.add_argument('--world_size', default=None, type=int, help='world size')
-        self.parser.add_argument('--rank', default=None, type=int, help='rank')
-        self.parser.add_argument('--backend', default='gloo', type=str, help='backend')
-
         # random setting
         self.parser.add_argument('--seed', type=int, default=233, help='random seed')
 
