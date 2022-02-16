@@ -13,8 +13,8 @@ import re
 import torch
 import torch.nn as nn
 
-from fedhf.api import Logger
-from fedhf.component import build_aggregator, build_selector, Evaluator, Serializer, Deserializer
+from fedhf.api import Logger, Serializer, Deserializer
+from fedhf.component import build_aggregator, build_selector, Evaluator
 from fedhf.model import build_criterion, build_model, build_optimizer
 
 from .base_server import BaseServer

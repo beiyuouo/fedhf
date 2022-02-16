@@ -1,10 +1,12 @@
 # FedHF
 
-[FedHF](https://github.com/beiyuouo/FedHF) 是一个松耦合的，支持异构资源的，极其灵活的联邦学习框架。希望它能够帮助您更好更快的实现联邦学习相关算法。
+<img src="https://raw.githubusercontent.com/beiyuouo/fedhf/main/docs/assets/logo.svg" alt="logo" style="width:100%;">
+
+[FedHF](https://github.com/beiyuouo/fedhf) 是一个松耦合的，支持异构资源的，极其灵活的联邦学习框架。希望它能够帮助您更好更快的实现联邦学习相关算法。
 
 *Accelerate your research*
 
-![](https://img.shields.io/github/stars/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/github/forks/beiyuouo/FedHF?style=flat-square) ![https://www.bj-yan.top/FedHF/](https://img.shields.io/badge/document-building-blue?style=flat-square) ![](https://img.shields.io/github/languages/code-size/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/github/issues/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/github/issues-pr/beiyuouo/FedHF?style=flat-square) ![](https://img.shields.io/pypi/pyversions/fedhf?style=flat-square) ![](https://img.shields.io/pypi/l/fedhf?style=flat-square)
+![](https://img.shields.io/github/stars/beiyuouo/fedhf?style=flat-square) ![](https://img.shields.io/github/forks/beiyuouo/fedhf?style=flat-square) ![https://www.bj-yan.top/fedhf/](https://img.shields.io/badge/document-building-blue?style=flat-square) ![](https://img.shields.io/github/languages/code-size/beiyuouo/fedhf?style=flat-square) ![](https://img.shields.io/github/issues/beiyuouo/fedhf?style=flat-square) ![](https://img.shields.io/github/issues-pr/beiyuouo/fedhf?style=flat-square) ![](https://img.shields.io/pypi/pyversions/fedhf?style=flat-square) ![](https://img.shields.io/pypi/l/fedhf?style=flat-square) [![Downloads](https://pepy.tech/badge/fedhf)](https://pepy.tech/project/fedhf)
 
 ## Features
 
@@ -18,7 +20,7 @@
 
 ### Synchronous Aggregation
 
-- [ ] **[FedAvg]** Communication-Efficient Learning of Deep Networks from Decentralized Data(*AISTAT*) [[paper]](https://arxiv.org/abs/1602.05629.pdf)
+- [x] **[FedAvg]** Communication-Efficient Learning of Deep Networks from Decentralized Data(*AISTAT*) [[paper]](https://arxiv.org/abs/1602.05629.pdf)
 
 ### Asynchronous Aggregation
 
@@ -37,11 +39,11 @@ pip install fedhf
 wandb login
 ```
 
-你可以在 [文档](https://www.bj-yan.top/FedHF/) 查看更多详细信息。
+你可以在 [文档](https://www.bj-yan.top/fedhf/) 查看更多详细信息。
 
 ## Contributing
 
-你可以在 [贡献指南](http://127.0.0.1:8000/FedHF/contributing/) 中查看更多详细信息。
+你可以在 [贡献指南](https://www.bj-yan.top/fedhf/contributing/) 中查看更多详细信息。
 
 ## Citation
 

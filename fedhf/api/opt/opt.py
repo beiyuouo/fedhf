@@ -57,6 +57,8 @@ class opts(object):
                                  type=int,
                                  default=0,
                                  help='dataloader threads. 0 for single-thread.')
+
+        # random setting
         self.parser.add_argument('--seed', type=int, default=233, help='random seed')
 
         # log setting
@@ -247,5 +249,10 @@ class opts(object):
         return opt
 
     def load_from_file(self, args):
-        # TODO
+        pass
+
+    def save(self, opt):
+        pass
+
+    def name_generate(self, opt):
         pass

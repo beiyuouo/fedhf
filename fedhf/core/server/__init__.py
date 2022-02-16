@@ -12,7 +12,9 @@ __all__ = ["SimulatedServer", "build_server", "server_factory"]
 
 from .simulated_server import SimulatedServer
 
-server_factory = {"simulated": SimulatedServer}
+server_factory = {
+    "simulated": SimulatedServer,
+}
 
 
 def build_server(server_type: str):

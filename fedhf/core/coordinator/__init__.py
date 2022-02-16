@@ -8,7 +8,10 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ["SimulatedCoordinator", "build_coordinator", "coordinator_factory"]
+__all__ = [
+    "SimulatedSyncCoordinator", "SimulatedAsyncCoordinator", "build_coordinator",
+    "coordinator_factory"
+]
 
 from .simulated_sync_coordinator import SimulatedSyncCoordinator
 from .simulated_async_coordinator import SimulatedAsyncCoordinator

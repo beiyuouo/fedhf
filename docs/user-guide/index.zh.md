@@ -7,7 +7,9 @@
 
 `FedHF`有着一个松耦合的结构，各个组件间尽可能的减少了引用关系，从而使得能够通过实现修改少量代码来实现新的算法。
 
-首先，`FedHF`支持3种部署模式，分别是`simulated`、`distributed`和`standalone`。目前版本只实现了`simulated`模式。对于每种部署模式提供了3种方案，分别是`sync`、`async`和`tier-based`。
+首先，`FedHF`未来预计支持3种部署模式，分别是`simulated`、`distributed` 和 `standalone`。目前仅实现了 `simulated` 的部署模式。对于每种部署模式提供了3种方案，分别是`sync`、`async`和`tier-based`。
+
+`FedHF`的各组件依赖关系为单向引用，`api`为最低层，随后是`component`利用`api`中的组件，最后是`core`中的组件利用`component`，`model`与`dataset`
 
 ### `fedhf.core`
 
@@ -44,4 +46,4 @@
 
 ## Docs structure
 
-文档共分为5个部分。
+文档共分为5个部分，分别介绍`FedHF`中的5个核心部分。

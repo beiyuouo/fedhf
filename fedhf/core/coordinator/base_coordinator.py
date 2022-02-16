@@ -10,6 +10,8 @@
 
 from abc import ABC, abstractmethod
 
+import threading
+
 from fedhf.api import Logger
 from fedhf.core import build_server, build_client
 from fedhf.component import build_sampler

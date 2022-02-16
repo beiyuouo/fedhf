@@ -1,18 +1,17 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   tests\test_component\test_serializer.py 
-@Time    :   2021-11-15 18:24:08 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+# -*- coding: utf-8 -*-
+# @File    :   tests\test_api\test_serial.py
+# @Time    :   2022-02-07 12:35:07
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
+
+import pickle
 import numpy as np
 import torch
 from torch.utils.data import DataLoader
 
-from fedhf.api import opts
-from fedhf.component import Serializer, Deserializer
+from fedhf.api import opts, Serializer, Deserializer
 from fedhf.model import build_model
 
 
@@ -34,8 +33,7 @@ class TestSerializer(object):
         model_ = build_model(self.args.model)(self.args)
         Deserializer.deserialize_model(model_, serialized_model)
 
-        for param1_kv, param2_kv in zip(model.parameters(),
-                                        model_.parameters()):
+        for param1_kv, param2_kv in zip(model.parameters(), model_.parameters()):
             param1 = param1_kv[1]
             param2 = param2_kv[1]
             # print(param1_kv[0], param2_kv[0])
