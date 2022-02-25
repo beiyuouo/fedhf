@@ -20,9 +20,9 @@ from fedhf.dataset import build_dataset, ClientDataset
 
 class TestTrainer(object):
     args = opts().parse([
-        '--num_classes', '10', '--model', 'mlp', '--dataset', 'mnist',
-        '--num_local_epochs', '1', '--batch_size', '1', '--optim', 'sgd',
-        '--lr', '0.01', '--loss', 'ce', '--gpus', '-1'
+        '--num_classes', '10', '--model', 'mlp', '--dataset', 'mnist', '--num_local_epochs',
+        '1', '--batch_size', '1', '--optim', 'sgd', '--lr', '0.01', '--loss', 'ce', '--gpus',
+        '-1'
     ])
 
     def test_trainer_mlp(self):
@@ -34,10 +34,8 @@ class TestTrainer(object):
 
         model = build_model(self.args.model)(self.args)
 
-        client_dataset = ClientDataset(dataset.trainset,
-                                       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-        dataloader = DataLoader(client_dataset,
-                                batch_size=self.args.batch_size)
+        client_dataset = ClientDataset(dataset.trainset, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+        dataloader = DataLoader(client_dataset, batch_size=self.args.batch_size)
 
         trainer = Trainer(self.args)
         result = trainer.train(dataloader=dataloader,
@@ -64,10 +62,8 @@ class TestTrainer(object):
 
         model = build_model(self.args.model)(self.args)
 
-        client_dataset = ClientDataset(dataset.trainset,
-                                       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-        dataloader = DataLoader(client_dataset,
-                                batch_size=self.args.batch_size)
+        client_dataset = ClientDataset(dataset.trainset, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+        dataloader = DataLoader(client_dataset, batch_size=self.args.batch_size)
 
         trainer = Trainer(self.args)
         result = trainer.train(dataloader=dataloader,
@@ -80,7 +76,7 @@ class TestTrainer(object):
         print(train_loss)
 
     def test_trainer_resnet(self):
-        self.args.model = 'resnet'
+        self.args.model = 'resnet_mnist'
         self.args.resize = True
         dataset = build_dataset(self.args.dataset)(self.args)
 
@@ -88,10 +84,8 @@ class TestTrainer(object):
 
         model = build_model(self.args.model)(self.args)
 
-        client_dataset = ClientDataset(dataset.trainset,
-                                       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-        dataloader = DataLoader(client_dataset,
-                                batch_size=self.args.batch_size)
+        client_dataset = ClientDataset(dataset.trainset, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+        dataloader = DataLoader(client_dataset, batch_size=self.args.batch_size)
 
         trainer = Trainer(self.args)
         result = trainer.train(dataloader=dataloader,
@@ -104,7 +98,7 @@ class TestTrainer(object):
         print(train_loss)
 
     def test_trainer_on_gpu_resnet(self):
-        self.args.model = 'resnet'
+        self.args.model = 'resnet_mnist'
         if not torch.cuda.is_available():
             return
 
@@ -118,10 +112,8 @@ class TestTrainer(object):
 
         model = build_model(self.args.model)(self.args)
 
-        client_dataset = ClientDataset(dataset.trainset,
-                                       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-        dataloader = DataLoader(client_dataset,
-                                batch_size=self.args.batch_size)
+        client_dataset = ClientDataset(dataset.trainset, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+        dataloader = DataLoader(client_dataset, batch_size=self.args.batch_size)
 
         trainer = Trainer(self.args)
         result = trainer.train(dataloader=dataloader,

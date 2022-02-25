@@ -106,6 +106,12 @@ class opts(object):
                                  help='weight decay.')
 
         self.parser.add_argument('--lr', type=float, default=1.25e-4, help='learning rate.')
+        self.parser.add_argument('--lr_scheduler',
+                                 type=str,
+                                 default='cosine',
+                                 help='lr scheduler.')
+        self.parser.add_argument('--lr_step', type=int, default=30, help='lr step.')
+
         self.parser.add_argument('--loss', type=str, default='ce', help='loss function.')
         self.parser.add_argument('--train_loss',
                                  type=str,

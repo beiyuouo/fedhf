@@ -69,6 +69,15 @@ class Logger(BaseLogger):
         def error(self, log_str: str) -> None:
             self.logger.error(log_str)
 
+        def log(self, log_dict: dict, *args, **kwargs) -> None:
+            # log one line in result.csv
+
+            with open(args.log_file, 'a') as f:
+                f.write(str(log_dict) + '\n')
+
+            if self.use_wandb:
+                self.to_wandb(log_dict, *args, **kwargs)
+
         def to_wandb(self, log_dict: dict, *args, **kwargs) -> None:
             wandb.log(log_dict, *args, **kwargs)
 
@@ -90,6 +99,9 @@ class Logger(BaseLogger):
 
     def error(self, log_str: str) -> None:
         self.__instance.error(log_str)
+
+    def log(self, log_dict: dict, *args, **kwargs) -> None:
+        self.__instance.log(log_dict, args, kwargs)
 
     def to_wandb(self, log_dict: dict, *args, **kwargs) -> None:
         if self.__instance.use_wandb:

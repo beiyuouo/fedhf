@@ -19,15 +19,16 @@ from fedhf.dataset import build_dataset
 
 class TestResnet(object):
     args = opts().parse([
-        '--model', 'resnet', '--num_classes', '10', '--model_pretrained',
-        '--dataset', 'mnist', '--gpus', '-1', '--task', 'classification',
-        '--resize', '--input_c', '1', '--image_size', '224'
+        '--model', 'resnet_mnist', '--num_classes', '10', '--model_pretrained', '--dataset',
+        'mnist', '--gpus', '-1', '--task', 'classification', '--resize', '--input_c', '1',
+        '--image_size', '224'
     ])
 
     def test_resnet(self):
         model = build_model(self.args.model)(self.args)
         print(model)
 
+        assert model.__class__.__name__ == 'ResNetMNIST'
         assert model.cnn.__class__.__name__ == 'ResNet'
         assert model.num_classes == 10
         assert model.cnn.fc.out_features == 10

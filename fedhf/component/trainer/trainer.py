@@ -40,6 +40,8 @@ class Trainer(BaseTrainer):
             optim = self.optim(params=model.parameters(), lr=self.args.lr)
         crit = self.crit()
 
+        lr_scheduler = self.lr_scheduler(optim, self.args.lr_step)
+
         self.logger.info(f'Start training on {client_id}')
 
         train_loss = []
@@ -65,6 +67,7 @@ class Trainer(BaseTrainer):
                 pbar.update(1)
 
             train_loss.append(sum(losses) / len(losses))
+            lr_scheduler.step()
 
         time.sleep(0.3)  # wait for pbar to update
         self.logger.info(f'Client:{client_id} Train Loss:{train_loss}')
