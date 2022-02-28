@@ -93,10 +93,17 @@ class opts(object):
 
         self.parser.add_argument('--input_c', type=int, default=1, help='input channel')
         self.parser.add_argument('--image_size', type=int, default=224, help='image_size')
+
+        self.parser.add_argument('--output_c', type=int, default=1, help='output channel')
         self.parser.add_argument('--num_classes',
                                  type=int,
                                  default=10,
                                  help='number of classes')
+
+        # unet setting
+        self.parser.add_argument('--unet_n1', type=int, default=64, help='unet_n1')
+        self.parser.add_argument('--unet_bilinear', action='store_true', help='unet_bilinear')
+
         self.parser.add_argument('--trainer', type=str, default='trainer', help='trainer.')
         self.parser.add_argument('--optim', type=str, default='adam', help='optimizer.')
         self.parser.add_argument('--momentum', type=float, default=0.75, help='momentum.')

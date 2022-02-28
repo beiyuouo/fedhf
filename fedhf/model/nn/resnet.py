@@ -15,17 +15,17 @@ from torchvision import models
 
 from .base_model import BaseModel
 """
-    [1] Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun.
-        Deep Residual Learning for Image Recognition
-        https://arxiv.org/abs/1512.03385v1
+    Deep Residual Learning for Image Recognition
+    Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun
+    https://arxiv.org/abs/1512.03385v1
 """
 
 
 class ResNet(BaseModel):
     def __init__(self, args, model_time=None, model_version=0):
         super().__init__(args, model_time, model_version)
-        self.model = models.resnet18(pretrained=True)
-        self.model.fc = nn.Linear(512, args.num_classes)
+        self.net = models.resnet18(pretrained=True)
+        self.net.fc = nn.Linear(512, args.num_classes)
 
     def forward(self, x):
-        return self.model(x)
+        return self.net(x)

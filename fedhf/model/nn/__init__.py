@@ -14,6 +14,8 @@ from .mlp import MLP
 from .alexnet_cifar10 import AlexNetCIFAR10
 from .cnn_cifar10 import CNN2CIFAR10, CNN4CIFAR10
 from .cnn_mnist import CNNMNIST
+from .densenet import DenseNet
+from .unet import UNet
 
 model_factory = {
     'resnet': ResNet,
@@ -25,6 +27,8 @@ model_factory = {
     'cnn2_cifar10': CNN2CIFAR10,
     'cnn4_cifar10': CNN4CIFAR10,
     'cnn_mnist': CNNMNIST,
+    'densenet': DenseNet,
+    'unet': UNet,
 }
 
 
