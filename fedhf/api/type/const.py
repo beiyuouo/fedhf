@@ -5,3 +5,7 @@
 # @Author  :   Bingjie Yan
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
+
+
+class DefaultConst(object):
+    pass

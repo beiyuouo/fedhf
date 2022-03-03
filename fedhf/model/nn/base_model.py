@@ -17,7 +17,7 @@ import torch.nn as nn
 
 class BaseModel(nn.Module):
     def __init__(self, args, model_time=None, model_version=0):
-        super().__init__()
+        super(BaseModel, self).__init__()
         self.args = args
         self.model_time = model_time if model_time else time.time()
         self.model_version = model_version

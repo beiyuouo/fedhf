@@ -24,5 +24,5 @@ __all__ += ["Injector"]
 
 from .server import build_server, SimulatedServer, server_factory
 from .client import build_client, SimulatedClient, client_factory
-from .coordinator import build_coordinator, SimulatedSyncCoordinator, SimulatedAsyncCoordinator, coordinator_factory
+from .coordinator import build_coordinator, SimulatedSyncCoordinator, SimulatedAsyncCoordinator, coordinator_factory, SimulatedBaseCoordinator
 from .injector import Injector

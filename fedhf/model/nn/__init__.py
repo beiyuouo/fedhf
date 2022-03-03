@@ -16,6 +16,7 @@ from .cnn_cifar10 import CNN2CIFAR10, CNN4CIFAR10
 from .cnn_mnist import CNNMNIST
 from .densenet import DenseNet
 from .unet import UNet
+from .base_model import BaseModel
 
 model_factory = {
     'resnet': ResNet,

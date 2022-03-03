@@ -10,6 +10,8 @@
 
 import argparse
 import os
+import yaml
+
 import torch
 import torch.nn as nn
 import numpy as np
@@ -38,6 +40,7 @@ class opts(object):
         self.parser.add_argument('--dataset',
                                  default='mnist',
                                  help='see fedhf/dataset for available datasets')
+        self.parser.add_argument('--data_dir', default=None, help='dataset directory')
         self.parser.add_argument('--load_model', default='', help='path to pretrained model')
         self.parser.add_argument('--resume',
                                  action='store_true',
@@ -262,7 +265,10 @@ class opts(object):
         return opt
 
     def load_from_file(self, args):
-        pass
+        file_path = args.from_file
+        # read yaml file
+        with open(file_path, 'r') as f:
+            opt_raw = yaml.load(f, Loader=yaml.FullLoader)
 
     def save(self, opt):
         pass

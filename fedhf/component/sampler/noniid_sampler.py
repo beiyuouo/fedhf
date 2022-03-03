@@ -16,7 +16,7 @@ from .base_sampler import BaseSampler
 
 class NonIIDSampler(BaseSampler):
     def __init__(self, args) -> None:
-        self.args = args
+        super(NonIIDSampler, self).__init__(args)
 
     def sample(self, train_dataset, test_dataset=None):
         """[summary]

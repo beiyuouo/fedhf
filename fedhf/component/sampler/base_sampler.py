@@ -12,8 +12,8 @@ from abc import ABC
 
 
 class BaseSampler(ABC):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, args) -> None:
+        self.args = args
 
     def sample(self):
         raise NotImplementedError

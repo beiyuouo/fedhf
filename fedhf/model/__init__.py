@@ -19,7 +19,8 @@ from .optimizer import build_optimizer, optimizer_factory
 from .scheduler import build_lr_scheduler, lr_schedule_factory
 
 __all__ += [
-    "ResNet", "ResNetMNIST", "MLP", "AlexNetCIFAR10", "CNN2CIFAR10", "CNN4CIFAR10", "CNNMNIST"
+    "ResNet", "ResNetMNIST", "MLP", "AlexNetCIFAR10", "CNN2CIFAR10", "CNN4CIFAR10", "CNNMNIST",
+    "DenseNet", "UNet", "BaseModel"
 ]
 
-from .nn import ResNet, ResNetMNIST, MLP, AlexNetCIFAR10, CNN2CIFAR10, CNN4CIFAR10, CNNMNIST
+from .nn import ResNet, ResNetMNIST, MLP, AlexNetCIFAR10, CNN2CIFAR10, CNN4CIFAR10, CNNMNIST, DenseNet, UNet, BaseModel
