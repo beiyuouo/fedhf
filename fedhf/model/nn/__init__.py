@@ -9,20 +9,27 @@
 """
 
 from .resnet import ResNet
+from .resnet_mnist import ResNetMNIST
 from .mlp import MLP
 from .alexnet_cifar10 import AlexNetCIFAR10
 from .cnn_cifar10 import CNN2CIFAR10, CNN4CIFAR10
 from .cnn_mnist import CNNMNIST
+from .densenet import DenseNet
+from .unet import UNet
+from .base_model import BaseModel
 
 model_factory = {
     'resnet': ResNet,
     'resnet18': ResNet,
+    'resnet_mnist': ResNetMNIST,
     'mlp': MLP,
     'alexnet_cifar10': AlexNetCIFAR10,
     'cnn_cifar10': CNN2CIFAR10,
     'cnn2_cifar10': CNN2CIFAR10,
     'cnn4_cifar10': CNN4CIFAR10,
     'cnn_mnist': CNNMNIST,
+    'densenet': DenseNet,
+    'unet': UNet,
 }
 
 

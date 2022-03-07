@@ -10,6 +10,8 @@
 
 import argparse
 import os
+import yaml
+
 import torch
 import torch.nn as nn
 import numpy as np
@@ -38,6 +40,7 @@ class opts(object):
         self.parser.add_argument('--dataset',
                                  default='mnist',
                                  help='see fedhf/dataset for available datasets')
+        self.parser.add_argument('--data_dir', default=None, help='dataset directory')
         self.parser.add_argument('--load_model', default='', help='path to pretrained model')
         self.parser.add_argument('--resume',
                                  action='store_true',
@@ -93,11 +96,22 @@ class opts(object):
 
         self.parser.add_argument('--input_c', type=int, default=1, help='input channel')
         self.parser.add_argument('--image_size', type=int, default=224, help='image_size')
+
+        self.parser.add_argument('--output_c', type=int, default=1, help='output channel')
         self.parser.add_argument('--num_classes',
                                  type=int,
                                  default=10,
                                  help='number of classes')
+
+        # unet setting
+        self.parser.add_argument('--unet_n1', type=int, default=64, help='unet_n1')
+        self.parser.add_argument('--unet_bilinear', action='store_true', help='unet_bilinear')
+
         self.parser.add_argument('--trainer', type=str, default='trainer', help='trainer.')
+        self.parser.add_argument('--evaluator',
+                                 type=str,
+                                 default='evaluator',
+                                 help='evaluator.')
         self.parser.add_argument('--optim', type=str, default='adam', help='optimizer.')
         self.parser.add_argument('--momentum', type=float, default=0.75, help='momentum.')
         self.parser.add_argument('--weight_decay',
@@ -106,6 +120,12 @@ class opts(object):
                                  help='weight decay.')
 
         self.parser.add_argument('--lr', type=float, default=1.25e-4, help='learning rate.')
+        self.parser.add_argument('--lr_scheduler',
+                                 type=str,
+                                 default='cosine',
+                                 help='lr scheduler.')
+        self.parser.add_argument('--lr_step', type=int, default=30, help='lr step.')
+
         self.parser.add_argument('--loss', type=str, default='ce', help='loss function.')
         self.parser.add_argument('--train_loss',
                                  type=str,
@@ -113,7 +133,11 @@ class opts(object):
                                  help='train loss function.')
 
         # training setting
-        self.parser.add_argument('--check_point',
+        self.parser.add_argument('--evaluation_interval',
+                                 type=int,
+                                 default=5,
+                                 help='evaluation interval')
+        self.parser.add_argument('--checkpoint_interval',
                                  type=int,
                                  default=50,
                                  help='when to save the model and result to disk.')
@@ -249,7 +273,10 @@ class opts(object):
         return opt
 
     def load_from_file(self, args):
-        pass
+        file_path = args.from_file
+        # read yaml file
+        with open(file_path, 'r') as f:
+            opt_raw = yaml.load(f, Loader=yaml.FullLoader)
 
     def save(self, opt):
         pass

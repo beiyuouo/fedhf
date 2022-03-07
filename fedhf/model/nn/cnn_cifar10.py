@@ -24,7 +24,7 @@ class CNN4CIFAR10(BaseModel):
 
         self.num_classes = args.num_classes
 
-        self.cnn = nn.Sequential(
+        self.net = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=3, padding=1),
             nn.LeakyReLU(0.1),
             nn.BatchNorm2d(64),
@@ -50,7 +50,7 @@ class CNN4CIFAR10(BaseModel):
         )
 
     def forward(self, x):
-        return self.cnn(x)
+        return self.net(x)
 
 
 class CNN2CIFAR10(BaseModel):
@@ -62,7 +62,7 @@ class CNN2CIFAR10(BaseModel):
 
         self.num_classes = args.num_classes
 
-        self.cnn = nn.Sequential(
+        self.net = nn.Sequential(
             nn.Conv2d(3, 32, kernel_size=3, padding=1),
             nn.ReLU(),
             nn.MaxPool2d(2),
@@ -77,4 +77,4 @@ class CNN2CIFAR10(BaseModel):
         )
 
     def forward(self, x):
-        return self.cnn(x)
+        return self.net(x)

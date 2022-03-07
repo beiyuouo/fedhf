@@ -10,8 +10,10 @@
 
 __all__ = [
     "SimulatedSyncCoordinator", "SimulatedAsyncCoordinator", "build_coordinator",
-    "coordinator_factory"
+    "coordinator_factory", "SimulatedBaseCoordinator"
 ]
+
+from .base_coordinator import SimulatedBaseCoordinator
 
 from .simulated_sync_coordinator import SimulatedSyncCoordinator
 from .simulated_async_coordinator import SimulatedAsyncCoordinator

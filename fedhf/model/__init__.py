@@ -10,13 +10,17 @@
 
 __all__ = [
     "build_model", "build_optimizer", "build_criterion", "criterion_factory",
-    "optimizer_factory", "model_factory"
+    "optimizer_factory", "model_factory", "build_lr_scheduler", "lr_schedule_factory"
 ]
 
 from .criterion import build_criterion, criterion_factory
 from .nn import build_model, model_factory
 from .optimizer import build_optimizer, optimizer_factory
+from .scheduler import build_lr_scheduler, lr_schedule_factory
 
-__all__ += ["ResNet", "MLP", "AlexNetCIFAR10", "CNN2CIFAR10", "CNN4CIFAR10", "CNNMNIST"]
+__all__ += [
+    "ResNet", "ResNetMNIST", "MLP", "AlexNetCIFAR10", "CNN2CIFAR10", "CNN4CIFAR10", "CNNMNIST",
+    "DenseNet", "UNet", "BaseModel"
+]
 
-from .nn import ResNet, MLP, AlexNetCIFAR10, CNN2CIFAR10, CNN4CIFAR10, CNNMNIST
+from .nn import ResNet, ResNetMNIST, MLP, AlexNetCIFAR10, CNN2CIFAR10, CNN4CIFAR10, CNNMNIST, DenseNet, UNet, BaseModel

@@ -17,21 +17,20 @@ from fedhf.model import build_model, build_optimizer
 from fedhf.dataset import build_dataset
 
 
-class TestResnet(object):
+class TestDenseNet(object):
     args = opts().parse([
-        '--model', 'resnet_mnist', '--num_classes', '10', '--model_pretrained', '--dataset',
-        'mnist', '--gpus', '-1', '--task', 'classification', '--resize', '--input_c', '1',
+        '--model', 'densenet', '--num_classes', '10', '--model_pretrained', '--dataset',
+        'cifar10', '--gpus', '-1', '--task', 'classification', '--resize', '--input_c', '1',
         '--image_size', '224'
     ])
 
-    def test_resnet(self):
+    def test_desenet(self):
         model = build_model(self.args.model)(self.args)
         print(model)
 
-        assert model.__class__.__name__ == 'ResNetMNIST'
-        assert model.net.__class__.__name__ == 'ResNet'
+        assert model.__class__.__name__ == 'DenseNet'
         assert model.num_classes == 10
-        assert model.net.fc.out_features == 10
+        assert model.net.classifier.out_features == 10
 
         dataset = build_dataset(self.args.dataset)(self.args)
         dataloader = DataLoader(dataset.trainset, batch_size=1, shuffle=False)

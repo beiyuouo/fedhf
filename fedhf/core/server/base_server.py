@@ -12,7 +12,7 @@ from abc import ABC
 from torch.utils.data.dataloader import DataLoader
 
 from fedhf.api import Logger, Serializer, Deserializer
-from fedhf.component import build_aggregator, build_selector, Evaluator
+from fedhf.component import build_aggregator, build_selector, build_evaluator
 from fedhf.model import build_criterion, build_model, build_optimizer
 
 
@@ -38,7 +38,7 @@ class BaseServer(AbsServer):
         self.aggregator = build_aggregator(self.args.agg)(self.args)
 
         self.model = build_model(self.args.model)(self.args)
-        self.evaluator = Evaluator(self.args)
+        self.evaluator = build_evaluator(self.args.evaluator)(self.args)
         self.logger = Logger(self.args)
 
     def select(self, client_list: list):

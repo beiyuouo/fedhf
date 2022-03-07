@@ -71,7 +71,8 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
                     self.logger.info(
                         f'Server model version {self.server.model.get_model_version()} result: {result}'
                     )
-                    if self.server.model.get_model_version() % self.args.check_point == 0:
+                    if self.server.model.get_model_version(
+                    ) % self.args.checkpoint_interval == 0:
                         self.logger.info(
                             f'Save model: {self.args.name}-{self.server.model.get_model_version()}.pth'
                         )

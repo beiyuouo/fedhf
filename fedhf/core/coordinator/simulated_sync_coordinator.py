@@ -50,7 +50,7 @@ class SimulatedSyncCoordinator(SimulatedBaseCoordinator):
                 result = self.server.evaluate(self.dataset.testset)
                 self.logger.info(f'Server result: {result}')
 
-                if self.server.model.get_model_version() % self.args.check_point == 0:
+                if self.server.model.get_model_version() % self.args.checkpoint_interval == 0:
                     self.server.model.save(
                         f'{self.args.name}-{self.server.model.get_model_version()}.pth')
 

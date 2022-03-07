@@ -14,18 +14,16 @@ import torch.nn as nn
 from torchvision import models
 
 from .base_model import BaseModel
-"""
-    Deep Residual Learning for Image Recognition
-    Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun
-    https://arxiv.org/abs/1512.03385v1
-"""
 
 
-class ResNet(BaseModel):
-    def __init__(self, args, model_time=None, model_version=0):
+class ResNetMNIST(BaseModel):
+    def __init__(self, args, model_time=0, model_version=0):
         super().__init__(args, model_time, model_version)
-        self.net = models.resnet18(pretrained=True)
+        self.input_size = (args.input_c, args.image_size, args.image_size)
+        self.num_classes = args.num_classes
+        self.conv = nn.Conv2d(1, 3, kernel_size=1)
+        self.net = models.resnet18(pretrained=args.model_pretrained)
         self.net.fc = nn.Linear(512, args.num_classes)
 
     def forward(self, x):
-        return self.net(x)
+        return self.net(self.conv(x))

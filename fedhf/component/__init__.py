@@ -8,12 +8,27 @@
 @License :   Apache License 2.0 
 """
 
-from .trainer import build_trainer, Trainer, FedAsyncTrainer, trainer_factory
+__all__ = []
 
-from .evaluator import build_evalutor, Evaluator, evaluator_factory
+from .trainer import build_trainer, Trainer, FedAsyncTrainer, trainer_factory, BaseTrainer
+
+__all__ += ["build_trainer", "Trainer", "FedAsyncTrainer", "trainer_factory", "BaseTrainer"]
+
+from .evaluator import build_evaluator, Evaluator, BaseEvaluator, evaluator_factory
+
+__all__ += ["build_evaluator", "Evaluator", "evaluator_factory", "BaseEvaluator"]
 
 from .aggregator import build_aggregator, FedAsyncAggregator, FedAvgAggregator, SyncAggregator, AsyncAggregator, aggregator_factory
 
+__all__ += [
+    "build_aggregator", "FedAsyncAggregator", "FedAvgAggregator", "SyncAggregator",
+    "AsyncAggregator", "aggregator_factory"
+]
+
 from .selector import build_selector, RandomFedAsyncSelector, RandomSelector, selector_factory
 
-from .sampler import build_sampler, RandomSampler, NonIIDSampler, sampler_factory
+__all__ += ["build_selector", "RandomFedAsyncSelector", "RandomSelector", "selector_factory"]
+
+from .sampler import build_sampler, RandomSampler, NonIIDSampler, sampler_factory, BaseSampler
+
+__all__ += ["build_sampler", "RandomSampler", "NonIIDSampler", "sampler_factory", "BaseSampler"]

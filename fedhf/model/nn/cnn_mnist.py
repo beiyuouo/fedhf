@@ -24,7 +24,7 @@ class CNNMNIST(BaseModel):
 
         self.num_classes = args.num_classes
 
-        self.cnn = nn.Sequential(
+        self.net = nn.Sequential(
             nn.Conv2d(1, 32, kernel_size=3, padding=1),
             nn.ReLU(),
             nn.MaxPool2d(2),
@@ -38,4 +38,4 @@ class CNNMNIST(BaseModel):
         )
 
     def forward(self, x):
-        return self.cnn(x)
+        return self.net(x)

@@ -37,6 +37,7 @@ class FedAsyncTrainer(BaseTrainer):
         else:
             optim = self.optim(params=model.parameters(), lr=self.args.lr)
         crit = self.crit()
+        lr_scheduler = self.lr_scheduler(optim, self.args.lr_step)
 
         self.logger.info(f'Start training on {client_id}')
 
@@ -71,6 +72,7 @@ class FedAsyncTrainer(BaseTrainer):
                 pbar.update(1)
 
             train_loss.append(sum(losses) / len(losses))
+            lr_scheduler.step()
             # self.logger.info(
             #    f'Client:{client_id} Epoch:{epoch+1}/{num_epochs} Loss:{train_loss[-1]}'
             #)

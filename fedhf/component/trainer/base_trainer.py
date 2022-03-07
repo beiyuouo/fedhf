@@ -11,7 +11,7 @@
 from abc import ABC, abstractmethod
 
 from fedhf.api import Logger
-from fedhf.model import build_criterion, build_optimizer
+from fedhf.model import build_criterion, build_optimizer, build_lr_scheduler
 
 
 class AbsTrainer(ABC):
@@ -28,6 +28,7 @@ class BaseTrainer(AbsTrainer):
         self.args = args
         self.optim = build_optimizer(self.args.optim)
         self.crit = build_criterion(self.args.train_loss)
+        self.lr_scheduler = build_lr_scheduler(self.args.lr_scheduler)
         self.logger = Logger(self.args)
 
     def set_device(self, gpus, device):
