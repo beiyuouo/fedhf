@@ -133,7 +133,11 @@ class opts(object):
                                  help='train loss function.')
 
         # training setting
-        self.parser.add_argument('--check_point',
+        self.parser.add_argument('--evaluation_interval',
+                                 type=int,
+                                 default=5,
+                                 help='evaluation interval')
+        self.parser.add_argument('--checkpoint_interval',
                                  type=int,
                                  default=50,
                                  help='when to save the model and result to disk.')
