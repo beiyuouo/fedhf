@@ -108,6 +108,10 @@ class opts(object):
         self.parser.add_argument('--unet_bilinear', action='store_true', help='unet_bilinear')
 
         self.parser.add_argument('--trainer', type=str, default='trainer', help='trainer.')
+        self.parser.add_argument('--evaluator',
+                                 type=str,
+                                 default='evaluator',
+                                 help='evaluator.')
         self.parser.add_argument('--optim', type=str, default='adam', help='optimizer.')
         self.parser.add_argument('--momentum', type=float, default=0.75, help='momentum.')
         self.parser.add_argument('--weight_decay',

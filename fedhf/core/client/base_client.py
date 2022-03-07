@@ -11,7 +11,7 @@
 from abc import ABC, abstractmethod
 
 from fedhf.api import Logger
-from fedhf.component import Evaluator, build_trainer
+from fedhf.component import build_evaluator, build_trainer
 from fedhf.model import build_criterion, build_model, build_optimizer
 
 
@@ -33,6 +33,6 @@ class BaseClient(AbsClient):
         self.client_id = client_id
 
         self.trainer = build_trainer(self.args.trainer)(self.args)
-        self.evaluator = Evaluator(args)
+        self.evaluator = build_evaluator(self.args.evaluator)(self.args)
 
         self.logger = Logger(args)

@@ -22,7 +22,7 @@ components = {
     'criterion': criterion_factory,
     'dataset': dataset_factory,
     'trainer': trainer_factory,
-    'evalutor': evaluator_factory,
+    'evaluator': evaluator_factory,
     'aggregator': aggregator_factory,
     'sampler': sampler_factory,
     'selector': selector_factory,

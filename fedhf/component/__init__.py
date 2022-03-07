@@ -14,9 +14,9 @@ from .trainer import build_trainer, Trainer, FedAsyncTrainer, trainer_factory, B
 
 __all__ += ["build_trainer", "Trainer", "FedAsyncTrainer", "trainer_factory", "BaseTrainer"]
 
-from .evaluator import build_evalutor, Evaluator, evaluator_factory
+from .evaluator import build_evaluator, Evaluator, BaseEvaluator, evaluator_factory
 
-__all__ += ["build_evalutor", "Evaluator", "evaluator_factory"]
+__all__ += ["build_evaluator", "Evaluator", "evaluator_factory", "BaseEvaluator"]
 
 from .aggregator import build_aggregator, FedAsyncAggregator, FedAvgAggregator, SyncAggregator, AsyncAggregator, aggregator_factory
 
