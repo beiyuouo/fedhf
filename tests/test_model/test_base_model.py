@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @File    :   tests\test_model\test_unet.py
-# @Time    :   2022-02-28 20:51:10
+# @File    :   tests\test_model\test_base_model.py
+# @Time    :   2022-03-18 12:41:52
 # @Author  :   Bingjie Yan
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
 import torch
-from torch import optim
 from torch.utils.data import DataLoader
 
 from fedhf.api import opts
@@ -15,19 +14,19 @@ from fedhf.model import build_model, build_optimizer
 from fedhf.dataset import build_dataset
 
 
-class TestDenseNet(object):
+class TestCNNCIFAR10(object):
     args = opts().parse([
-        '--model', 'unet', '--model_pretrained', '--dataset', 'cifar10', '--gpus', '-1', '--task',
-        'classification', '--resize', '--input_c', '3', '--output_c', '1', '--image_size', '224'
+        '--model', 'cnn2_cifar10', '--num_classes', '10', '--model_pretrained', '--dataset',
+        'cifar10', '--gpus', '-1', '--task', 'classification', '--resize', '--image_size', '32',
+        '--input_c', '3'
     ])
 
-    def test_desenet(self):
+    def test_cnn2cifar10(self):
         model = build_model(self.args.model)(self.args)
         print(model)
 
-        assert model.__class__.__name__ == 'UNet'
-        assert model.input_c == 3
-        assert model.output_c == 1
+        assert model.__class__.__name__ == 'CNN2CIFAR10'
+        assert model.num_classes == 10
 
         dataset = build_dataset(self.args.dataset)(self.args)
         dataloader = DataLoader(dataset.trainset, batch_size=1, shuffle=False)
@@ -36,7 +35,7 @@ class TestDenseNet(object):
         model.train()
         for data, target in dataloader:
             output = model(data)
-            assert output.shape == (1, 1, 224, 224)
+            assert output.shape == (1, 10)
             assert output.dtype == torch.float32
             assert output.device == torch.device('cpu')
             break

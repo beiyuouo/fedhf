@@ -22,6 +22,7 @@ class RandomFedAsyncSelector(BaseSelector):
         select_ratio = self.args.select_ratio
         select_count = min(int(self.args.num_clients * select_ratio),
                            self.args.fedasync_max_staleness)
+        select_count = max(1, select_count)
         selected_clients = np.random.choice(client_list, select_count, replace=False)
         # np.random.shuffle(selected_clients)
         return selected_clients

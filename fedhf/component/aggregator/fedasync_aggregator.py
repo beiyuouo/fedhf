@@ -74,4 +74,4 @@ class FedAsyncAggregator(AsyncAggregator):
         elif self.args.fedasync_strategy == "polynomial" and self.a is not None:
             return torch.mul(self.alpha, (staleness + 1)**(-self.a))
         else:
-            raise ValueError("Unknown strategy: {}".format(self.args.strategy))
+            raise ValueError("Unknown strategy: {}".format(self.args.fedasync_strategy))

@@ -19,8 +19,9 @@ class CNNMNIST(BaseModel):
     """
     Implentation of the cnn described in the fedasync
     """
-    def __init__(self, args, model_time=0):
-        super().__init__(args, model_time)
+
+    def __init__(self, args, model_time=None, model_version=0):
+        super().__init__(args, model_time, model_version)
 
         self.num_classes = args.num_classes
 

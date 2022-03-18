@@ -26,6 +26,7 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
         In simulated scheme, the data and model belong to coordinator and there is no need communicator.
         Also, there is no need to instantiate every client.
     """
+
     def __init__(self, args) -> None:
         super(SimulatedAsyncCoordinator, self).__init__(args)
 
@@ -50,9 +51,9 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
                     staleness = np.random.randint(
                         low=1,
                         high=min(self.args.fedasync_max_staleness,
-                                 self.server.model.get_model_version() + 1) + 1)
+                                 max(self.server.model.get_model_version(), 0) + 1) + 1)
 
-                    assert staleness <= self.server.model.get_model_version() + 1
+                    assert staleness <= max(0, self.server.model.get_model_version()) + 1
                     assert staleness <= len(self._model_queue)
 
                     self.logger.info(
@@ -62,33 +63,27 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
                     model = client.train(data=self.data[client_id],
                                          model=deepcopy(self._model_queue[-staleness]))
 
-                    self.server.update(
-                        model,
-                        server_model_version=self.server.model.get_model_version(),
-                        client_model_version=model.get_model_version())
+                    self.server.update(model,
+                                       server_model_version=self.server.model.get_model_version(),
+                                       client_model_version=model.get_model_version())
 
                     result = self.server.evaluate(self.dataset.testset)
                     self.logger.info(
                         f'Server model version {self.server.model.get_model_version()} result: {result}'
                     )
-                    if self.server.model.get_model_version(
-                    ) % self.args.checkpoint_interval == 0:
+                    if self.server.model.get_model_version() % self.args.checkpoint_interval == 0:
                         self.logger.info(
                             f'Save model: {self.args.name}-{self.server.model.get_model_version()}.pth'
                         )
                         self.server.model.save(
                             os.path.join(
                                 self.args.save_dir,
-                                f'{self.args.name}-{self.server.model.get_model_version()}.pth')
-                        )
+                                f'{self.args.name}-{self.server.model.get_model_version()}.pth'))
 
                     self._model_queue.append(deepcopy(self.server.model))
 
                     while len(self._model_queue) > self.args.fedasync_max_staleness + 1:
                         self._model_queue.pop(0)
-
-        except KeyboardInterrupt:
-
             self.logger.info(f'All rounds finished.')
 
         except KeyboardInterrupt:

@@ -17,6 +17,7 @@ from fedhf.model import build_criterion, build_model, build_optimizer
 
 
 class AbsServer(ABC):
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -31,13 +32,14 @@ class AbsServer(ABC):
 
 
 class BaseServer(AbsServer):
+
     def __init__(self, args) -> None:
         self.args = args
 
         self.selector = build_selector(self.args.selector)(self.args)
         self.aggregator = build_aggregator(self.args.agg)(self.args)
 
-        self.model = build_model(self.args.model)(self.args)
+        self.model = build_model(self.args.model)(self.args, model_version=-1)
         self.evaluator = build_evaluator(self.args.evaluator)(self.args)
         self.logger = Logger(self.args)
 
