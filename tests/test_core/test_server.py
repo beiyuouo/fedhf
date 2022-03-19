@@ -32,7 +32,7 @@ class TestServer(object):
         model = build_model(self.args.model)(self.args)
         model.set_model_version(0)
 
-        assert server.model.get_model_version() == -1
+        assert server.model.get_model_version() == 0
         assert model.get_model_version() == 0
 
         server.update(model, server_model_version=0, client_model_version=model.get_model_version())

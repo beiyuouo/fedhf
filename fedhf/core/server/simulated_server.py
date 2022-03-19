@@ -26,7 +26,9 @@ class SimulatedServer(BaseServer):
         super(SimulatedServer, self).__init__(args)
 
     def update(self, model: nn.Module, **kwargs):
-        if self.model.model_version == -1:
+        self.logger.info(f'Update model with {kwargs}')
+
+        if self.model.get_model_version() == 0:
             self.model = deepcopy(model)
 
         result = self.aggregator.agg(Serializer.serialize_model(self.model),

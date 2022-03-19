@@ -39,7 +39,7 @@ class BaseServer(AbsServer):
         self.selector = build_selector(self.args.selector)(self.args)
         self.aggregator = build_aggregator(self.args.agg)(self.args)
 
-        self.model = build_model(self.args.model)(self.args, model_version=-1)
+        self.model = build_model(self.args.model)(self.args, model_version=0)
         self.evaluator = build_evaluator(self.args.evaluator)(self.args)
         self.logger = Logger(self.args)
 

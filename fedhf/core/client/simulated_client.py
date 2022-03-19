@@ -18,6 +18,7 @@ from .base_client import BaseClient
 
 
 class SimulatedClient(BaseClient):
+
     def __init__(self, args, client_id) -> None:
         super(SimulatedClient, self).__init__(args, client_id)
 
@@ -29,11 +30,10 @@ class SimulatedClient(BaseClient):
                                     num_epochs=self.args.num_local_epochs,
                                     client_id=self.client_id,
                                     device=device)
-        train_loss = result['train_loss']
+        # train_loss = result['train_loss']
         model = result['model']
 
-        self.logger.info(
-            f'Finish training on client {self.client_id}, train_loss: {train_loss}')
+        # self.logger.info(f'Finish training on client {self.client_id}, train_loss: {train_loss}')
         return model
 
     def evaluate(self, data, model, device='cpu'):
@@ -43,7 +43,7 @@ class SimulatedClient(BaseClient):
                                          model=model,
                                          client_id=self.client_id,
                                          device=device)
-
-        self.logger.info(
-            f'Finish evaluating on client {self.client_id}, test_loss: {result["test_loss"]} test_acc: {result["test_acc"]}'
-        )
+        return result
+        # self.logger.info(
+        #     f'Finish evaluating on client {self.client_id}, test_loss: {result["test_loss"]} test_acc: {result["test_acc"]}'
+        # )
