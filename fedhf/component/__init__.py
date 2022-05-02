@@ -18,11 +18,11 @@ from .evaluator import build_evaluator, Evaluator, BaseEvaluator, evaluator_fact
 
 __all__ += ["build_evaluator", "Evaluator", "evaluator_factory", "BaseEvaluator"]
 
-from .aggregator import build_aggregator, FedAsyncAggregator, FedAvgAggregator, SyncAggregator, AsyncAggregator, aggregator_factory
+from .aggregator import build_aggregator, FedAsyncAggregator, FedAvgAggregator, SyncAggregator, AsyncAggregator, aggregator_factory, BaseAggregator
 
 __all__ += [
     "build_aggregator", "FedAsyncAggregator", "FedAvgAggregator", "SyncAggregator",
-    "AsyncAggregator", "aggregator_factory"
+    "AsyncAggregator", "aggregator_factory", "BaseAggregator"
 ]
 
 from .selector import build_selector, RandomFedAsyncSelector, RandomSelector, selector_factory

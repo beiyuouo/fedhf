@@ -26,7 +26,7 @@ class SimulatedServer(BaseServer):
         super(SimulatedServer, self).__init__(args)
 
     def update(self, model: nn.Module, **kwargs):
-        self.logger.info(f'Update model with {kwargs}')
+        # self.logger.info(f'Update model with {kwargs}')
 
         if self.model.get_model_version() == 0:
             self.model = deepcopy(model)
