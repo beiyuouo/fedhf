@@ -31,6 +31,8 @@ class SimulatedClient(BaseClient):
         # train_loss = result['train_loss']
         model = result['model']
 
+        model = self.encryptor.encrypt_model(model)
+
         # self.logger.info(f'Finish training on client {self.client_id}, train_loss: {train_loss}')
         return model
 

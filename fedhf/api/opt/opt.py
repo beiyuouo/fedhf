@@ -191,6 +191,15 @@ class opts(object):
                                  default=None,
                                  help='fedasync aggregate b')
 
+        # security setting
+        self.parser.add_argument('--encryptor', type=str, default='none', help='encryptor.')
+        self.parser.add_argument('--dp_mechanism',
+                                 type=str,
+                                 default='none',
+                                 help='dp mechanism none | gaussian | laplace')
+        self.parser.add_argument('--dp_clip', type=float, default=0.5, help='dp clip')
+        self.parser.add_argument('--dp_delta', type=float, default=0.1, help='dp delta')
+
         # test setting
         self.parser.add_argument('--test', action='store_true', help='test mode')
 
