@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   tests\test_component\test_logger.py 
-@Time    :   2021-11-11 13:19:25 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+# -*- coding: utf-8 -*-
+# @File    :   tests\test_api\test_logger.py
+# @Time    :   2022-05-02 23:35:51
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 from fedhf.api import opts, Logger
 

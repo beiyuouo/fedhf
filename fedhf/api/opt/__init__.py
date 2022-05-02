@@ -8,7 +8,7 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ["opts", "Option"]
+__all__ = ["opts"]
 
 from .opt import opts
 from .config import ConfigDict, Config

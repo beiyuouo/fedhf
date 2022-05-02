@@ -8,6 +8,8 @@
 
 from abc import ABC, abstractmethod
 
+import numpy as np
+
 
 class AbsEncryptor(ABC):
     """
@@ -23,11 +25,26 @@ class AbsEncryptor(ABC):
         self.args = args
 
     @abstractmethod
-    def crypor(self, x):
+    def generate_noise(self):
         """
-        Crypor the given data.
-        :param x: the data
-        :return: the crypor data
+        Generate noise.
+        :return: the noise
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def clip_grad(self, model):
+        """
+        Clip the gradient of the given model.
+        :param model: the model
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def encrypt_model(self):
+        """
+        Encrypt the model.
+        :return: the encrypted model
         """
         raise NotImplementedError
 
@@ -44,13 +61,20 @@ class BaseEncryptor(AbsEncryptor):
         """
         super().__init__(args)
 
-    def encrypt_data(self, x):
+    def generate_noise(self, size):
         """
-        Encrypt the given data.
-        :param x: the data
-        :return: the encrypted data
+        Generate noise.
+        :param size: the size
+        :return: the noise
         """
-        return x
+        return np.zeros(size)
+
+    def clip_grad(self, model):
+        """
+        Clip the gradient of the given model.
+        :param model: the model
+        """
+        return model
 
     def encrypt_model(self, model):
         """

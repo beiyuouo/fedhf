@@ -17,4 +17,4 @@ def calculate_sensitivity(lr, clip, data_size):
     :param data_size: data size
     :return: the sensitivity of the privacy mechanism
     """
-    return lr * clip / data_size
+    return 2 * lr * clip / data_size
