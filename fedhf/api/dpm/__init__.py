@@ -44,19 +44,19 @@ def build_mechanism(mechanism, sensitivity, size, epsilon, **kwargs):
         raise ValueError('Unknown mechanism: %s' % mechanism)
 
 
-def build_clip_grad(mechanism, clip, model, **kwargs):
+def build_clip_grad(mechanism, model, clip, **kwargs):
     """
     Clip the gradients of the model.
     :param mechanism: the mechanism name
-    :param clip: the clipping bound
     :param model: the model
+    :param clip: the clipping bound
     :param kwargs: other parameters
     :return: None
     """
     if mechanism == 'none':
         return
     elif mechanism in clip_grad_factory:
-        clip_grad_factory[mechanism](clip, model, **kwargs)
+        clip_grad_factory[mechanism](model, clip, **kwargs)
     else:
         raise ValueError('Unknown mechanism: %s' % mechanism)
 
