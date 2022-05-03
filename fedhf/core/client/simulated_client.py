@@ -9,7 +9,7 @@
 import re
 from torch.utils.data import DataLoader
 
-from fedhf.component import Evaluator, build_trainer
+from fedhf.component import Evaluator, build_trainer, build_encryptor
 from fedhf.model import build_criterion, build_model, build_optimizer
 
 from .base_client import BaseClient
@@ -17,8 +17,11 @@ from .base_client import BaseClient
 
 class SimulatedClient(BaseClient):
 
-    def __init__(self, args, client_id) -> None:
+    def __init__(self, args, client_id, **kwargs) -> None:
         super(SimulatedClient, self).__init__(args, client_id)
+        assert 'data_size' in kwargs.keys()
+        self.data_size = kwargs['data_size']
+        self.encryptor = build_encryptor(self.args.encryptor)(self.args, data_size=self.data_size)
 
     def train(self, data, model, device='cpu'):
         dataloader = DataLoader(data, batch_size=self.args.batch_size)

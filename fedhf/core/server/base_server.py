@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-"""
-@File    :   fedhf\component\server\base_server.py
-@Time    :   2021-10-26 11:07:00
-@Author  :   Bingjie Yan
-@Email   :   bj.yan.pa@qq.com
-@License :   Apache License 2.0
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\core\server\base_server.py
+# @Time    :   2022-05-03 15:45:08
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 from abc import ABC
 from torch.utils.data.dataloader import DataLoader
@@ -41,7 +39,7 @@ class BaseServer(AbsServer):
 
         self.model = build_model(self.args.model)(self.args, model_version=0)
         self.evaluator = build_evaluator(self.args.evaluator)(self.args)
-        self.encryptor = build_encryptor(self.args.encryptor)(self.args)
+        # self.encryptor = build_encryptor(self.args.encryptor)(self.args)
         self.logger = Logger(self.args)
 
     def select(self, client_list: list):

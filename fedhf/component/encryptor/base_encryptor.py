@@ -17,7 +17,7 @@ class AbsEncryptor(ABC):
     """
 
     @abstractmethod
-    def __init__(self, args):
+    def __init__(self, args, **kwargs):
         """
         Constructor.
         :param args: the arguments
@@ -54,7 +54,7 @@ class BaseEncryptor(AbsEncryptor):
     BaseEncryptor is the base class for all crypor mechanisms.
     """
 
-    def __init__(self, args):
+    def __init__(self, args, **kwargs):
         """
         Constructor.
         :param args: the arguments
@@ -74,7 +74,7 @@ class BaseEncryptor(AbsEncryptor):
         Clip the gradient of the given model.
         :param model: the model
         """
-        return model
+        return
 
     def encrypt_model(self, model):
         """

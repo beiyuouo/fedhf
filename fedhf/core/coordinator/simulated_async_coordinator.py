@@ -47,7 +47,10 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
                 self.logger.info(f'Round {i} Selected clients: {selected_clients}')
 
                 for client_id in selected_clients:
-                    client = build_client(self.args.deploy_mode)(self.args, client_id)
+                    client = build_client(self.args.deploy_mode)(self.args,
+                                                                 client_id,
+                                                                 data_size=len(
+                                                                     self.data[client_id]))
 
                     staleness = np.random.randint(
                         low=1,

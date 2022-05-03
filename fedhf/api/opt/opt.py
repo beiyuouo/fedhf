@@ -198,6 +198,7 @@ class opts(object):
                                  default='none',
                                  help='dp mechanism none | gaussian | laplace')
         self.parser.add_argument('--dp_clip', type=float, default=0.5, help='dp clip')
+        self.parser.add_argument('--dp_epsilon', type=float, default=0.1, help='dp epsilon')
         self.parser.add_argument('--dp_delta', type=float, default=0.1, help='dp delta')
 
         # test setting
@@ -258,6 +259,11 @@ class opts(object):
 
         if opt.train_loss is None:
             opt.train_loss = opt.loss
+
+        if opt.scheme == 'sync':
+            opt.dp_epsilon = opt.dp_epsilon / (opt.select_ratio * opt.num_local_epochs)
+        else:
+            opt.dp_epsilon = opt.dp_epsilon / (opt.num_local_epochs)
 
         # make dirs
         os.makedirs(opt.save_dir, exist_ok=True)

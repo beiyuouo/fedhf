@@ -19,12 +19,16 @@ class DPEncryptor(BaseEncryptor):
     DPEncryptor is the class for DP encryption.
     """
 
-    def __init__(self, args):
+    def __init__(self, args, **kwargs):
         """
         Constructor.
         :param args: the arguments
         """
         super().__init__(args)
+        assert kwargs['data_size'] is not None
+        self.data_size = kwargs['data_size']
+        self.sensitivity = dpm.calculate_sensitivity(self.args.lr, self.args.dp_clip,
+                                                     self.data_size)
 
     def generate_noise(self, size):
         """
@@ -34,7 +38,7 @@ class DPEncryptor(BaseEncryptor):
         """
         return dpm.build_mechanism(
             self.args.dp_mechanism,
-            dpm.calculate_sensitivity(self.args.lr, self.args.dp_clip, size),
+            self.sensitivity,
             size,
             self.args.dp_epsilon,
             delta=self.args.dp_delta if hasattr(self.args, 'dp_delta') else None,
@@ -45,10 +49,10 @@ class DPEncryptor(BaseEncryptor):
         Clip the gradient of the given model.
         :param model: the model
         """
-        return dpm.build_clip_grad(
+        dpm.build_clip_grad(
             self.args.dp_mechanism,
-            self.args.dp_clip,
             model,
+            self.args.dp_clip,
         )
 
     def encrypt_model(self, model):
@@ -57,7 +61,7 @@ class DPEncryptor(BaseEncryptor):
         :param model: the model
         :return: the encrypted model
         """
-        model = self.clip_grad(model)
+        self.clip_grad(model)
 
         with torch.no_grad():
             for k, v in model.named_parameters():

@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-"""
-@File    :   fedhf\component\client\base_client.py
-@Time    :   2021-10-26 11:06:33
-@Author  :   Bingjie Yan
-@Email   :   bj.yan.pa@qq.com
-@License :   Apache License 2.0
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\core\client\base_client.py
+# @Time    :   2022-05-03 15:55:52
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 from abc import ABC, abstractmethod
 
@@ -36,6 +34,6 @@ class BaseClient(AbsClient):
 
         self.trainer = build_trainer(self.args.trainer)(self.args)
         self.evaluator = build_evaluator(self.args.evaluator)(self.args)
-        self.encryptor = build_encryptor(self.args.encryptor)(self.args)
+        # self.encryptor = build_encryptor(self.args.encryptor)(self.args)
 
         self.logger = Logger(args)

@@ -38,7 +38,7 @@ class SimulatedServer(BaseServer):
         # print(self.model.get_model_version(), model.get_model_version())
         Deserializer.deserialize_model(self.model, result['param'])
 
-        self.model = self.encryptor.encrypt_model(self.model)
+        # self.model = self.encryptor.encrypt_model(self.model)
 
         self.model.set_model_version(result['model_version'])
         self.model.set_model_time(result['model_time'])

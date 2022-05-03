@@ -23,6 +23,7 @@ class SimulatedSyncCoordinator(SimulatedBaseCoordinator):
         In simulated scheme, the data and model belong to coordinator and there is no need communicator.
         Also, there is no need to instantiate every client.
     """
+
     def __init__(self, args) -> None:
         super(SimulatedSyncCoordinator, self).__init__(args)
 
@@ -40,12 +41,14 @@ class SimulatedSyncCoordinator(SimulatedBaseCoordinator):
 
                 for client_id in selected_client:
                     model = deepcopy(self.server.model)
-                    client = build_client(self.args.deploy_mode)(self.args, client_id)
+                    client = build_client(self.args.deploy_mode)(self.args,
+                                                                 client_id,
+                                                                 data_size=len(
+                                                                     self.data[client_id]))
                     model = client.train(self.data[client_id], model)
-                    self.server.update(
-                        model,
-                        server_model_version=self.server.model.get_model_version(),
-                        client_id=client_id)
+                    self.server.update(model,
+                                       server_model_version=self.server.model.get_model_version(),
+                                       client_id=client_id)
 
                 result = self.server.evaluate(self.dataset.testset)
                 self.logger.info(f'Server result: {result}')

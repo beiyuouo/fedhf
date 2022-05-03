@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-"""
-@File    :   fedhf\component\coordinator\base_coordinator.py
-@Time    :   2021-10-26 11:06:07
-@Author  :   Bingjie Yan
-@Email   :   bj.yan.pa@qq.com
-@License :   Apache License 2.0
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\core\coordinator\base_coordinator.py
+# @Time    :   2022-05-03 15:41:08
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 from abc import ABC, abstractmethod
 
@@ -19,6 +17,7 @@ from fedhf.dataset import ClientDataset, build_dataset
 
 
 class AbsCoordinator(ABC):
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -40,6 +39,7 @@ class AbsCoordinator(ABC):
 
 
 class SimulatedBaseCoordinator(AbsCoordinator):
+
     def __init__(self, args) -> None:
         super().__init__()
         self.args = args
@@ -78,8 +78,7 @@ class SimulatedBaseCoordinator(AbsCoordinator):
 
             result = self.server.evaluate(self.dataset.testset)
             self.logger.info(f'Server result: {result}')
-            self.logger.info(
-                f'Final server model version: {self.server.model.get_model_version()}')
+            self.logger.info(f'Final server model version: {self.server.model.get_model_version()}')
         except KeyboardInterrupt:
             self.logger.info(f'Interrupted by user.')
 
