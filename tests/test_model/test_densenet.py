@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   tests\test_model\test_resnet.py 
-@Time    :   2021-11-11 10:58:42 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+# -*- coding: utf-8 -*-
+# @File    :   tests\test_model\test_densenet.py
+# @Time    :   2022-05-03 12:14:59
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 import torch
 from torch import optim
@@ -19,9 +17,9 @@ from fedhf.dataset import build_dataset
 
 class TestDenseNet(object):
     args = opts().parse([
-        '--model', 'densenet', '--num_classes', '10', '--model_pretrained', '--dataset',
-        'cifar10', '--gpus', '-1', '--task', 'classification', '--resize', '--input_c', '1',
-        '--image_size', '224'
+        '--model', 'densenet', '--num_classes', '10', '--model_pretrained', '--dataset', 'cifar10',
+        '--gpus', '-1', '--task', 'classification', '--resize', '--input_c', '1', '--image_size',
+        '224'
     ])
 
     def test_desenet(self):

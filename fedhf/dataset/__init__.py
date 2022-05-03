@@ -8,15 +8,15 @@
 @License :   Apache License 2.0
 """
 
-__all__ = ["build_dataset", "MNISTDataset", "ClientDataset"]
-
 from .mnist import MNISTDataset
 from .cifar10 import CIFAR10Dataset
+from .random import RandomDataset
 from .client_datasest import ClientDataset
 
 dataset_factory = {
     'mnist': MNISTDataset,
     'cifar10': CIFAR10Dataset,
+    'random': RandomDataset,
 }
 
 
@@ -27,3 +27,9 @@ def build_dataset(dataset_name: str):
     dataset = dataset_factory[dataset_name]
 
     return dataset
+
+
+__all__ = [
+    'build_dataset', 'dataset_factory', 'MNISTDataset', 'CIFAR10Dataset', 'RandomDataset',
+    'ClientDataset'
+]

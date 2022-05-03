@@ -1,12 +1,12 @@
-#!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   tests\test_dataset\test_mnist.py
-@Time    :   2021-11-10 17:10:20
-@Author  :   Bingjie Yan
-@Email   :   bj.yan.pa@qq.com
-@License :   Apache License 2.0
-"""
+#!/usr/bin/env python 
+# -*- coding: utf-8 -*- 
+# @File    :   tests\test_dataset\test_mnist.py 
+# @Time    :   2022-05-03 12:01:30 
+# @Author  :   Bingjie Yan 
+# @Email   :   bj.yan.pa@qq.com 
+# @License :   Apache License 2.0 
+
+
 
 import numpy as np
 
