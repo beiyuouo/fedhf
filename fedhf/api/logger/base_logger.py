@@ -1,17 +1,14 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-"""
-@File    :   fedhf\component\logger\base_logger.py
-@Time    :   2021-10-26 14:41:32
-@Author  :   Bingjie Yan
-@Email   :   bj.yan.pa@qq.com
-@License :   Apache License 2.0
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\api\logger\base_logger.py
+# @Time    :   2022-05-03 15:58:34
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 from abc import ABC, abstractmethod
 
 import logging
-
 
 logger_map = {
     'debug': logging.DEBUG,
@@ -22,6 +19,7 @@ logger_map = {
 
 
 class BaseLogger(ABC):
+
     def __init__(self) -> None:
         super().__init__()
 

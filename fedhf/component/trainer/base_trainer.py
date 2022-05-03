@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-"""
-@File    :   fedhf\component\trainer\base_train.py
-@Time    :   2021-10-26 20:42:25
-@Author  :   Bingjie Yan
-@Email   :   bj.yan.pa@qq.com
-@License :   Apache License 2.0
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\component\trainer\base_trainer.py
+# @Time    :   2022-05-03 16:01:18
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 from abc import ABC, abstractmethod
 
@@ -15,6 +13,7 @@ from fedhf.model import build_criterion, build_optimizer, build_lr_scheduler
 
 
 class AbsTrainer(ABC):
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -24,6 +23,7 @@ class AbsTrainer(ABC):
 
 
 class BaseTrainer(AbsTrainer):
+
     def __init__(self, args):
         self.args = args
         self.optim = build_optimizer(self.args.optim)

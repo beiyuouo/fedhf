@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   fedhf\component\aggregator\async_aggregator.py 
-@Time    :   2021-12-02 12:52:16 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\component\aggregator\async_aggregator.py
+# @Time    :   2022-05-03 15:59:45
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 import time
 
@@ -20,6 +18,7 @@ from .base_aggregator import BaseAggregator
 
 
 class AsyncAggregator(BaseAggregator):
+
     def __init__(self, args) -> None:
         super(AsyncAggregator, self).__init__(args)
         self.alpha = 0.6
@@ -34,12 +33,12 @@ class AsyncAggregator(BaseAggregator):
 
         result = {
             'param':
-            new_param,
+                new_param,
             'model_version':
-            kwargs["server_model_version"] +
-            1 if "server_model_version" in kwargs.keys() else 0,
+                kwargs["server_model_version"] +
+                1 if "server_model_version" in kwargs.keys() else 0,
             'model_time':
-            time.time()
+                time.time()
         }
         return result
 

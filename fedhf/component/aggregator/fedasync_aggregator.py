@@ -1,12 +1,11 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-"""
-@File    :   fedhf\component\aggregator\async_aggregator.py
-@Time    :   2021-10-28 11:56:57
-@Author  :   Bingjie Yan
-@Email   :   bj.yan.pa@qq.com
-@License :   Apache License 2.0
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\component\aggregator\fedasync_aggregator.py
+# @Time    :   2022-05-03 15:59:57
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
+
 import time
 
 import torch
@@ -18,6 +17,7 @@ from .async_aggregator import AsyncAggregator
 
 
 class FedAsyncAggregator(AsyncAggregator):
+
     def __init__(self, args) -> None:
         super(FedAsyncAggregator, self).__init__(args)
 
@@ -48,17 +48,16 @@ class FedAsyncAggregator(AsyncAggregator):
         self.logger.info(
             f"Aggregated server model version: {kwargs['server_model_version']}, client model version: {kwargs['client_model_version']}"
         )
-        self.logger.info(
-            f"FedAsyncAggregator agg: alpha: {alpha} using stragegy: {self.stragegy}")
+        self.logger.info(f"FedAsyncAggregator agg: alpha: {alpha} using stragegy: {self.stragegy}")
 
         result = {
             'param':
-            new_param,
+                new_param,
             'model_version':
-            kwargs["server_model_version"] +
-            1 if "server_model_version" in kwargs.keys() else 0,
+                kwargs["server_model_version"] +
+                1 if "server_model_version" in kwargs.keys() else 0,
             'model_time':
-            time.time()
+                time.time()
         }
         return result
 

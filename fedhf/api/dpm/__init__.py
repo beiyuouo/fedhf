@@ -13,13 +13,13 @@ from .sensitivity import calculate_sensitivity
 from .gaussian import gaussian_noise, gaussian_clip
 from .laplace import laplace_noise, laplace_clip
 
-mechanism_factory = {
+dp_mechanism_factory = {
     'none': None,
     'gaussian': gaussian_noise,
     'laplace': laplace_noise,
 }
 
-clip_grad_factory = {
+dp_clip_factory = {
     'none': None,
     'gaussian': gaussian_clip,
     'laplace': laplace_clip,
@@ -38,8 +38,8 @@ def build_mechanism(mechanism, sensitivity, size, epsilon, **kwargs):
     """
     if mechanism == 'none':
         return np.zeros(size)
-    elif mechanism in mechanism_factory:
-        return mechanism_factory[mechanism](sensitivity, size, epsilon, **kwargs)
+    elif mechanism in dp_mechanism_factory:
+        return dp_mechanism_factory[mechanism](sensitivity, size, epsilon, **kwargs)
     else:
         raise ValueError('Unknown mechanism: %s' % mechanism)
 
@@ -55,8 +55,8 @@ def build_clip_grad(mechanism, model, clip, **kwargs):
     """
     if mechanism == 'none':
         return
-    elif mechanism in clip_grad_factory:
-        clip_grad_factory[mechanism](model, clip, **kwargs)
+    elif mechanism in dp_clip_factory:
+        dp_clip_factory[mechanism](model, clip, **kwargs)
     else:
         raise ValueError('Unknown mechanism: %s' % mechanism)
 
@@ -69,4 +69,6 @@ __all__ = [
     'laplace_clip',
     'build_mechanism',
     'build_clip_grad',
+    'dp_mechanism_factory',
+    'dp_clip_factory',
 ]

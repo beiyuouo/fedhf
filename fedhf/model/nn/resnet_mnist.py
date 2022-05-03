@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   fedhf\model\resnet.py 
-@Time    :   2021-11-11 12:11:41 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\model\nn\resnet_mnist.py
+# @Time    :   2022-05-03 16:07:27
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 import torch
 import torch.nn as nn

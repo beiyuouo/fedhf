@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-"""
-@File    :   fedhf\dataset\__init__.py
-@Time    :   2021-10-26 11:11:16
-@Author  :   Bingjie Yan
-@Email   :   bj.yan.pa@qq.com
-@License :   Apache License 2.0
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\dataset\__init__.py
+# @Time    :   2022-05-03 16:06:13
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 from .mnist import MNISTDataset
 from .cifar10 import CIFAR10Dataset

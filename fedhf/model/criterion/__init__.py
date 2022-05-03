@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   fedhf\model\criterion\__init__.py 
-@Time    :   2022-01-24 11:49:40 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\model\criterion\__init__.py
+# @Time    :   2022-05-03 16:06:51
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 import torch
 import torch.nn as nn

@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   fedhf\core\attactor\base_attactor.py 
-@Time    :   2021-12-13 11:45:37 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\core\attactor\base_attactor.py
+# @Time    :   2022-05-03 16:02:07
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 from abc import ABC, abstractmethod
 import numpy as np
@@ -19,6 +17,7 @@ from fedhf.model import build_criterion, build_optimizer
 
 
 class AbsAttactor(ABC):
+
     def __init__(self, args):
         self.args = args
 
@@ -28,6 +27,7 @@ class AbsAttactor(ABC):
 
 
 class BaseAttactor(AbsAttactor):
+
     def __init__(self, args):
         super(BaseAttactor, self).__init__(args)
         self.crit = build_criterion(self.args.train_loss)
