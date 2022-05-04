@@ -9,4 +9,3 @@
 __all__ = ["opts"]
 
 from .opt import opts
-from .config import ConfigDict, Config
