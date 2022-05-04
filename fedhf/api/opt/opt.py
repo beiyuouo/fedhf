@@ -195,9 +195,9 @@ class opts(object):
                                  type=str,
                                  default='none',
                                  help='dp mechanism none | gaussian | laplace')
-        self.parser.add_argument('--dp_clip', type=float, default=0.5, help='dp clip')
-        self.parser.add_argument('--dp_epsilon', type=float, default=0.1, help='dp epsilon')
-        self.parser.add_argument('--dp_delta', type=float, default=0.1, help='dp delta')
+        self.parser.add_argument('--dp_clip', type=float, default=50, help='dp clip')
+        self.parser.add_argument('--dp_epsilon', type=float, default=100, help='dp epsilon')
+        self.parser.add_argument('--dp_delta', type=float, default=1e-2, help='dp delta')
 
         # test setting
         self.parser.add_argument('--test', action='store_true', help='test mode')
