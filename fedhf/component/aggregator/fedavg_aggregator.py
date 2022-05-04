@@ -1,12 +1,11 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-"""
-@File    :   fedhf\component\aggregator\aggregator.py
-@Time    :   2021-10-26 20:36:08
-@Author  :   Bingjie Yan
-@Email   :   bj.yan.pa@qq.com
-@License :   Apache License 2.0
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\component\aggregator\fedavg_aggregator.py
+# @Time    :   2022-05-03 16:00:02
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
+
 import time
 import torch
 import torch.nn as nn
@@ -15,6 +14,7 @@ from .sync_aggregator import SyncAggregator
 
 
 class FedAvgAggregator(SyncAggregator):
+
     def __init__(self, args) -> None:
         super(FedAvgAggregator, self).__init__(args)
 
@@ -44,11 +44,11 @@ class FedAvgAggregator(SyncAggregator):
 
         result = {
             'param':
-            new_param,
+                new_param,
             'model_version':
-            kwargs["server_model_version"] +
-            1 if "server_model_version" in kwargs.keys() else 0,
+                kwargs["server_model_version"] +
+                1 if "server_model_version" in kwargs.keys() else 0,
             'model_time':
-            time.time()
+                time.time()
         }
         return result

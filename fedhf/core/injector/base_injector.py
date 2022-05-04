@@ -1,13 +1,12 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   fedhf\api\injector\base_injector.py 
-@Time    :   2021-11-30 22:54:03 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\core\injector\base_injector.py
+# @Time    :   2022-05-03 16:02:52
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
+from fedhf.api import dp_mechanism_factory, dp_clip_factory
 from fedhf.component import aggregator_factory, trainer_factory, evaluator_factory, sampler_factory, selector_factory
 from fedhf.model import model_factory, optimizer_factory, criterion_factory, lr_schedule_factory
 from fedhf.dataset import dataset_factory
@@ -26,11 +25,14 @@ components = {
     'aggregator': aggregator_factory,
     'sampler': sampler_factory,
     'selector': selector_factory,
-    'lr_schedule': lr_schedule_factory
+    'lr_schedule': lr_schedule_factory,
+    'dp_mechanism': dp_mechanism_factory,
+    'dp_clip': dp_clip_factory
 }
 
 
 class BaseInjector(object):
+
     def __init__(self):
         pass
 

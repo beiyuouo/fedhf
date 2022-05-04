@@ -1,18 +1,17 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-"""
-@File    :   fedhf\component\aggregator\__init__.py
-@Time    :   2021-10-26 20:31:35
-@Author  :   Bingjie Yan
-@Email   :   bj.yan.pa@qq.com
-@License :   Apache License 2.0
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\component\aggregator\__init__.py
+# @Time    :   2022-05-03 15:59:40
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 __all__ = [
     "build_aggregator", "FedAsyncAggregator", "FedAvgAggregator", "SyncAggregator",
-    "AsyncAggregator", "aggregator_factory"
+    "AsyncAggregator", "aggregator_factory", "BaseAggregator"
 ]
 
+from .base_aggregator import BaseAggregator
 from .fedasync_aggregator import FedAsyncAggregator
 from .fedavg_aggregator import FedAvgAggregator
 from .sync_aggregator import SyncAggregator

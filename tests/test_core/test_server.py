@@ -17,8 +17,8 @@ from fedhf.model import build_model
 class TestServer(object):
     args = opts().parse([
         '--num_clients', '10', '--select_ratio', '0.5', '--num_classes', '10', '--model', 'mlp',
-        '--dataset', 'mnist', '--batch_size', '1', '--optim', 'sgd', '--lr', '0.01', '--loss',
-        'ce', '--gpus', '-1', '--test', '--agg', 'fedasync'
+        '--dataset', 'mnist', '--batch_size', '1', '--optim', 'sgd', '--lr', '0.01', '--loss', 'ce',
+        '--gpus', '-1', '--test', '--agg', 'fedasync'
     ])
 
     def test_simulated_server(self):
@@ -35,9 +35,7 @@ class TestServer(object):
         assert server.model.get_model_version() == 0
         assert model.get_model_version() == 0
 
-        server.update(model,
-                      server_model_version=0,
-                      client_model_version=model.get_model_version())
+        server.update(model, server_model_version=0, client_model_version=model.get_model_version())
 
         assert server.model.get_model_version() == 1
 

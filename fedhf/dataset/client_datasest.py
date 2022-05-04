@@ -1,18 +1,17 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   fedhf\dataset\client_datasest.py 
-@Time    :   2021-11-10 23:00:32 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\dataset\client_datasest.py
+# @Time    :   2022-05-03 16:06:28
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 from typing import List
 from torch.utils.data import Dataset
 
 
 class ClientDataset(Dataset):
+
     def __init__(self, dataset, data_dict: List) -> None:
         super().__init__()
         self.dataset = dataset

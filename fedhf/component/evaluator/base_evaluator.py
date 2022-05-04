@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-"""
-@File    :   fedhf\component\evaluator\base_evaluator.py
-@Time    :   2021-10-26 20:47:02
-@Author  :   Bingjie Yan
-@Email   :   bj.yan.pa@qq.com
-@License :   Apache License 2.0
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\component\evaluator\base_evaluator.py
+# @Time    :   2022-05-03 16:00:25
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 from abc import ABC, abstractmethod
 
@@ -15,6 +13,7 @@ from fedhf.api import Logger
 
 
 class AbsEvaluator(ABC):
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -24,6 +23,7 @@ class AbsEvaluator(ABC):
 
 
 class BaseEvaluator(AbsEvaluator):
+
     def __init__(self, args) -> None:
         self.args = args
         self.crit = build_criterion(self.args.loss)

@@ -19,6 +19,7 @@ from .base_model import BaseModel
 
 
 class DoubleConv(nn.Module):
+
     def __init__(self,
                  in_channel,
                  out_channel,
@@ -51,6 +52,7 @@ class DoubleConv(nn.Module):
 
 
 class DownConv(nn.Module):
+
     def __init__(self, in_channel, out_channel):
         super(DownConv, self).__init__()
         self.down_conv = nn.Sequential(
@@ -63,6 +65,7 @@ class DownConv(nn.Module):
 
 
 class UpConv(nn.Module):
+
     def __init__(self, in_channel, out_channel, bilinear=True):
         super(UpConv, self).__init__()
 
@@ -88,6 +91,7 @@ class UpConv(nn.Module):
 
 
 class OutConv(nn.Module):
+
     def __init__(self, in_channel, out_channel):
         super(OutConv, self).__init__()
         self.conv = nn.Conv2d(in_channel, out_channel, kernel_size=1)
@@ -97,6 +101,7 @@ class OutConv(nn.Module):
 
 
 class UNet(BaseModel):
+
     def __init__(self, args, model_time=None, model_version=0):
         super().__init__(args, model_time, model_version)
         self.input_c = args.input_c
@@ -118,6 +123,16 @@ class UNet(BaseModel):
         self.up4 = UpConv(self.filter[1], self.filter[0], self.bilinear)
         self.outc = OutConv(self.filter[0], self.output_c)
 
+        self.init_weights()
+
+    def init_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+
     def forward(self, x):
         x1 = self.inc(x)
         x2 = self.down1(x1)
@@ -128,5 +143,45 @@ class UNet(BaseModel):
         x = self.up2(x, x3)
         x = self.up3(x, x2)
         x = self.up4(x, x1)
-        logits = self.outc(x)
-        return logits
+        pred = self.outc(x)
+        return pred
+
+
+class UNetMini(BaseModel):
+
+    def __init__(self, args, model_time=None, model_version=0):
+        super().__init__(args, model_time, model_version)
+        self.input_c = args.input_c
+        self.output_c = args.output_c
+        self.bilinear = args.unet_bilinear if args.unet_bilinear is not None else False
+
+        self.n1 = args.unet_n1 if args.unet_n1 is not None else 64
+        self.filter = [self.n1, self.n1 * 2, self.n1 * 4]
+
+        factor = 2 if self.bilinear else 1
+
+        self.inc = DoubleConv(self.input_c, self.filter[0])
+        self.down1 = DownConv(self.filter[0], self.filter[1])
+        self.down2 = DownConv(self.filter[1], self.filter[2] // factor)
+        self.up1 = UpConv(self.filter[2], self.filter[1] // factor, self.bilinear)
+        self.up2 = UpConv(self.filter[1], self.filter[0], self.bilinear)
+        self.outc = OutConv(self.filter[0], self.output_c)
+
+        self.init_weights()
+
+    def init_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+
+    def forward(self, x):
+        x1 = self.inc(x)
+        x2 = self.down1(x1)
+        x3 = self.down2(x2)
+        x = self.up1(x3, x2)
+        x = self.up2(x, x1)
+        pred = self.outc(x)
+        return pred

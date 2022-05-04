@@ -1,12 +1,11 @@
-#!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   tests\test_dataset\test_clientdataset.py 
-@Time    :   2021-11-10 22:54:43 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+#!/usr/bin/env python 
+# -*- coding: utf-8 -*- 
+# @File    :   tests\test_dataset\test_clientdataset.py 
+# @Time    :   2022-05-03 12:01:34 
+# @Author  :   Bingjie Yan 
+# @Email   :   bj.yan.pa@qq.com 
+# @License :   Apache License 2.0 
+
 
 import torch
 

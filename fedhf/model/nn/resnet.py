@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   fedhf\model\resnet.py 
-@Time    :   2021-11-11 12:11:41 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\model\nn\resnet.py
+# @Time    :   2022-05-03 16:07:31
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 import torch
 import torch.nn as nn
@@ -22,6 +20,7 @@ from .base_model import BaseModel
 
 
 class ResNet(BaseModel):
+
     def __init__(self, args, model_time=None, model_version=0):
         super().__init__(args, model_time, model_version)
         self.net = models.resnet18(pretrained=True)

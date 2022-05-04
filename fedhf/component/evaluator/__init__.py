@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-"""
-@File    :   fedhf\component\evaluator\__init__.py
-@Time    :   2021-10-26 20:47:06
-@Author  :   Bingjie Yan
-@Email   :   bj.yan.pa@qq.com
-@License :   Apache License 2.0
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\component\evaluator\__init__.py
+# @Time    :   2022-05-03 16:00:21
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 __all__ = ["Evaluator", "build_evaluator", "evaluator_factory", "BaseEvaluator"]
 

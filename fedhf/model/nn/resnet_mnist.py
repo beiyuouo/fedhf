@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   fedhf\model\resnet.py 
-@Time    :   2021-11-11 12:11:41 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\model\nn\resnet_mnist.py
+# @Time    :   2022-05-03 16:07:27
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 import torch
 import torch.nn as nn
@@ -17,7 +15,8 @@ from .base_model import BaseModel
 
 
 class ResNetMNIST(BaseModel):
-    def __init__(self, args, model_time=0, model_version=0):
+
+    def __init__(self, args, model_time=None, model_version=0):
         super().__init__(args, model_time, model_version)
         self.input_size = (args.input_c, args.image_size, args.image_size)
         self.num_classes = args.num_classes

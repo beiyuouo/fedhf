@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-"""
-@File    :   fedhf\component\trainer\trainer.py
-@Time    :   2021-10-26 21:42:28
-@Author  :   Bingjie Yan
-@Email   :   bj.yan.pa@qq.com
-@License :   Apache License 2.0
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\component\trainer\fedasync_trainer.py
+# @Time    :   2022-05-03 16:01:22
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 import wandb
 import time
@@ -17,6 +15,7 @@ from .base_trainer import BaseTrainer
 
 
 class FedAsyncTrainer(BaseTrainer):
+
     def __init__(self, args) -> None:
         super(FedAsyncTrainer, self).__init__(args)
 
@@ -85,10 +84,10 @@ class FedAsyncTrainer(BaseTrainer):
             table = wandb.Table(data=data, columns=["epoch", "train_loss"])
             self.logger.to_wandb({
                 f"train at client {client_id} model_version {model.get_model_version()}":
-                wandb.plot.line(table,
-                                "epoch",
-                                "train_loss",
-                                title=f"train loss at client {client_id}")
+                    wandb.plot.line(table,
+                                    "epoch",
+                                    "train_loss",
+                                    title=f"train loss at client {client_id}")
             })
 
         return {'train_loss': train_loss, 'model': model}

@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   tests\test_model\test_alexnet_cifar10.py 
-@Time    :   2021-11-17 17:29:32 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+# -*- coding: utf-8 -*-
+# @File    :   tests\test_model\test_alexnet_cifar10.py
+# @Time    :   2022-05-03 12:14:47
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 import torch
 from torch import optim
@@ -19,9 +17,8 @@ from fedhf.dataset import build_dataset
 
 class TestAlexNetCIFAR10(object):
     args = opts().parse([
-        '--model', 'alexnet_cifar10', '--num_classes', '10',
-        '--model_pretrained', '--dataset', 'cifar10', '--task',
-        'classification', '--gpus', '-1'
+        '--model', 'alexnet_cifar10', '--num_classes', '10', '--model_pretrained', '--dataset',
+        'cifar10', '--task', 'classification', '--gpus', '-1'
     ])
 
     def test_alexnet_cifar10(self):

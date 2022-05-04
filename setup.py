@@ -20,10 +20,10 @@ setup(name="fedhf",
       license="Apache-2.0 License",
       url="https://github.com/beiyuouo/fedhf",
       packages=find_packages(include=['fedhf', 'fedhf.*', 'LICENSE']),
-      install_requires=['torch>=1.8.2', 'torchvision>=0.9.2', 'numpy', 'tqdm', 'wandb'],
+      install_requires=["torch>=1.8.2", "torchvision>=0.9.2", "numpy", "tqdm", "wandb"],
       extras_require={
-        "dev": ["nox", "pytest", "mkdocs"],
-        "test": ["pytest", "mkdocs"],
+          "dev": ["nox", "pytest", "mkdocs"],
+          "test": ["pytest", "mkdocs"],
       },
       python_requires='>=3.6',
       classifiers=[

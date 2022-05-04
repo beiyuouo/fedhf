@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-"""
-@File    :   fedhf\component\serializer\deserializer.py
-@Time    :   2021-11-10 16:57:59
-@Author  :   Bingjie Yan
-@Email   :   bj.yan.pa@qq.com
-@License :   Apache License 2.0
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\api\serial\deserializer.py
+# @Time    :   2022-05-03 15:59:24
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 import io
 import torch
@@ -16,10 +14,9 @@ class Deserializer(object):
     """
     Deserializer
     """
+
     @staticmethod
-    def deserialize_model(model: torch.nn.Module,
-                          serialized_parameters: torch.Tensor,
-                          mode="copy"):
+    def deserialize_model(model: torch.nn.Module, serialized_parameters: torch.Tensor, mode="copy"):
         cur_idx = 0
         for parameter in model.parameters():
             numel = parameter.data.numel()

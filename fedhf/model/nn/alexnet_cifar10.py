@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   fedhf\model\alexnet_cifar10.py 
-@Time    :   2021-11-17 16:09:03 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\model\nn\alexnet_cifar10.py
+# @Time    :   2022-05-03 16:07:01
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 import torch
 import torch.nn as nn
@@ -15,6 +13,7 @@ from .base_model import BaseModel
 
 
 class AlexNetCIFAR10(BaseModel):
+
     def __init__(self, args, model_time=0):
         super().__init__(args, model_time)
 

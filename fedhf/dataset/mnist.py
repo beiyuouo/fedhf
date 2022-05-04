@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   fedhf\dataset\mnist.py 
-@Time    :   2021-11-11 12:09:01 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\dataset\mnist.py
+# @Time    :   2022-05-03 16:06:35
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 from torchvision.datasets import MNIST
 from torchvision.transforms import Compose, ToTensor, Normalize, Resize
@@ -14,6 +12,7 @@ import torch
 
 
 class MNISTDataset(object):
+
     def __init__(self, args) -> None:
         super().__init__()
 

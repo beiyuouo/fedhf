@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-"""
-@File    :   fedhf\api\opt\opt.py
-@Time    :   2021-11-10 17:20:18
-@Author  :   Bingjie Yan
-@Email   :   bj.yan.pa@qq.com
-@License :   Apache License 2.0
-"""
+# -*- coding: utf-8 -*-
+# @File    :   fedhf\api\opt\opt.py
+# @Time    :   2022-05-03 15:59:07
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 import argparse
 import os
@@ -18,6 +16,7 @@ import numpy as np
 
 
 class opts(object):
+
     def __init__(self):
         self.parser = argparse.ArgumentParser()
 
@@ -30,10 +29,9 @@ class opts(object):
                                  type=str,
                                  help='using for save result.')
         self.parser.add_argument('--name', default='experiment', help='name of the experiment.')
-        self.parser.add_argument(
-            '--deploy_mode',
-            default='simulated',
-            help='type of deployment. [ simulated, standalone, distributed ]')
+        self.parser.add_argument('--deploy_mode',
+                                 default='simulated',
+                                 help='type of deployment. [ simulated, standalone, distributed ]')
         self.parser.add_argument('--scheme',
                                  default='async',
                                  help='type of deployment. [ async, sync ]')
@@ -98,32 +96,20 @@ class opts(object):
         self.parser.add_argument('--image_size', type=int, default=224, help='image_size')
 
         self.parser.add_argument('--output_c', type=int, default=1, help='output channel')
-        self.parser.add_argument('--num_classes',
-                                 type=int,
-                                 default=10,
-                                 help='number of classes')
+        self.parser.add_argument('--num_classes', type=int, default=10, help='number of classes')
 
         # unet setting
         self.parser.add_argument('--unet_n1', type=int, default=64, help='unet_n1')
         self.parser.add_argument('--unet_bilinear', action='store_true', help='unet_bilinear')
 
         self.parser.add_argument('--trainer', type=str, default='trainer', help='trainer.')
-        self.parser.add_argument('--evaluator',
-                                 type=str,
-                                 default='evaluator',
-                                 help='evaluator.')
+        self.parser.add_argument('--evaluator', type=str, default='evaluator', help='evaluator.')
         self.parser.add_argument('--optim', type=str, default='adam', help='optimizer.')
         self.parser.add_argument('--momentum', type=float, default=0.75, help='momentum.')
-        self.parser.add_argument('--weight_decay',
-                                 type=float,
-                                 default=0.001,
-                                 help='weight decay.')
+        self.parser.add_argument('--weight_decay', type=float, default=0.001, help='weight decay.')
 
         self.parser.add_argument('--lr', type=float, default=1.25e-4, help='learning rate.')
-        self.parser.add_argument('--lr_scheduler',
-                                 type=str,
-                                 default='cosine',
-                                 help='lr scheduler.')
+        self.parser.add_argument('--lr_scheduler', type=str, default='cosine', help='lr scheduler.')
         self.parser.add_argument('--lr_step', type=int, default=30, help='lr step.')
 
         self.parser.add_argument('--loss', type=str, default='ce', help='loss function.')
@@ -178,11 +164,10 @@ class opts(object):
         self.parser.add_argument('--agg', type=str, default='async', help='aggregate strategy')
 
         # fedasync setting
-        self.parser.add_argument(
-            '--fedasync_strategy',
-            type=str,
-            default='constant',
-            help='fedasync aggregate strategy | constant | hinge | polynomial')
+        self.parser.add_argument('--fedasync_strategy',
+                                 type=str,
+                                 default='constant',
+                                 help='fedasync aggregate strategy constant | hinge | polynomial')
         self.parser.add_argument('--fedasync_alpha',
                                  type=float,
                                  default=0.5,
@@ -204,13 +189,21 @@ class opts(object):
                                  default=None,
                                  help='fedasync aggregate b')
 
+        # security setting
+        self.parser.add_argument('--encryptor', type=str, default='none', help='encryptor.')
+        self.parser.add_argument('--dp_mechanism',
+                                 type=str,
+                                 default='none',
+                                 help='dp mechanism none | gaussian | laplace')
+        self.parser.add_argument('--dp_clip', type=float, default=50, help='dp clip')
+        self.parser.add_argument('--dp_epsilon', type=float, default=100, help='dp epsilon')
+        self.parser.add_argument('--dp_delta', type=float, default=1e-2, help='dp delta')
+
         # test setting
         self.parser.add_argument('--test', action='store_true', help='test mode')
 
         # custom dataset
-        self.parser.add_argument('--dataset_root',
-                                 default='./dataset',
-                                 help='custom dataset root')
+        self.parser.add_argument('--dataset_root', default='./dataset', help='custom dataset root')
         self.parser.add_argument('--resize', action='store_true', help='resize or not')
 
     def parse(self, args=''):
@@ -265,8 +258,15 @@ class opts(object):
         if opt.train_loss is None:
             opt.train_loss = opt.loss
 
+        if opt.scheme == 'sync':
+            opt.dp_epsilon = opt.dp_epsilon / (opt.select_ratio * opt.num_local_epochs)
+        else:
+            opt.dp_epsilon = opt.dp_epsilon / (opt.num_local_epochs)
+
         # make dirs
         os.makedirs(opt.save_dir, exist_ok=True)
+        os.makedirs(os.path.join('log'), exist_ok=True)
+        os.makedirs(os.path.join('log', 'vis'), exist_ok=True)
 
         if opt.resume and opt.load_model == '':
             opt.load_model = os.path.join(opt.save_dir, f'{opt.name}.pth')
