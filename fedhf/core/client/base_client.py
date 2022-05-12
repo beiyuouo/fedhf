@@ -14,7 +14,6 @@ from fedhf.model import build_criterion, build_model, build_optimizer
 
 
 class AbsClient(ABC):
-
     def __init__(self) -> None:
         super().__init__()
 
@@ -27,7 +26,6 @@ class AbsClient(ABC):
 
 
 class BaseClient(AbsClient):
-
     def __init__(self, args, client_id) -> None:
         self.args = args
         self.client_id = client_id
