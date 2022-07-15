@@ -6,11 +6,11 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-from fedhf.api import opts, Logger
+from fedhf import Logger, Config
 
 
 class TestLogger:
-    args = opts().parse(['--project_name', 'fedhf'])
+    args = Config(project_name="fedhf")
 
     def test_logger(self):
         self.logger = Logger(self.args)

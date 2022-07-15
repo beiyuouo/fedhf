@@ -14,16 +14,13 @@ from .base_aggregator import BaseAggregator
 
 
 class SyncAggregator(BaseAggregator):
-
     def __init__(self, args) -> None:
         super(SyncAggregator, self).__init__(args)
 
-        self.num_clients_per_round = int(args.num_clients * args.select_ratio)
+        self.num_clients_per_round = args.num_clients_per_round or int(args.num_clients * args.select_ratio)
         self._model_cached = []
         self._model_counter = 0
-        self._model_weight = [
-            1 / self.num_clients_per_round for i in range(self.num_clients_per_round)
-        ]
+        self._model_weight = [1 / self.num_clients_per_round for i in range(self.num_clients_per_round)]
 
     def agg(self, server_param: torch.Tensor, client_param: torch.Tensor, **kwargs):
         self._model_cached.append(client_param)
@@ -32,7 +29,7 @@ class SyncAggregator(BaseAggregator):
         if not self._check_agg():
             return
 
-        self.logger.info('Aggregate models')
+        self.logger.info("Aggregate models")
 
         new_param = torch.zeros_like(server_param)
         for i in range(self.num_clients_per_round):
@@ -40,18 +37,12 @@ class SyncAggregator(BaseAggregator):
 
         self._model_cached = []
         self._model_counter = 0
-        self._model_weight = [
-            1 / self.num_clients_per_round for i in range(self.num_clients_per_round)
-        ]
+        self._model_weight = [1 / self.num_clients_per_round for i in range(self.num_clients_per_round)]
 
         result = {
-            'param':
-                new_param,
-            'model_version':
-                kwargs["server_model_version"] +
-                1 if "server_model_version" in kwargs.keys() else 0,
-            'model_time':
-                time.time()
+            "param": new_param,
+            "model_version": kwargs["server_model_version"] + 1 if "server_model_version" in kwargs.keys() else 0,
+            "model_time": time.time(),
         }
         return result
 

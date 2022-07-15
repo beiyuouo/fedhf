@@ -6,7 +6,7 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-from .opt import *
+from .cfg import *
 from .logger import *
 from .serial import *
 

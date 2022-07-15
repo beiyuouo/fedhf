@@ -6,14 +6,10 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-from .trainer import *
-
-from .evaluator import *
-
 from .aggregator import *
-
-from .selector import *
-
-from .sampler import *
-
-from .encryptor import *
+from attactor import *
+from encryptor import *
+from evaluator import *
+from sampler import *
+from selector import *
+from trainer import *

@@ -1,0 +1,5 @@
+scheme: async # sync | async
+
+fedasync:
+  strategy: constant # constant | hinge | polynomial
+  alpha: 0.6
