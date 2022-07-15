@@ -12,7 +12,6 @@ import torch
 
 
 class MNISTDataset(object):
-
     def __init__(self, args) -> None:
         super().__init__()
 
@@ -24,14 +23,8 @@ class MNISTDataset(object):
         else:
             self.transform = Compose([ToTensor()])
 
-        self.trainset = MNIST(root=args.dataset_root,
-                              train=True,
-                              download=True,
-                              transform=self.transform)
-        self.testset = MNIST(root=args.dataset_root,
-                             train=False,
-                             download=True,
-                             transform=self.transform)
+        self.trainset = MNIST(root=args.data_dir, train=True, download=True, transform=self.transform)
+        self.testset = MNIST(root=args.data_dir, train=False, download=True, transform=self.transform)
 
         self.trainset.num_classes = self.num_classes
         self.testset.num_classes = self.num_classes
@@ -46,4 +39,4 @@ class MNISTDataset(object):
 
         mean = torch.mean(torch.tensor(means))
         std = torch.mean(torch.tensor(stds))
-        return {'mean': mean, 'std': std}
+        return {"mean": mean, "std": std}

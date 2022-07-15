@@ -1,12 +1,11 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   tests\test_component\test_aggregator.py 
-@Time    :   2021-11-11 13:48:17 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+# -*- coding: utf-8 -*-
+# @File    :   tests\test_component\test_aggregator.py
+# @Time    :   2022-07-15 16:11:10
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
+
 
 import os
 import torch

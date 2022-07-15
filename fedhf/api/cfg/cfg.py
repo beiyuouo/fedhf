@@ -63,9 +63,14 @@ class Config(ez.Config):
         if self.scheme == "async":
             self.select_ratio = 1.0
 
-        print(self.get("dp"))
+        # print(self.get("dp"))
         if self.get("dp"):
-            self.dp.epsilon = self.dp.epsilon / (self.select_ratio * self.num_local_epochs)
+            self.dp.epsilon = self.dp.epsilon / (self.select_ratio * self.num_epochs)
+
+        self.num_clients_per_round = (
+            self.num_clients_per_round if self.num_clients_per_round else int(self.num_clients * self.select_ratio)
+        )
+        self.num_clients_per_round = max(self.num_clients_per_round, 1)
 
         # if opt.resume and opt.load_model == "":
         #     opt.load_model = os.path.join(opt.save_dir, f"{opt.name}.pth")

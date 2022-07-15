@@ -1,32 +1,36 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-""" 
-@File    :   tests\test_component\test_trainer.py 
-@Time    :   2021-11-11 12:29:11 
-@Author  :   Bingjie Yan 
-@Email   :   bj.yan.pa@qq.com 
-@License :   Apache License 2.0 
-"""
+# -*- coding: utf-8 -*-
+# @File    :   tests\test_component\test_trainer.py
+# @Time    :   2022-07-15 16:11:32
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
+
 
 import torch
-from torch.nn.modules.module import T
 from torch.utils.data import DataLoader
 
-from fedhf.api import opts
-from fedhf.component import Trainer
+from fedhf import Config
+from fedhf.component import DefaultTrainer as Trainer
 from fedhf.model import build_model, build_criterion, build_optimizer
 from fedhf.dataset import build_dataset, ClientDataset
 
 
 class TestTrainer(object):
-    args = opts().parse([
-        '--num_classes', '10', '--model', 'mlp', '--dataset', 'mnist', '--num_local_epochs',
-        '1', '--batch_size', '1', '--optim', 'sgd', '--lr', '0.01', '--loss', 'ce', '--gpus',
-        '-1'
-    ])
+    args = Config(
+        num_classes=10,
+        model="mlp",
+        dataset="mnist",
+        num_epochs=1,
+        batch_size=1,
+        optim="sgd",
+        lr=0.01,
+        loss="ce",
+        gpus="-1",
+    )
 
     def test_trainer_mlp(self):
-        self.args.model = 'mlp'
+        self.args.model = "mlp"
         self.args.resize = False
         dataset = build_dataset(self.args.dataset)(self.args)
 
@@ -38,23 +42,25 @@ class TestTrainer(object):
         dataloader = DataLoader(client_dataset, batch_size=self.args.batch_size)
 
         trainer = Trainer(self.args)
-        result = trainer.train(dataloader=dataloader,
-                               model=model,
-                               num_epochs=self.args.num_local_epochs,
-                               client_id=client_id,
-                               device=self.args.device)
-        train_loss = result['train_loss']
-        model = result['model']
+        result = trainer.train(
+            dataloader=dataloader,
+            model=model,
+            num_epochs=self.args.num_epochs,
+            client_id=client_id,
+            device=self.args.device,
+        )
+        train_loss = result["train_loss"]
+        model = result["model"]
         print(train_loss)
 
     def test_trainer_on_gpu_mlp(self):
-        self.args.model = 'mlp'
+        self.args.model = "mlp"
         self.args.resize = False
         if not torch.cuda.is_available():
             return
 
-        self.args.gpus = '0'
-        self.args.device = torch.device('cuda:0')
+        self.args.gpus = "0"
+        self.args.device = torch.device("cuda:0")
 
         dataset = build_dataset(self.args.dataset)(self.args)
 
@@ -66,17 +72,19 @@ class TestTrainer(object):
         dataloader = DataLoader(client_dataset, batch_size=self.args.batch_size)
 
         trainer = Trainer(self.args)
-        result = trainer.train(dataloader=dataloader,
-                               model=model,
-                               num_epochs=self.args.num_local_epochs,
-                               client_id=client_id,
-                               device=self.args.device)
-        train_loss = result['train_loss']
-        model = result['model']
+        result = trainer.train(
+            dataloader=dataloader,
+            model=model,
+            num_epochs=self.args.num_epochs,
+            client_id=client_id,
+            device=self.args.device,
+        )
+        train_loss = result["train_loss"]
+        model = result["model"]
         print(train_loss)
 
     def test_trainer_resnet(self):
-        self.args.model = 'resnet_mnist'
+        self.args.model = "resnet_mnist"
         self.args.resize = True
         dataset = build_dataset(self.args.dataset)(self.args)
 
@@ -88,22 +96,24 @@ class TestTrainer(object):
         dataloader = DataLoader(client_dataset, batch_size=self.args.batch_size)
 
         trainer = Trainer(self.args)
-        result = trainer.train(dataloader=dataloader,
-                               model=model,
-                               num_epochs=self.args.num_local_epochs,
-                               client_id=client_id,
-                               device=self.args.device)
-        train_loss = result['train_loss']
-        model = result['model']
+        result = trainer.train(
+            dataloader=dataloader,
+            model=model,
+            num_epochs=self.args.num_epochs,
+            client_id=client_id,
+            device=self.args.device,
+        )
+        train_loss = result["train_loss"]
+        model = result["model"]
         print(train_loss)
 
     def test_trainer_on_gpu_resnet(self):
-        self.args.model = 'resnet_mnist'
+        self.args.model = "resnet_mnist"
         if not torch.cuda.is_available():
             return
 
-        self.args.gpus = '0'
-        self.args.device = torch.device('cuda:0')
+        self.args.gpus = "0"
+        self.args.device = torch.device("cuda:0")
         self.args.resize = True
 
         dataset = build_dataset(self.args.dataset)(self.args)
@@ -116,11 +126,13 @@ class TestTrainer(object):
         dataloader = DataLoader(client_dataset, batch_size=self.args.batch_size)
 
         trainer = Trainer(self.args)
-        result = trainer.train(dataloader=dataloader,
-                               model=model,
-                               num_epochs=self.args.num_local_epochs,
-                               client_id=client_id,
-                               device=self.args.device)
-        train_loss = result['train_loss']
-        model = result['model']
+        result = trainer.train(
+            dataloader=dataloader,
+            model=model,
+            num_epochs=self.args.num_epochs,
+            client_id=client_id,
+            device=self.args.device,
+        )
+        train_loss = result["train_loss"]
+        model = result["model"]
         print(train_loss)

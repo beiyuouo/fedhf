@@ -68,7 +68,7 @@ class opts(object):
         # data setting
         self.parser.add_argument("--dataset", default="mnist", help="see fedhf/dataset for available datasets")
         self.parser.add_argument("--resize", action="store_true", help="resize or not")
-        self.parser.add_argument("--data_dir", default=None, help="dataset directory")
+        self.parser.add_argument("--data_dir", default=os.path.join(".", "dataset"), help="dataset directory")
         self.parser.add_argument("--input_c", type=int, default=1, help="input channel")
         self.parser.add_argument("--image_size", type=int, default=224, help="image_size")
         self.parser.add_argument("--output_c", type=int, default=1, help="output channel")
@@ -99,6 +99,7 @@ class opts(object):
 
         # federated setting
         self.parser.add_argument("--num_clients", type=int, default=100, help="clients number.")
+        self.parser.add_argument("--num_clients_per_round", type=int, default=None, help="clients number per round.")
         self.parser.add_argument("--num_epochs", type=int, default=3, help="training epochs.")
         self.parser.add_argument("--batch_size", type=int, default=8, help="batch size")
         self.parser.add_argument("--num_rounds", type=int, default=5, help="server round.")

@@ -13,12 +13,11 @@ from fedhf.model import build_criterion, build_optimizer
 from .base_evaluator import BaseEvaluator
 
 
-class Evaluator(BaseEvaluator):
-
+class DefaultEvaluator(BaseEvaluator):
     def __init__(self, args) -> None:
-        super(Evaluator, self).__init__(args)
+        super(DefaultEvaluator, self).__init__(args)
 
-    def evaluate(self, dataloader, model, client_id=None, gpus=[], device='cpu'):
+    def evaluate(self, dataloader, model, client_id=None, gpus=[], device="cpu"):
         if len(gpus) > 1:
             pass
         else:
@@ -28,12 +27,12 @@ class Evaluator(BaseEvaluator):
         model = model.to(device)
         crit = self.crit()
 
-        self.logger.info(f'Start evaluation on {client_id}')
+        self.logger.info(f"Start evaluation on {client_id}")
 
         model.eval()
         losses = 0.0
         acc = 0.0
-        for inputs, labels in tqdm(dataloader, desc=f'Test on client {client_id}'):
+        for inputs, labels in tqdm(dataloader, desc=f"Test on client {client_id}"):
             inputs = inputs.to(device)
             labels = labels.to(device)
 
@@ -49,14 +48,12 @@ class Evaluator(BaseEvaluator):
         # self.logger.info(f'Client {client_id} test loss: {losses:.4f}, acc: {acc}')
         acc /= len(dataloader.dataset)
 
-        self.logger.info(f'Evaluation on {client_id} finished')
+        self.logger.info(f"Evaluation on {client_id} finished")
 
         if self.args.use_wandb:
             if client_id == -1:
-                self.logger.to_wandb({
-                    'acc on server': acc,
-                    'loss on server': losses,
-                    'epoch': model.get_model_version()
-                })
+                self.logger.to_wandb(
+                    {"acc on server": acc, "loss on server": losses, "epoch": model.get_model_version()}
+                )
 
-        return {'test_loss': losses, 'test_acc': acc}
+        return {"test_loss": losses, "test_acc": acc}
