@@ -1,4 +1,7 @@
 scheme: async # sync | async
+algor: fedasync
+agg: fedasync
+trainer: fedasync
 
 fedasync:
   strategy: constant # constant | hinge | polynomial

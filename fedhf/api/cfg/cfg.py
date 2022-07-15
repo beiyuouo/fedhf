@@ -42,16 +42,16 @@ class Config(ez.Config):
         np.random.seed(self.seed)
         torch.manual_seed(self.seed)
 
-        _exp_name = f"{self.scheme}_{self.num_clients}_{self.num_rounds}_{self.num_epochs}_{self.seed}"
+        _prj_name = f"{self.scheme}_{self.num_clients}_{self.num_rounds}_{self.num_epochs}_{self.seed}"
 
-        self.exp_name = self.exp_name if self.exp_name else _exp_name
+        self.prj_name = self.prj_name if self.prj_name else _prj_name
         # make dirs
         self.save_dir = Path(self.save_dir) / self.exp_name
         self.save_dir.mkdir(parents=True, exist_ok=True)
         self.log_dir = Path(self.log_dir) / self.exp_name
         self.log_dir.mkdir(parents=True, exist_ok=True)
 
-        self.gpus_str = self.gpus
+        self.gpus_str = str(self.gpus)
         self.gpus = [int(gpu) for gpu in self.gpus.split(",")]
         self.gpus = [i for i in range(len(self.gpus))] if self.gpus[0] >= 0 else [-1]
         self.device = torch.device("cuda" if self.gpus[0] >= 0 else "cpu")

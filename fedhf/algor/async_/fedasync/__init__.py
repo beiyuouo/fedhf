@@ -6,6 +6,17 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
+import os
+from ....api import Config
+from .fedasync_aggregator import FedAsyncAggregator
+from .fedasync_trainer import FedAsyncTrainer
 
-def init():
-    pass
+components = {"aggregator": {"fedasync": FedAsyncAggregator}, "trainer": {"fedasync": FedAsyncTrainer}}
+
+default_params = Config().load("default_params.yaml")
+
+
+def init(args):
+    default_params.update(args)
+    args = default_params
+    return args

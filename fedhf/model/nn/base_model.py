@@ -6,6 +6,7 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
+from copy import deepcopy
 import time
 import os
 
@@ -14,7 +15,6 @@ import torch.nn as nn
 
 
 class BaseModel(nn.Module):
-
     def __init__(self, args, model_time=None, model_version=0):
         super(BaseModel, self).__init__()
         self.args = args
@@ -33,20 +33,26 @@ class BaseModel(nn.Module):
     def set_model_version(self, model_version):
         self.model_version = model_version
 
-    def save(self, path: str = None):
+    def save(self, path: str = None) -> None:
         if path is None:
-            path = os.path.join(self.args.save_dir, f'{self.args.name}.pth')
-        torch.save(obj={
-            'model_version': self.model_version,
-            'model_time': self.model_time,
-            'state_dict': self.state_dict(),
-        },
-                   f=path)
+            path = os.path.join(self.args.save_dir, f"{self.args.exp_name}.pth")
+        torch.save(
+            obj={
+                "model_version": self.model_version,
+                "model_time": self.model_time,
+                "state_dict": self.state_dict(),
+            },
+            f=path,
+        )
 
-    def load(self, path: str = None):
+    def load(self, path: str = None) -> None:
         if path is None:
-            path = os.path.join(self.args.save_dir, f'{self.args.name}.pth')
+            path = os.path.join(self.args.save_dir, f"{self.args.exp_name}.pth")
         checkpoint = torch.load(path)
-        self.model_version = checkpoint['model_version']
-        self.model_time = checkpoint['model_time']
-        self.load_state_dict(checkpoint['state_dict'])
+        self.model_version = checkpoint["model_version"]
+        self.model_time = checkpoint["model_time"]
+        self.load_state_dict(checkpoint["state_dict"])
+
+    def add_default_args(self, args) -> None:
+        args.update(self.args)
+        self.args = args

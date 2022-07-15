@@ -23,14 +23,15 @@ class opts(object):
         self.parser.add_argument("--cfg", type=str, default="", help="config file path")
 
         # basic experiment setting
-        self.parser.add_argument("--exp_name", default=None, help="name of the experiment.")
+        self.parser.add_argument("--exp_name", default="exp", help="name of the experiment.")
+        self.parser.add_argument("--prj_name", default=None, help="name of the project.")
         self.parser.add_argument(
             "--deploy_mode", default="simulated", help="type of deployment. [ simulated, standalone, distributed ]"
         )
         self.parser.add_argument("--scheme", default="async", help="type of deployment. [ async, sync ]")
 
         # system setting
-        self.parser.add_argument("--gpus", default="0", help="-1 for cpu, use comma for multiple gpus")
+        self.parser.add_argument("--gpus", default="-1", help="-1 for cpu, use comma for multiple gpus")
         self.parser.add_argument("--num_workers", type=int, default=0, help="dataloader threads. 0 for single-thread.")
 
         # random setting

@@ -9,23 +9,29 @@
 import torch
 from torch.utils.data import DataLoader
 
-from fedhf.api import opts
+from fedhf import Config
 from fedhf.model import build_model, build_optimizer
 from fedhf.dataset import build_dataset
 
 
 class TestCNNCIFAR10(object):
-    args = opts().parse([
-        '--model', 'cnn2_cifar10', '--num_classes', '10', '--model_pretrained', '--dataset',
-        'cifar10', '--gpus', '-1', '--task', 'classification', '--resize', '--image_size', '32',
-        '--input_c', '3'
-    ])
+    args = Config(
+        model="cnn2_cifar10",
+        num_classes=10,
+        dataset="cifar10",
+        model_pretrained=True,
+        gpus="-1",
+        resize=True,
+        image_size=32,
+        input_c=3,
+    )
 
     def test_cnn2cifar10(self):
+        print(self.args)
         model = build_model(self.args.model)(self.args)
         print(model)
 
-        assert model.__class__.__name__ == 'CNN2CIFAR10'
+        assert model.__class__.__name__ == "CNN2CIFAR10"
         assert model.num_classes == 10
 
         dataset = build_dataset(self.args.dataset)(self.args)
@@ -37,13 +43,13 @@ class TestCNNCIFAR10(object):
             output = model(data)
             assert output.shape == (1, 10)
             assert output.dtype == torch.float32
-            assert output.device == torch.device('cpu')
+            assert output.device == torch.device("cpu")
             break
 
         model.save()
-        torch.save(model.state_dict(), './model.pth')
+        torch.save(model.state_dict(), "./model.pth")
 
-        _model_state_dict = torch.load('./model.pth')
+        _model_state_dict = torch.load("./model.pth")
         # print(torch.load('./model.pth'))
         # print('-' * 10)
         # print(model.state_dict())
