@@ -9,13 +9,12 @@
 import numpy as np
 import torch
 
+from fedhf import Config
 from fedhf.dataset import build_dataset
-from fedhf.api import opts
 
 
 class TestRandom(object):
-    args = opts().parse(
-        ['--num_classes', '10', '--dataset_root', './dataset', '--dataset', 'random'])
+    args = Config(num_classes=10, dataset="random")
 
     def test_random(self):
         print(self.args)

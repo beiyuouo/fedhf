@@ -1,24 +1,20 @@
-#!/usr/bin/env python 
-# -*- coding: utf-8 -*- 
-# @File    :   tests\test_dataset\test_mnist.py 
-# @Time    :   2022-05-03 12:01:30 
-# @Author  :   Bingjie Yan 
-# @Email   :   bj.yan.pa@qq.com 
-# @License :   Apache License 2.0 
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @File    :   tests\test_dataset\test_mnist.py
+# @Time    :   2022-05-03 12:01:30
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 
 import numpy as np
 
+from fedhf import Config
 from fedhf.dataset import build_dataset
-from fedhf.api import opts
 
 
 class TestMNIST(object):
-    args = opts().parse([
-        '--num_classes', '10', '--dataset_root', './dataset', '--dataset',
-        'mnist'
-    ])
+    args = Config(num_classes=10, dataset="mnist")
 
     def test_mnist(self):
         print(self.args)
@@ -34,6 +30,6 @@ class TestMNIST(object):
         assert len(dataset.testset) == 10000
 
         assert np.array(dataset.trainset[0][0]).shape == (1, 28, 28)
-        assert np.array([dataset.trainset[0][1]]).shape == (1, )
+        assert np.array([dataset.trainset[0][1]]).shape == (1,)
         assert np.array(dataset.testset[0][0]).shape == (1, 28, 28)
-        assert np.array([dataset.testset[0][1]]).shape == (1, )
+        assert np.array([dataset.testset[0][1]]).shape == (1,)

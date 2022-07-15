@@ -7,18 +7,12 @@
 # @License :   Apache License 2.0 
 
 
-import torch
-
-from fedhf.api import opts
+from fedhf import Config
 from fedhf.dataset import ClientDataset, build_dataset
-from fedhf.component import build_sampler
 
 
 class TestClientDataset(object):
-    args = opts().parse([
-        '--num_classes', '10', '--dataset_root', './dataset', '--dataset',
-        'mnist'
-    ])
+    args = Config(num_classes=10, dataset="mnist")
 
     def test_clientdataset_mnist(self):
         dataset = build_dataset(self.args.dataset)(self.args)
