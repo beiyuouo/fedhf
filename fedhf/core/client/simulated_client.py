@@ -6,11 +6,11 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-import re
-from torch.utils.data import DataLoader
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader, Dataset
 
 from fedhf.component import build_encryptor
-
 from .base_client import BaseClient
 
 
@@ -20,16 +20,13 @@ class SimulatedClient(BaseClient):
         assert "data_size" in kwargs.keys()
         self.data_size = kwargs["data_size"]
 
-        if self.args.encryptor:
-            self.encryptor = build_encryptor(self.args.encryptor)(self.args, data_size=self.data_size)
-
-    def train(self, data, model, device="cpu", **kwargs):
+    def train(self, data: Dataset, model: nn.Module, device="cpu", **kwargs):
         dataloader = DataLoader(data, batch_size=self.args.batch_size)
 
         result = self.trainer.train(
             dataloader=dataloader,
             model=model,
-            num_epochs=self.args.num_local_epochs,
+            num_epochs=self.args.num_epochs,
             client_id=self.client_id,
             device=device,
             encryptor=self.encryptor,
@@ -39,13 +36,13 @@ class SimulatedClient(BaseClient):
         model = result["model"]
         result.pop("model")
 
-        if self.args.encryptor:
+        if self.encryptor is not None:
             model = self.encryptor.encrypt_model(model)
 
         # self.logger.info(f'Finish training on client {self.client_id}, train_loss: {train_loss}')
         return model, result
 
-    def evaluate(self, data, model, device="cpu", **kwargs):
+    def evaluate(self, data: Dataset, model: nn.Module, device="cpu", **kwargs):
         dataloader = DataLoader(data, batch_size=self.args.batch_size)
 
         result = self.evaluator.evaluate(dataloader=dataloader, model=model, client_id=self.client_id, device=device)

@@ -6,7 +6,10 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
+from typing import Any, Optional, Union
 import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 from fedhf.model import build_criterion, build_optimizer
@@ -17,7 +20,14 @@ class DefaultEvaluator(BaseEvaluator):
     def __init__(self, args) -> None:
         super(DefaultEvaluator, self).__init__(args)
 
-    def evaluate(self, dataloader, model, client_id=None, gpus=[], device="cpu"):
+    def evaluate(
+        self,
+        dataloader: DataLoader,
+        model: nn.Module,
+        client_id: Union[int, str] = None,
+        gpus: list = [],
+        device="cpu",
+    ) -> Any:
         if len(gpus) > 1:
             pass
         else:

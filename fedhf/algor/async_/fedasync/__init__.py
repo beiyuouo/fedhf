@@ -13,7 +13,7 @@ from .fedasync_trainer import FedAsyncTrainer
 
 components = {"aggregator": {"fedasync": FedAsyncAggregator}, "trainer": {"fedasync": FedAsyncTrainer}}
 
-default_params = Config().load("default_params.yaml")
+default_params = Config().load(os.path.join(os.path.dirname(__file__), "default_params.yaml"))
 
 
 def init(args):
