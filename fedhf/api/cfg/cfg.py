@@ -24,6 +24,7 @@ class Config(ez.Config):
         opt = opts().parse([])  # default opts
         self.load(opt)
 
+        cfg = None
         if opt.cfg or self.cfg:  # load cfg file
             cfg = self.cfg if self.cfg else opt.cfg
             self.load_from_file(cfg)
@@ -32,13 +33,16 @@ class Config(ez.Config):
         # print("kwargs:", kwargs)
         self.load_args_kwargs(*args, **kwargs)  # load args and kwargs, highest priority
 
+        if self.cfg and cfg != self.cfg:
+            self.load_from_file(self.cfg)
+
         self.parse_cfg()
 
     def parse_cfg(self):
         np.random.seed(self.seed)
         torch.manual_seed(self.seed)
 
-        _exp_name = f"{self.scheme}_{self.num_clients}_{self.num_rounds}_{self.num_epochs}_{self.batch_size}_{self.lr}_{self.seed}"
+        _exp_name = f"{self.scheme}_{self.num_clients}_{self.num_rounds}_{self.num_epochs}_{self.seed}"
 
         self.exp_name = self.exp_name if self.exp_name else _exp_name
         # make dirs
@@ -56,13 +60,11 @@ class Config(ez.Config):
 
         self.num_workers = max(self.num_workers, 2 * len(self.gpus))
 
-        if self.train_loss is None:
-            self.train_loss = self.loss
-
         if self.scheme == "async":
             self.select_ratio = 1.0
 
-        if self.dp is not None:
+        print(self.get("dp"))
+        if self.get("dp"):
             self.dp.epsilon = self.dp.epsilon / (self.select_ratio * self.num_local_epochs)
 
         # if opt.resume and opt.load_model == "":

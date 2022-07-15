@@ -23,7 +23,7 @@ class opts(object):
         self.parser.add_argument("--cfg", type=str, default="", help="config file path")
 
         # basic experiment setting
-        self.parser.add_argument("--exp_name", default="experiment", help="name of the experiment.")
+        self.parser.add_argument("--exp_name", default=None, help="name of the experiment.")
         self.parser.add_argument(
             "--deploy_mode", default="simulated", help="type of deployment. [ simulated, standalone, distributed ]"
         )
@@ -95,13 +95,11 @@ class opts(object):
         self.parser.add_argument(
             "--save_dir", type=str, default="./chkp", help="where to save the model and result to disk."
         )
-        self.parser.add_argument(
-            "--save_log", type=str, default="./log", help="where to save the model and result to disk."
-        )
+        self.parser.add_argument("--log_dir", type=str, default="./log", help="where to save the log.")
 
         # federated setting
         self.parser.add_argument("--num_clients", type=int, default=100, help="clients number.")
-        self.parser.add_argument("--num_local_epochs", type=int, default=3, help="local training epochs.")
+        self.parser.add_argument("--num_epochs", type=int, default=3, help="training epochs.")
         self.parser.add_argument("--batch_size", type=int, default=8, help="batch size")
         self.parser.add_argument("--num_rounds", type=int, default=5, help="server round.")
 

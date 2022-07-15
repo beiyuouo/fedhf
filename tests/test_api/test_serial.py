@@ -42,8 +42,8 @@ class TestSerializer(object):
 
         assert model.get_model_version() == model_.get_model_version()
 
-    def test_serializer_unet(self):
-        self.args.model = "unet"
+    def test_serializer_cnn(self):
+        self.args.model = "cnn_mnist"
         model = build_model(self.args.model)(self.args)
 
         serialized_model = Serializer.serialize_model(model)

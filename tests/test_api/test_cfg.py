@@ -17,8 +17,9 @@ class TestConfig(object):
         cfg = Config([f"--cfg={os.path.join('tests', 'config', 'fedavg.yaml')}"], a=1, b=2, c=3)
         cfg = Config(cfg=f"{os.path.join('tests', 'config', 'fedavg.yaml')}", a=1, b=2, c=3)
 
-        cfg_yaml = yaml.load(open(os.path.join("tests", "config", "fedavg.yaml"), "r"))
+        cfg_yaml = yaml.load(open(os.path.join("tests", "config", "fedavg.yaml"), "r"), Loader=yaml.FullLoader)
 
+        print(cfg)
         assert cfg.a == 1
         assert cfg.b == 2
         assert cfg.c == 3
