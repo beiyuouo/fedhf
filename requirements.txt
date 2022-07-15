@@ -70,4 +70,4 @@ yapf
 yaspin
 zope.event
 zope.interface
-addict
+ezkfg

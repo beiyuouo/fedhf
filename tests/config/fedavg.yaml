@@ -1,0 +1,5 @@
+scheme: sync
+algor: fedavg
+
+fedavg:
+  ratio: 0.7

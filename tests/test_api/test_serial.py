@@ -11,15 +11,15 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader
 
-from fedhf.api import opts, Serializer, Deserializer
+from fedhf import Config, Serializer, Deserializer
 from fedhf.model import build_model
 
 
 class TestSerializer(object):
-    args = opts().parse(['--num_classes', '10', '--model', 'resnet'])
+    args = Config(num_classes=10, model="resnet")
 
     def test_serializer_resnet(self):
-        self.args.model = 'resnet'
+        self.args.model = "resnet"
         model = build_model(self.args.model)(self.args)
 
         serialized_model = Serializer.serialize_model(model)
@@ -43,7 +43,7 @@ class TestSerializer(object):
         assert model.get_model_version() == model_.get_model_version()
 
     def test_serializer_unet(self):
-        self.args.model = 'unet'
+        self.args.model = "unet"
         model = build_model(self.args.model)(self.args)
 
         serialized_model = Serializer.serialize_model(model)

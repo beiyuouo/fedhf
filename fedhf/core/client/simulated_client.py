@@ -9,8 +9,7 @@
 import re
 from torch.utils.data import DataLoader
 
-from fedhf.component import Evaluator, build_trainer, build_encryptor, encryptor
-from fedhf.model import build_criterion, build_model, build_optimizer
+from fedhf.component import build_encryptor
 
 from .base_client import BaseClient
 
@@ -20,9 +19,11 @@ class SimulatedClient(BaseClient):
         super(SimulatedClient, self).__init__(args, client_id)
         assert "data_size" in kwargs.keys()
         self.data_size = kwargs["data_size"]
-        self.encryptor = build_encryptor(self.args.encryptor)(self.args, data_size=self.data_size)
 
-    def train(self, data, model, device="cpu"):
+        if self.args.encryptor:
+            self.encryptor = build_encryptor(self.args.encryptor)(self.args, data_size=self.data_size)
+
+    def train(self, data, model, device="cpu", **kwargs):
         dataloader = DataLoader(data, batch_size=self.args.batch_size)
 
         result = self.trainer.train(
@@ -32,20 +33,25 @@ class SimulatedClient(BaseClient):
             client_id=self.client_id,
             device=device,
             encryptor=self.encryptor,
+            **kwargs,
         )
-        # train_loss = result['train_loss']
-        model = result["model"]
 
-        model = self.encryptor.encrypt_model(model)
+        model = result["model"]
+        result.pop("model")
+
+        if self.args.encryptor:
+            model = self.encryptor.encrypt_model(model)
 
         # self.logger.info(f'Finish training on client {self.client_id}, train_loss: {train_loss}')
-        return model
+        return model, result
 
-    def evaluate(self, data, model, device="cpu"):
+    def evaluate(self, data, model, device="cpu", **kwargs):
         dataloader = DataLoader(data, batch_size=self.args.batch_size)
 
         result = self.evaluator.evaluate(dataloader=dataloader, model=model, client_id=self.client_id, device=device)
+        if "model" in result:
+            model = result["model"]
+            result.pop("model")
+
+        self.logger.info(f"Finish evaluating on client {self.client_id}, result: {result}")
         return result
-        # self.logger.info(
-        #     f'Finish evaluating on client {self.client_id}, test_loss: {result["test_loss"]} test_acc: {result["test_acc"]}'
-        # )

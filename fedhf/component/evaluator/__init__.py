@@ -6,15 +6,19 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-__all__ = ["Evaluator", "build_evaluator", "evaluator_factory", "BaseEvaluator"]
+__all__ = ["build_evaluator", "evaluator_factory", "BaseEvaluator", "DefaultEvaluator"]
 
-from .evaluator import Evaluator
 from .base_evaluator import BaseEvaluator
+from .default_evaluator import DefaultEvaluator
 
-evaluator_factory = {'evaluator': Evaluator, 'base_evaluator': BaseEvaluator}
+
+evaluator_factory = {
+    "base_evaluator": BaseEvaluator,
+    "default_evaluator": DefaultEvaluator,
+}
 
 
 def build_evaluator(name):
     if name not in evaluator_factory.keys():
-        raise ValueError(f'Unknown evaluator name: {name}')
+        raise ValueError(f"Unknown evaluator name: {name}")
     return evaluator_factory[name]

@@ -12,12 +12,10 @@ from .base_selector import BaseSelector
 
 
 class RandomSelector(BaseSelector):
-
     def __init__(self, args) -> None:
         self.args = args
 
     def select(self, client_list: list) -> list:
-        selected_clients = np.random.choice(client_list,
-                                            int(self.args.num_clients * self.args.select_ratio),
-                                            replace=False)
+        num_client_per_round = self.args.num_clients_per_round or int(self.args.num_clients * self.args.select_ratio)
+        selected_clients = np.random.choice(client_list, num_client_per_round, replace=False)
         return selected_clients
