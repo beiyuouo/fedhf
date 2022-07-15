@@ -10,7 +10,7 @@ from abc import ABC
 from torch.utils.data.dataloader import DataLoader
 
 from fedhf.api import Logger
-from fedhf.component import build_aggregator, build_selector, build_evaluator
+from fedhf.component import build_aggregator, build_selector, build_evaluator, build_encryptor
 from fedhf.model import build_model
 
 
@@ -37,7 +37,9 @@ class BaseServer(AbsServer):
 
         self.model = build_model(self.args.model)(self.args, model_version=0)
         self.evaluator = build_evaluator(self.args.evaluator)(self.args)
-        # self.encryptor = build_encryptor(self.args.encryptor)(self.args)
+        if self.args.get("encryptor"):
+            self.encryptor = build_encryptor(self.args.encryptor)(self.args)
+
         self.logger = Logger(self.args)
 
     def select(self, client_list: list):

@@ -7,16 +7,12 @@
 # @License :   Apache License 2.0
 
 import os
-from ....api import Config
+from typing import Any
+from fedhf.api import Config
 from .fedasync_aggregator import FedAsyncAggregator
 from .fedasync_trainer import FedAsyncTrainer
 
-components = {"aggregator": {"fedasync": FedAsyncAggregator}, "trainer": {"fedasync": FedAsyncTrainer}}
+components = {"agg": {"fedasync": FedAsyncAggregator}, "trainer": {"fedasync": FedAsyncTrainer}}
 
-default_params = Config().load(os.path.join(os.path.dirname(__file__), "default_params.yaml"))
-
-
-def init(args):
-    default_params.update(args)
-    args = default_params
-    return args
+default_params = Config()
+default_params.load(os.path.join(os.path.dirname(__file__), "default_params.yaml"))

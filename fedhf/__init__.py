@@ -8,5 +8,12 @@
 
 __version__ = "0.2.3"
 
-# only import utils api
+# import utils api
 from .api import *
+from .algor import *
+
+
+def init(*args, **kwargs):
+    args = Config(*args, **kwargs)
+    args = init_algor(args)
+    return args

@@ -6,27 +6,20 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-from .async_ import fedasync
-from .sync import fedavg, fedprox
-
-algor_factory = {
-    "fedasync": fedasync,
-    "fedavg": fedavg,
-    "fedprox": fedprox,
-}
+from typing import Any
+from .base import build_algor
+from fedhf.core.register import register
 
 
-def build_algor(algor_type: str):
-    if algor_type not in algor_factory.keys():
-        raise ValueError(f"{algor_type} is not a valid algor name")
-
-    return algor_factory[algor_type]
-
-
-def init_algor(args):
+def init_algor(args) -> Any:
     # register components
-    components_ = build_algor(args.algor)
+    algor = build_algor(args.algor)
 
     # update parameters
+    algor.default_params.update(args)
+    args = algor.default_params
 
-    pass
+    for component_name, component in algor.components.items():
+        register(component_name, component)
+
+    return args

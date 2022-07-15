@@ -11,7 +11,6 @@ from fedhf.api import Logger
 from fedhf.core import build_server, build_client
 from fedhf.component import build_sampler
 from fedhf.dataset import ClientDataset, build_dataset
-from fedhf.algor import init_algor
 
 
 class AbsCoordinator(ABC):
@@ -42,8 +41,6 @@ class SimulatedBaseCoordinator(AbsCoordinator):
         self.logger = Logger(self.args)
 
     def prepare(self) -> None:
-        self.args = init_algor(self.args.algor)(self.args)
-
         self.dataset = build_dataset(self.args.dataset)(self.args)
         self.sampler = build_sampler(self.args.sampler)(self.args)
 

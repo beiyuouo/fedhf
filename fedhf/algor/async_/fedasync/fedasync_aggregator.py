@@ -23,9 +23,9 @@ class FedAsyncAggregator(AsyncAggregator):
         self.stragegy = args[self.algor].strategy
         assert self.stragegy != "" and self.stragegy in ["constant", "hinge", "polynomial"]
 
-        self.a = args[self.algor].a if args[self.algor].a is not None else None
-        self.b = args[self.algor].b if args[self.algor].b is not None else None
-        self.alpha = args[self.algor].alpha if args[self.algor].alpha is not None else None
+        self.a = args[self.algor].a if args[self.algor].get("a") is not None else None
+        self.b = args[self.algor].b if args[self.algor].get("b") is not None else None
+        self.alpha = args[self.algor].alpha if args[self.algor].get("alpha") is not None else None
 
         # asserts
         assert self.alpha is not None, "alpha is required"

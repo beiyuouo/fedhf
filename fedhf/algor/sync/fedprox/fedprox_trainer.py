@@ -15,12 +15,9 @@ from tqdm import tqdm
 from ....component.trainer.base_trainer import BaseTrainer
 
 
-class FedAsyncTrainer(BaseTrainer):
+class FedProxTrainer(BaseTrainer):
     def __init__(self, args) -> None:
-        super(FedAsyncTrainer, self).__init__(args)
-
-        self.rho = args.fedasync.get("rho", 0.005)
-        self.args.fedasync.update({"rho": self.rho})
+        super(FedProxTrainer, self).__init__(args)
 
     def train(self, dataloader, model, num_epochs, client_id=None, gpus=[], device="cpu", encryptor=None):
         if len(gpus) > 1:

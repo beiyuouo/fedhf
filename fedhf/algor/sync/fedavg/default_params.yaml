@@ -1,0 +1,5 @@
+scheme: sync # sync | async
+algor: fedavg
+agg: fedavg
+
+fedavg:

@@ -9,6 +9,7 @@
 from unittest import result
 from torch.utils.data import DataLoader
 
+import fedhf
 from fedhf import Config
 from fedhf.core import SimulatedClient
 from fedhf.model import build_model
@@ -16,7 +17,7 @@ from fedhf.dataset import build_dataset, ClientDataset
 
 
 class TestClient(object):
-    args = Config(
+    args = fedhf.init(
         num_classes=10,
         model="mlp",
         dataset="mnist",

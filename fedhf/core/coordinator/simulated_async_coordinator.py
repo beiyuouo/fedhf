@@ -32,6 +32,7 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
 
     def main(self) -> None:
         try:
+            self.max_staleness = self.args[self.args.algor].get("max_staleness", 16)
             self._model_queue.append(deepcopy(self.server.model))
 
             for i in range(self.args.num_rounds):
@@ -49,7 +50,7 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
                     staleness = np.random.randint(
                         low=1,
                         high=min(
-                            self.args.fedasync_max_staleness,
+                            self.max_staleness,
                             max(self.server.model.get_model_version(), 0) + 1,
                             self.server.model.get_model_version() - self._last_update_time[client_id] + 1,
                         )
@@ -64,7 +65,9 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
                         f"Client {client_id} staleness: {staleness} start train from model version : {self._model_queue[-staleness].get_model_version()}"
                     )
 
-                    model = client.train(data=self.data[client_id], model=deepcopy(self._model_queue[-staleness]))
+                    model, result = client.train(
+                        data=self.data[client_id], model=deepcopy(self._model_queue[-staleness])
+                    )
 
                     self.server.update(
                         model,
@@ -74,18 +77,20 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
 
                     result = self.server.evaluate(self.dataset.testset)
                     self.logger.info(f"Server model version {self.server.model.get_model_version()} result: {result}")
-                    if self.server.model.get_model_version() % self.args.checkpoint_interval == 0:
-                        self.logger.info(f"Save model: {self.args.name}-{self.server.model.get_model_version()}.pth")
+                    if self.server.model.get_model_version() % self.args.chkp_interval == 0:
+                        self.logger.info(
+                            f"Save model: {self.args.exp_name}-{self.server.model.get_model_version()}.pth"
+                        )
                         self.server.model.save(
                             os.path.join(
-                                self.args.save_dir, f"{self.args.name}-{self.server.model.get_model_version()}.pth"
+                                self.args.save_dir, f"{self.args.exp_name}-{self.server.model.get_model_version()}.pth"
                             )
                         )
 
                     self._model_queue.append(deepcopy(self.server.model))
                     self._last_update_time[client_id] = self.server.model.get_model_version()
 
-                    while len(self._model_queue) > self.args.fedasync_max_staleness + 1:
+                    while len(self._model_queue) > self.max_staleness + 1:
                         self._model_queue.pop(0)
             self.logger.info(f"All rounds finished.")
 

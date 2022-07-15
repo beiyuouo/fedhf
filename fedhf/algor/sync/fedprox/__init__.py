@@ -5,3 +5,13 @@
 # @Author  :   Bingjie Yan
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
+
+import os
+from fedhf import Config
+from .fedprox_aggregator import FedProxAggregator
+from .fedprox_trainer import FedProxTrainer
+
+components = {"agg": {"fedprox": FedProxAggregator}, "trainer": {"fedprox": FedProxTrainer}}
+
+default_params = Config()
+default_params.load(os.path.join(os.path.dirname(__file__), "default_params.yaml"))
