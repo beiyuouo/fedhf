@@ -22,7 +22,7 @@ class Config(ez.Config):
         self.__parent__ = None
         self.__key__ = None
 
-        opt = opts().parse([])  # default opts
+        opt = opts().parse()  # default opts
         self.load(opt)
 
         cfg = None
