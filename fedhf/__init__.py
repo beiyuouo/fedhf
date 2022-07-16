@@ -9,6 +9,7 @@
 # import utils api
 from .api import *
 from .algor import *
+from .core import register, register_all
 
 
 def init(*args, **kwargs):
@@ -21,7 +22,7 @@ def run(args=None):
     if args is None:
         args = init()
 
-    from .core import register, register_all, build_coordinator
+    from .core import build_coordinator
 
     coordinator_type = args.get("coordinator", f"{args.deploy_mode}_{args.scheme}")
     coordinator = build_coordinator(coordinator_type)(args)
