@@ -9,7 +9,7 @@
 import torch
 import torch.nn as nn
 
-from .base_model import BaseModel
+from ..base_model import BaseModel
 
 
 class MLP(BaseModel):

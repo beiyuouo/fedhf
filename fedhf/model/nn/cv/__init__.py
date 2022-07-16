@@ -1,15 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @File    :   fedhf\model\nn\__init__.py
-# @Time    :   2022-05-03 16:06:57
+# @File    :   fedhf\model\nn\cv\__init__.py
+# @Time    :   2022-07-16 23:32:13
 # @Author  :   Bingjie Yan
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-from .base_model import BaseModel
-from .cv import *
+from .resnet import ResNet
+from .resnet_mnist import ResNetMNIST
+from .mlp import MLP
+from .alexnet_cifar10 import AlexNetCIFAR10
+from .cnn_cifar10 import CNN2CIFAR10, CNN4CIFAR10
+from .cnn_mnist import CNNMNIST
+from .densenet import DenseNet
+from .unet import UNet, UNetMini
 
-model_factory = {
+
+cv_model_factory = {
     "resnet": ResNet,
     "resnet18": ResNet,
     "resnet_mnist": ResNetMNIST,
@@ -23,10 +30,3 @@ model_factory = {
     "unet": UNet,
     "unet_mini": UNetMini,
 }
-
-
-def build_model(model_name: str):
-    if model_name not in model_factory.keys():
-        raise ValueError(f"Unknown model name: {model_name}")
-    model = model_factory[model_name]
-    return model

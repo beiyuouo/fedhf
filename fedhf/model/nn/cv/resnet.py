@@ -11,7 +11,7 @@ import torch.nn as nn
 
 from torchvision import models
 
-from .base_model import BaseModel
+from ..base_model import BaseModel
 
 """
     Deep Residual Learning for Image Recognition

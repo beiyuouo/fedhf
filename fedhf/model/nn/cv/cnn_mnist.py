@@ -10,7 +10,7 @@ import torch
 import torch.nn as nn
 from torch.nn.modules.activation import Softmax
 
-from .base_model import BaseModel
+from ..base_model import BaseModel
 
 
 class CNNMNIST(BaseModel):

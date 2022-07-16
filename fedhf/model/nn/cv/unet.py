@@ -7,8 +7,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from ...api import Config
-from .base_model import BaseModel
+from fedhf.api import Config
+from ..base_model import BaseModel
 
 """
     U-Net: Convolutional Networks for Biomedical Image Segmentation
