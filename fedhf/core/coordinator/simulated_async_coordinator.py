@@ -27,6 +27,8 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
 
     def prepare(self) -> None:
         super(SimulatedAsyncCoordinator, self).prepare()
+
+        assert self.args.deploy_mode == "simulated"
         self._model_queue = []
         self._last_update_time = {client_id: 0 for client_id in self.client_list}
 

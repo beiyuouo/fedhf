@@ -9,10 +9,20 @@
 # import utils api
 from .api import *
 from .algor import *
-from .core import register, register_all
 
 
 def init(*args, **kwargs):
     args = Config(*args, **kwargs)
     args = init_algor(args)
     return args
+
+
+def run(args=None):
+    if args is None:
+        args = init()
+
+    from .core import register, register_all, build_coordinator
+
+    coordinator_type = args.get("coordinator", f"{args.deploy_mode}_{args.scheme}")
+    coordinator = build_coordinator(coordinator_type)(args)
+    coordinator.run()

@@ -38,7 +38,7 @@ class opts(object):
             help="type of deployment. [ simulated, standalone, distributed ]",
         )
         self.parser.add_argument(
-            "--scheme", default="async", help="type of deployment. [ async, sync ]"
+            "--scheme", default="sync", help="type of deployment. [ async, sync ]"
         )
 
         # system setting
@@ -98,7 +98,7 @@ class opts(object):
 
         # model setting
         self.parser.add_argument(
-            "--model", type=str, default="resnet", help="model name."
+            "--model", type=str, default="cnn_mnist", help="model name."
         )
         self.parser.add_argument(
             "--model_pretrained",
@@ -106,7 +106,10 @@ class opts(object):
             help="load pretrained model or not",
         )
         self.parser.add_argument(
-            "--model_dir", default="./model", type=str, help="path to download model"
+            "--model_dir",
+            default=os.path.join(".", "model"),
+            type=str,
+            help="path to download model",
         )  # Never used
         self.parser.add_argument(
             "--resume",
