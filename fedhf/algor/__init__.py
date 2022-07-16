@@ -8,7 +8,7 @@
 
 from typing import Any
 from .base import build_algor
-from fedhf.core.register import register
+from fedhf.core.registor import register
 
 
 def init_algor(args) -> Any:

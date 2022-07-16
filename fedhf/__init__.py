@@ -9,6 +9,7 @@
 # import utils api
 from .api import *
 from .algor import *
+from .core import register, register_all
 
 
 def init(*args, **kwargs):

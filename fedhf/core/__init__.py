@@ -9,4 +9,4 @@
 from .server import *
 from .client import *
 from .coordinator import *
-from .register import *
+from .registor import *
