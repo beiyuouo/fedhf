@@ -7,7 +7,6 @@
 # @License :   Apache License 2.0
 
 import os
-from typing import Any
 from fedhf.api import EmptyConfig
 from .fedasync_aggregator import FedAsyncAggregator
 from .fedasync_trainer import FedAsyncTrainer
