@@ -25,6 +25,7 @@ setup(
     license="Apache-2.0 License",
     url="https://github.com/beiyuouo/fedhf",
     packages=find_packages(include=["fedhf", "fedhf.*", "LICENSE"]),
+    package_data={"": ["*.yaml"]},
     install_requires=[
         "torch>=1.8.2",
         "torchvision>=0.9.2",
