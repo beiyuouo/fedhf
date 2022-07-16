@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @File    :   fedhf\algor\async_\fedasync\fedasync_trainer.py
-# @Time    :   2022-07-15 13:17:29
+# @File    :   fedhf\algor\sync\fedprox\fedprox_trainer.py
+# @Time    :   2022-07-17 01:37:44
 # @Author  :   Bingjie Yan
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
@@ -17,6 +17,9 @@ from ....component.trainer.base_trainer import BaseTrainer
 class FedProxTrainer(BaseTrainer):
     def __init__(self, args) -> None:
         super(FedProxTrainer, self).__init__(args)
+
+        self.rho = args.fedprox.get("rho", 0.005)
+        self.args.fedprox.update({"rho": self.rho})
 
     def train(
         self,
@@ -46,7 +49,8 @@ class FedProxTrainer(BaseTrainer):
         else:
             optim = self.optim(params=model.parameters(), lr=self.args.lr)
         crit = self.crit()
-        lr_scheduler = self.lr_scheduler(optim, self.args.lr_step)
+        if self.lr_scheduler is not None:
+            lr_scheduler = self.lr_scheduler(optim, self.args.lr_step)
 
         self.logger.info(f"Start training on {client_id}")
 
@@ -68,7 +72,7 @@ class FedProxTrainer(BaseTrainer):
 
                 l2_reg = self._calc_l2_reg(model_, model)
 
-                loss = crit(outputs, labels) + l2_reg * self.args.fedasync_rho / 2
+                loss = crit(outputs, labels) + l2_reg * self.rho / 2
 
                 # self.logger.info(
                 #    f'ce: {crit(outputs, labels)}, l2_reg: {l2_reg}, loss: {loss.item()}')
@@ -85,7 +89,8 @@ class FedProxTrainer(BaseTrainer):
                 pbar.update(1)
 
             train_loss.append(sum(losses) / len(losses))
-            lr_scheduler.step()
+            if self.lr_scheduler is not None:
+                lr_scheduler.step()
             # self.logger.info(
             #    f'Client:{client_id} Epoch:{epoch+1}/{num_epochs} Loss:{train_loss[-1]}'
             # )

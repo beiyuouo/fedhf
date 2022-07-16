@@ -49,7 +49,8 @@ class FedAsyncTrainer(BaseTrainer):
         else:
             optim = self.optim(params=model.parameters(), lr=self.args.lr)
         crit = self.crit()
-        lr_scheduler = self.lr_scheduler(optim, self.args.lr_step)
+        if self.lr_scheduler is not None:
+            lr_scheduler = self.lr_scheduler(optim, self.args.lr_step)
 
         self.logger.info(f"Start training on {client_id}")
 
@@ -71,7 +72,7 @@ class FedAsyncTrainer(BaseTrainer):
 
                 l2_reg = self._calc_l2_reg(model_, model)
 
-                loss = crit(outputs, labels) + l2_reg * self.args.fedasync_rho / 2
+                loss = crit(outputs, labels) + l2_reg * self.rho / 2
 
                 # self.logger.info(
                 #    f'ce: {crit(outputs, labels)}, l2_reg: {l2_reg}, loss: {loss.item()}')
@@ -88,7 +89,8 @@ class FedAsyncTrainer(BaseTrainer):
                 pbar.update(1)
 
             train_loss.append(sum(losses) / len(losses))
-            lr_scheduler.step()
+            if self.lr_scheduler is not None:
+                lr_scheduler.step()
             # self.logger.info(
             #    f'Client:{client_id} Epoch:{epoch+1}/{num_epochs} Loss:{train_loss[-1]}'
             # )
