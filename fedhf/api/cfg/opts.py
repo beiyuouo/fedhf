@@ -24,6 +24,7 @@ class opts(object):
 
         # basic experiment setting
         self.parser.add_argument("--exp_name", default="exp", help="name of the experiment.")
+        self.parser.add_argument("--exist_ok", action="store_true", help="allow to overwrite existing files.")
         self.parser.add_argument("--prj_name", default=None, help="name of the project.")
         self.parser.add_argument(
             "--deploy_mode", default="simulated", help="type of deployment. [ simulated, standalone, distributed ]"
@@ -42,12 +43,20 @@ class opts(object):
         self.parser.add_argument("--wandb_log_client", action="store_true", help="log train on client or not")
         self.parser.add_argument("--wandb_reinit", action="store_true", help="reinit wandb")
         self.parser.add_argument("--log_name", default="logger", type=str, help="logger name")
+        self.parser.add_argument("--log_dir", type=str, default=None, help="where to save the log.")
         self.parser.add_argument("--log_file", default=None, type=str, help="where to save log")
         self.parser.add_argument(
             "--log_level",
             default="debug",
             type=str,
             help="log level, it could be in [ error | warning | info | debug ]",
+        )
+        self.parser.add_argument("--eval_interval", type=int, default=5, help="evaluation interval")
+        self.parser.add_argument(
+            "--chkp_interval", type=int, default=50, help="when to save the model and result to disk."
+        )
+        self.parser.add_argument(
+            "--save_dir", type=str, default="./chkp", help="where to save the model and result to disk."
         )
 
         # model setting
@@ -87,16 +96,6 @@ class opts(object):
 
         self.parser.add_argument("--loss", type=str, default="ce", help="loss function.")
         self.parser.add_argument("--evaluate_on_client", action="store_true", help="evaluate on client")
-
-        # log setting
-        self.parser.add_argument("--eval_interval", type=int, default=5, help="evaluation interval")
-        self.parser.add_argument(
-            "--chkp_interval", type=int, default=50, help="when to save the model and result to disk."
-        )
-        self.parser.add_argument(
-            "--save_dir", type=str, default="./chkp", help="where to save the model and result to disk."
-        )
-        self.parser.add_argument("--log_dir", type=str, default="./log", help="where to save the log.")
 
         # federated setting
         self.parser.add_argument("--num_clients", type=int, default=100, help="clients number.")

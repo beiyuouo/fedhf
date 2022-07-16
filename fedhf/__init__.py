@@ -6,8 +6,6 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-__version__ = "0.3.0"
-
 # import utils api
 from .api import *
 from .algor import *

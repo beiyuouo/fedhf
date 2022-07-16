@@ -75,7 +75,6 @@ class Logger(BaseLogger):
 
         def log(self, log_dict: dict, *args, **kwargs) -> None:
             # log one line in result.csv
-
             with open(args.log_file, 'a') as f:
                 f.write(str(log_dict) + '\n')
 

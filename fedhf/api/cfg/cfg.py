@@ -13,6 +13,7 @@ import numpy as np
 import torch
 
 from .opts import opts
+from ..path import *
 
 
 class Config(ez.Config):
@@ -45,12 +46,24 @@ class Config(ez.Config):
         _prj_name = f"{self.scheme}_{self.num_clients}_{self.num_rounds}_{self.num_epochs}_{self.seed}"
 
         self.prj_name = self.prj_name if self.prj_name else _prj_name
+
         # make dirs
         self.save_dir = Path(self.save_dir) / self.exp_name
-        self.save_dir.mkdir(parents=True, exist_ok=True)
-        self.log_dir = Path(self.log_dir) / self.exp_name
-        self.log_dir.mkdir(parents=True, exist_ok=True)
+        self.save_dir = increment_path(self.save_dir, exist_ok=self.exist_ok, mkdir=True)
+        # self.save_dir.mkdir(parents=True, exist_ok=True)
 
+        # logger
+        if self.log_dir:
+            self.log_dir = Path(self.log_dir) / self.exp_name
+            self.log_dir.mkdir(parents=True, exist_ok=True)
+        else:
+            self.log_dir = self.save_dir / "log"
+            self.log_dir.mkdir(parents=True, exist_ok=True)
+
+        if self.log_file is None:
+            self.log_file = self.log_dir / f"{self.exp_name}.log"
+
+        # device
         self.gpus_str = str(self.gpus)
         self.gpus = [int(gpu) for gpu in self.gpus.split(",")]
         self.gpus = [i for i in range(len(self.gpus))] if self.gpus[0] >= 0 else [-1]
