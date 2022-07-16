@@ -9,7 +9,6 @@
 import os
 import logging
 import sys
-import wandb
 import time
 
 from .base_logger import BaseLogger, logger_map
@@ -57,6 +56,8 @@ class Logger(BaseLogger):
             self.logger.addHandler(stream_handler)
 
             if args.use_wandb:
+                import wandb
+
                 self.use_wandb = args.use_wandb
                 wandb.init(
                     project=args.project_name,
@@ -83,9 +84,13 @@ class Logger(BaseLogger):
                 f.write(str(log_dict) + "\n")
 
             if self.use_wandb:
+                import wandb
+
                 self.to_wandb(log_dict, *args, **kwargs)
 
         def to_wandb(self, log_dict: dict, *args, **kwargs) -> None:
+            import wandb
+
             wandb.log(log_dict, *args, **kwargs)
 
     __instance = None

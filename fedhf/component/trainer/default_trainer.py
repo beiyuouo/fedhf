@@ -6,7 +6,6 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-import wandb
 import time
 from copy import deepcopy
 
@@ -91,6 +90,8 @@ class DefaultTrainer(BaseTrainer):
         self.logger.info(f"Client:{client_id} Train Loss:{train_loss}")
 
         if self.args.use_wandb and self.args.wandb_log_client:
+            import wandb
+
             data = [[x, y] for (x, y) in zip(range(1, num_epochs + 1), train_loss)]
             table = wandb.Table(data=data, columns=["epoch", "train_loss"])
             self.logger.to_wandb(
