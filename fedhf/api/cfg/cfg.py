@@ -55,6 +55,7 @@ class Config(ez.Config):
             self.save_dir, exist_ok=self.exist_ok, mkdir=True
         )
         # self.save_dir.mkdir(parents=True, exist_ok=True)
+        self.data_dir = Path(self.data_dir)
 
         # logger
         if self.log_dir:
