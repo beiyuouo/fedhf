@@ -10,7 +10,6 @@ from abc import ABC
 
 
 class BaseSampler(ABC):
-
     def __init__(self, args) -> None:
         self.args = args
 

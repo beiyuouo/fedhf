@@ -20,7 +20,17 @@ class DefaultTrainer(BaseTrainer):
     def __init__(self, args) -> None:
         super(DefaultTrainer, self).__init__(args)
 
-    def train(self, dataloader, model, num_epochs, client_id=None, gpus=[], device="cpu", encryptor=None, **kwargs):
+    def train(
+        self,
+        dataloader,
+        model,
+        num_epochs,
+        client_id=None,
+        gpus=[],
+        device="cpu",
+        encryptor=None,
+        **kwargs,
+    ):
         if len(gpus) > 1:
             pass
         else:
@@ -86,7 +96,10 @@ class DefaultTrainer(BaseTrainer):
             self.logger.to_wandb(
                 {
                     f"train at client {client_id} model_version {model.get_model_version()}": wandb.plot.line(
-                        table, "epoch", "train_loss", title=f"train loss at client {client_id}"
+                        table,
+                        "epoch",
+                        "train_loss",
+                        title=f"train loss at client {client_id}",
                     )
                 }
             )

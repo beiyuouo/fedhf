@@ -15,7 +15,6 @@ from .base_model import BaseModel
 
 
 class ResNetMNIST(BaseModel):
-
     def __init__(self, args, model_time=None, model_version=0):
         super().__init__(args, model_time, model_version)
         self.input_size = (args.input_c, args.image_size, args.image_size)

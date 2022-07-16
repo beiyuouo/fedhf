@@ -21,4 +21,6 @@ class TestSelector(object):
         assert selector is not None
         assert selector.__class__.__name__ == "RandomSelector"
         assert selector.select(self.client_list) is not None
-        assert len(selector.select(self.client_list)) == int(self.args.num_clients * self.args.select_ratio)
+        assert len(selector.select(self.client_list)) == int(
+            self.args.num_clients * self.args.select_ratio
+        )

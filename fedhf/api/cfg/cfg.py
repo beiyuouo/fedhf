@@ -49,7 +49,9 @@ class Config(ez.Config):
 
         # make dirs
         self.save_dir = Path(self.save_dir) / self.exp_name
-        self.save_dir = increment_path(self.save_dir, exist_ok=self.exist_ok, mkdir=True)
+        self.save_dir = increment_path(
+            self.save_dir, exist_ok=self.exist_ok, mkdir=True
+        )
         # self.save_dir.mkdir(parents=True, exist_ok=True)
 
         # logger
@@ -81,7 +83,9 @@ class Config(ez.Config):
             self.dp.epsilon = self.dp.epsilon / (self.select_ratio * self.num_epochs)
 
         self.num_clients_per_round = (
-            self.num_clients_per_round if self.num_clients_per_round else int(self.num_clients * self.select_ratio)
+            self.num_clients_per_round
+            if self.num_clients_per_round
+            else int(self.num_clients * self.select_ratio)
         )
         self.num_clients_per_round = max(self.num_clients_per_round, 1)
 

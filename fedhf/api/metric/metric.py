@@ -12,18 +12,17 @@ import warnings
 
 
 class Metric(object):
-
     def __init__(self, metric: Dict):
         self.metric = metric
-        for _key in ['round', 'epoch', 'id']:
+        for _key in ["round", "epoch", "id"]:
             if _key not in self.metric:
                 self.metric[_key] = 0
-                warnings.warn(f'Metric {_key} not found')
+                warnings.warn(f"Metric {_key} not found")
 
     def get_metric(self, name: str):
         if name in self.metric:
             return self.metric[name]
-        raise KeyError(f'Metric {name} not found')
+        raise KeyError(f"Metric {name} not found")
 
     def get_metrics(self) -> Dict:
         return self.metric
@@ -36,7 +35,6 @@ class Metric(object):
 
 
 class Metrics(object):
-
     def __init__(self, metrics: List[Metric]):
         self.metrics = metrics
 
@@ -47,9 +45,9 @@ class Metrics(object):
         return self.metrics
 
     def save(self, path: str):
-        with open(path, 'w') as f:
+        with open(path, "w") as f:
             f.write(json.dumps(self.metrics))
 
     def load(self, path: str):
-        with open(path, 'r') as f:
+        with open(path, "r") as f:
             self.metrics = json.loads(f.read())

@@ -21,15 +21,35 @@ from .base_model import BaseModel
 
 
 class DoubleConv(nn.Module):
-    def __init__(self, in_channel, out_channel, hidden_channel=None, kernel_size=3, padding=1, bias=True):
+    def __init__(
+        self,
+        in_channel,
+        out_channel,
+        hidden_channel=None,
+        kernel_size=3,
+        padding=1,
+        bias=True,
+    ):
         super(DoubleConv, self).__init__()
         if not hidden_channel:
             hidden_channel = out_channel
         self.double_conv = nn.Sequential(
-            nn.Conv2d(in_channel, hidden_channel, kernel_size=kernel_size, padding=padding, bias=bias),
+            nn.Conv2d(
+                in_channel,
+                hidden_channel,
+                kernel_size=kernel_size,
+                padding=padding,
+                bias=bias,
+            ),
             nn.BatchNorm2d(hidden_channel),
             nn.ReLU(inplace=True),
-            nn.Conv2d(hidden_channel, out_channel, kernel_size=kernel_size, padding=padding, bias=bias),
+            nn.Conv2d(
+                hidden_channel,
+                out_channel,
+                kernel_size=kernel_size,
+                padding=padding,
+                bias=bias,
+            ),
             nn.BatchNorm2d(out_channel),
             nn.ReLU(inplace=True),
         )
@@ -58,7 +78,9 @@ class UpConv(nn.Module):
             self.up = nn.Upsample(scale_factor=2, mode="bilinear", align_corners=True)
             self.conv = DoubleConv(in_channel, out_channel, in_channel // 2)
         else:
-            self.up = nn.ConvTranspose2d(in_channel, in_channel // 2, kernel_size=2, stride=2)
+            self.up = nn.ConvTranspose2d(
+                in_channel, in_channel // 2, kernel_size=2, stride=2
+            )
             self.conv = DoubleConv(in_channel, out_channel)
 
     def forward(self, x1, x2):
@@ -95,7 +117,9 @@ class UNet(BaseModel):
 
         self.input_c = self.args.input_c
         self.output_c = self.args.output_c
-        self.bilinear = self.args.unet.bilinear if self.args.unet.bilinear is not None else False
+        self.bilinear = (
+            self.args.unet.bilinear if self.args.unet.bilinear is not None else False
+        )
 
         self.n1 = self.args.unet.n1 if self.args.unet.n1 is not None else 64
         self.filter = [self.n1, self.n1 * 2, self.n1 * 4, self.n1 * 8, self.n1 * 16]
@@ -145,7 +169,9 @@ class UNetMini(BaseModel):
 
         self.input_c = self.args.input_c
         self.output_c = self.args.output_c
-        self.bilinear = self.args.unet.bilinear if self.args.unet.bilinear is not None else False
+        self.bilinear = (
+            self.args.unet.bilinear if self.args.unet.bilinear is not None else False
+        )
 
         self.n1 = self.args.unet.n1 if self.args.unet.n1 is not None else 64
         self.filter = [self.n1, self.n1 * 2, self.n1 * 4]

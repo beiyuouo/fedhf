@@ -29,13 +29,22 @@ class TestDPM:
 
     def test_none(self):
         dpm.build_mechanism("none", dpm.calculate_sensitivity(0.1, 10, 100), 100, 0.1)
-        assert np.all(dpm.build_mechanism("none", dpm.calculate_sensitivity(0.1, 10, 100), 100, 0.1) == 0)
+        assert np.all(
+            dpm.build_mechanism(
+                "none", dpm.calculate_sensitivity(0.1, 10, 100), 100, 0.1
+            )
+            == 0
+        )
 
     def test_gaussian_noise(self):
-        dpm.build_mechanism("gaussian", dpm.calculate_sensitivity(0.1, 10, 100), 100, 0.1, delta=0.1)
+        dpm.build_mechanism(
+            "gaussian", dpm.calculate_sensitivity(0.1, 10, 100), 100, 0.1, delta=0.1
+        )
 
     def test_laplace_noise(self):
-        dpm.build_mechanism("laplace", dpm.calculate_sensitivity(0.1, 10, 100), 100, 0.1)
+        dpm.build_mechanism(
+            "laplace", dpm.calculate_sensitivity(0.1, 10, 100), 100, 0.1
+        )
 
     def test_none_clip(self):
         model = MLP(None, input_dim=10 * 10, output_dim=10)

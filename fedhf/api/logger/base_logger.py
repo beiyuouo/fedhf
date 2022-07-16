@@ -11,15 +11,14 @@ from abc import ABC, abstractmethod
 import logging
 
 logger_map = {
-    'debug': logging.DEBUG,
-    'info': logging.INFO,
-    'warning': logging.WARNING,
-    'error': logging.ERROR
+    "debug": logging.DEBUG,
+    "info": logging.INFO,
+    "warning": logging.WARNING,
+    "error": logging.ERROR,
 }
 
 
 class BaseLogger(ABC):
-
     def __init__(self) -> None:
         super().__init__()
 

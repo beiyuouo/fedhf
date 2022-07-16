@@ -16,6 +16,10 @@ class RandomSelector(BaseSelector):
         self.args = args
 
     def select(self, client_list: list) -> list:
-        num_client_per_round = self.args.num_clients_per_round or int(self.args.num_clients * self.args.select_ratio)
-        selected_clients = np.random.choice(client_list, num_client_per_round, replace=False)
+        num_client_per_round = self.args.num_clients_per_round or int(
+            self.args.num_clients * self.args.select_ratio
+        )
+        selected_clients = np.random.choice(
+            client_list, num_client_per_round, replace=False
+        )
         return selected_clients

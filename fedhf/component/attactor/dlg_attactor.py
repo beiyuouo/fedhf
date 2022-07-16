@@ -10,6 +10,5 @@ from .base_attactor import BaseAttactor
 
 
 class DLGAttactor(BaseAttactor):
-
     def __init__(self, args):
         super(DLGAttactor, self).__init__(args)

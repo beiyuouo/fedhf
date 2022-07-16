@@ -28,7 +28,9 @@ class DPEncryptor(BaseEncryptor):
         assert kwargs["data_size"] is not None
         self.data_size = kwargs["data_size"]
         assert hasattr(args, "dp"), "The args must have the dp attribute."
-        self.sensitivity = dpm.calculate_sensitivity(self.args.lr, self.args.dp.clip, self.data_size)
+        self.sensitivity = dpm.calculate_sensitivity(
+            self.args.lr, self.args.dp.clip, self.data_size
+        )
 
     def generate_noise(self, size):
         """

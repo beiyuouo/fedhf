@@ -31,7 +31,9 @@ class AsyncAggregator(BaseAggregator):
 
         result = {
             "param": new_param,
-            "model_version": kwargs["server_model_version"] + 1 if "server_model_version" in kwargs.keys() else 0,
+            "model_version": kwargs["server_model_version"] + 1
+            if "server_model_version" in kwargs.keys()
+            else 0,
             "model_time": time.time(),
         }
         return result

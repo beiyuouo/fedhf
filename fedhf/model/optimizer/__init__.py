@@ -11,15 +11,15 @@ import torch.nn as nn
 import torch.optim as optim
 
 optimizer_factory = {
-    'sgd': optim.SGD,
-    'adam': optim.Adam,
-    'adagrad': optim.Adagrad,
+    "sgd": optim.SGD,
+    "adam": optim.Adam,
+    "adagrad": optim.Adagrad,
 }
 
 
 def build_optimizer(optim_name: str):
     if optim_name not in optimizer_factory.keys():
-        raise ValueError(f'Unknown optimizer name: {optim_name}')
+        raise ValueError(f"Unknown optimizer name: {optim_name}")
 
     optimizer = optimizer_factory[optim_name]
 

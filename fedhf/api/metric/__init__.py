@@ -6,6 +6,6 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-__all__ = ['Metric', 'Metrics']
+__all__ = ["Metric", "Metrics"]
 
 from .metric import Metric, Metrics

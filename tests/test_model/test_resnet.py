@@ -16,7 +16,13 @@ from fedhf.dataset import build_dataset
 
 class TestResnet(object):
     args = Config(
-        model="resnet_mnist", num_classes=10, dataset="mnist", gpus="-1", resize=True, input_c=1, image_size=224
+        model="resnet_mnist",
+        num_classes=10,
+        dataset="mnist",
+        gpus="-1",
+        resize=True,
+        input_c=1,
+        image_size=224,
     )
 
     def test_resnet(self):

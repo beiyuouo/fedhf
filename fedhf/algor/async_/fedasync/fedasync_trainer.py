@@ -22,7 +22,16 @@ class FedAsyncTrainer(BaseTrainer):
         self.rho = args.fedasync.get("rho", 0.005)
         self.args.fedasync.update({"rho": self.rho})
 
-    def train(self, dataloader, model, num_epochs, client_id=None, gpus=[], device="cpu", encryptor=None):
+    def train(
+        self,
+        dataloader,
+        model,
+        num_epochs,
+        client_id=None,
+        gpus=[],
+        device="cpu",
+        encryptor=None,
+    ):
         if len(gpus) > 1:
             pass
         else:
@@ -94,7 +103,10 @@ class FedAsyncTrainer(BaseTrainer):
             self.logger.to_wandb(
                 {
                     f"train at client {client_id} model_version {model.get_model_version()}": wandb.plot.line(
-                        table, "epoch", "train_loss", title=f"train loss at client {client_id}"
+                        table,
+                        "epoch",
+                        "train_loss",
+                        title=f"train loss at client {client_id}",
                     )
                 }
             )

@@ -11,14 +11,13 @@ from torch.utils.data import Dataset
 
 
 class ClientDataset(Dataset):
-
     def __init__(self, dataset, data_dict: List) -> None:
         super().__init__()
         self.dataset = dataset
         self.data_dict = data_dict
 
         for attr in self.dataset.__dict__:
-            if attr.startswith('__') or attr in self.__dict__:
+            if attr.startswith("__") or attr in self.__dict__:
                 continue
             # print(attr)
             setattr(self, attr, getattr(self.dataset, attr))

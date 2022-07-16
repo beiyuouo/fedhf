@@ -8,7 +8,13 @@ this_directory = os_path.abspath(os_path.dirname(__file__))
 setup(
     name="fedhf",
     version=__version__,
-    keywords=["federated learning", "deep learning", "pytorch", "asynchronous federated learning", "wandb"],
+    keywords=[
+        "federated learning",
+        "deep learning",
+        "pytorch",
+        "asynchronous federated learning",
+        "wandb",
+    ],
     author="Bingjie Yan",
     author_email="bj.yan.pa@qq.com",
     maintainer="Bingjie Yan",

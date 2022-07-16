@@ -45,10 +45,14 @@ class SimulatedClient(BaseClient):
     def evaluate(self, data: Dataset, model: nn.Module, device="cpu", **kwargs):
         dataloader = DataLoader(data, batch_size=self.args.batch_size)
 
-        result = self.evaluator.evaluate(dataloader=dataloader, model=model, client_id=self.client_id, device=device)
+        result = self.evaluator.evaluate(
+            dataloader=dataloader, model=model, client_id=self.client_id, device=device
+        )
         if "model" in result:
             model = result["model"]
             result.pop("model")
 
-        self.logger.info(f"Finish evaluating on client {self.client_id}, result: {result}")
+        self.logger.info(
+            f"Finish evaluating on client {self.client_id}, result: {result}"
+        )
         return result

@@ -10,8 +10,7 @@ from fedhf.api import opts
 
 
 class TestOpts:
-
     def test_get_opt(self):
-        args = opts().parse(['--num_clients', '10'])
+        args = opts().parse(["--num_clients", "10"])
 
         assert args.num_clients == 10

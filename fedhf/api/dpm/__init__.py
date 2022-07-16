@@ -14,15 +14,15 @@ from .gaussian import gaussian_noise, gaussian_clip
 from .laplace import laplace_noise, laplace_clip
 
 dp_mechanism_factory = {
-    'none': None,
-    'gaussian': gaussian_noise,
-    'laplace': laplace_noise,
+    "none": None,
+    "gaussian": gaussian_noise,
+    "laplace": laplace_noise,
 }
 
 dp_clip_factory = {
-    'none': None,
-    'gaussian': gaussian_clip,
-    'laplace': laplace_clip,
+    "none": None,
+    "gaussian": gaussian_clip,
+    "laplace": laplace_clip,
 }
 
 
@@ -36,12 +36,12 @@ def build_mechanism(mechanism, sensitivity, size, epsilon, **kwargs):
     :param kwargs: other parameters
     :return: the privacy mechanism
     """
-    if mechanism == 'none':
+    if mechanism == "none":
         return np.zeros(size)
     elif mechanism in dp_mechanism_factory:
         return dp_mechanism_factory[mechanism](sensitivity, size, epsilon, **kwargs)
     else:
-        raise ValueError('Unknown mechanism: %s' % mechanism)
+        raise ValueError("Unknown mechanism: %s" % mechanism)
 
 
 def build_clip_grad(mechanism, model, clip, **kwargs):
@@ -53,22 +53,22 @@ def build_clip_grad(mechanism, model, clip, **kwargs):
     :param kwargs: other parameters
     :return: None
     """
-    if mechanism == 'none':
+    if mechanism == "none":
         return
     elif mechanism in dp_clip_factory:
         dp_clip_factory[mechanism](model, clip, **kwargs)
     else:
-        raise ValueError('Unknown mechanism: %s' % mechanism)
+        raise ValueError("Unknown mechanism: %s" % mechanism)
 
 
 __all__ = [
-    'calculate_sensitivity',
-    'gaussian_noise',
-    'gaussian_clip',
-    'laplace_noise',
-    'laplace_clip',
-    'build_mechanism',
-    'build_clip_grad',
-    'dp_mechanism_factory',
-    'dp_clip_factory',
+    "calculate_sensitivity",
+    "gaussian_noise",
+    "gaussian_clip",
+    "laplace_noise",
+    "laplace_clip",
+    "build_mechanism",
+    "build_clip_grad",
+    "dp_mechanism_factory",
+    "dp_clip_factory",
 ]

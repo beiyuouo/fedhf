@@ -18,7 +18,14 @@ from fedhf.model import build_model
 
 class TestEvaluator:
     args = Config(
-        num_classes=10, model="mlp", dataset="mnist", batch_size=1, optim="sgd", lr=0.01, loss="ce", gpus="-1"
+        num_classes=10,
+        model="mlp",
+        dataset="mnist",
+        batch_size=1,
+        optim="sgd",
+        lr=0.01,
+        loss="ce",
+        gpus="-1",
     )
 
     def test_evaluate(self):
@@ -32,7 +39,9 @@ class TestEvaluator:
         dataloader = DataLoader(client_dataset, batch_size=self.args.batch_size)
 
         evaluator = Evaluator(self.args)
-        result = evaluator.evaluate(dataloader=dataloader, model=model, device=self.args.device)
+        result = evaluator.evaluate(
+            dataloader=dataloader, model=model, device=self.args.device
+        )
 
         assert "test_loss" in result.keys()
         assert "test_acc" in result.keys()
@@ -54,7 +63,9 @@ class TestEvaluator:
         dataloader = DataLoader(client_dataset, batch_size=self.args.batch_size)
 
         evaluator = Evaluator(self.args)
-        result = evaluator.evaluate(dataloader=dataloader, model=model, device=self.args.device)
+        result = evaluator.evaluate(
+            dataloader=dataloader, model=model, device=self.args.device
+        )
 
         assert "test_loss" in result.keys()
         assert "test_acc" in result.keys()

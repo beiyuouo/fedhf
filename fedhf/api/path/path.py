@@ -66,7 +66,11 @@ def scandir(dir_path, suffix=None, recursive=False, case_sensitive=True):
         raise TypeError('"suffix" must be a string or tuple of strings')
 
     if suffix is not None and not case_sensitive:
-        suffix = suffix.lower() if isinstance(suffix, str) else tuple(item.lower() for item in suffix)
+        suffix = (
+            suffix.lower()
+            if isinstance(suffix, str)
+            else tuple(item.lower() for item in suffix)
+        )
 
     root = dir_path
 
@@ -106,7 +110,9 @@ def find_vcs_root(path, markers=(".git",)):
 def increment_path(path, exist_ok=False, sep="", mkdir=False):
     path = Path(path)  # os-agnostic
     if path.exists() and not exist_ok:
-        path, suffix = (path.with_suffix(""), path.suffix) if path.is_file() else (path, "")
+        path, suffix = (
+            (path.with_suffix(""), path.suffix) if path.is_file() else (path, "")
+        )
 
         for n in range(2, 9999):
             p = f"{path}{sep}{n}{suffix}"  # increment path

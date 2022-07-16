@@ -12,7 +12,10 @@ from fedhf.api import Config
 from .fedasync_aggregator import FedAsyncAggregator
 from .fedasync_trainer import FedAsyncTrainer
 
-components = {"agg": {"fedasync": FedAsyncAggregator}, "trainer": {"fedasync": FedAsyncTrainer}}
+components = {
+    "agg": {"fedasync": FedAsyncAggregator},
+    "trainer": {"fedasync": FedAsyncTrainer},
+}
 
 default_params = Config()
 default_params.load(os.path.join(os.path.dirname(__file__), "default_params.yaml"))

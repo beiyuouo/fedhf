@@ -35,13 +35,17 @@ class TestClient(object):
         client_id = 0
 
         dataset = build_dataset(self.args.dataset)(self.args)
-        client = SimulatedClient(self.args, client_id=client_id, data_size=len(dataset.trainset))
+        client = SimulatedClient(
+            self.args, client_id=client_id, data_size=len(dataset.trainset)
+        )
 
         model = build_model(self.args.model)(self.args)
 
         client_dataset = ClientDataset(dataset.trainset, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 
-        model, result = client.train(data=client_dataset, model=model, device=self.args.device)
+        model, result = client.train(
+            data=client_dataset, model=model, device=self.args.device
+        )
 
         assert model is not None
 

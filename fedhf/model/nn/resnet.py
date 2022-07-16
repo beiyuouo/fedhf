@@ -12,6 +12,7 @@ import torch.nn as nn
 from torchvision import models
 
 from .base_model import BaseModel
+
 """
     Deep Residual Learning for Image Recognition
     Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun
@@ -20,7 +21,6 @@ from .base_model import BaseModel
 
 
 class ResNet(BaseModel):
-
     def __init__(self, args, model_time=None, model_version=0):
         super().__init__(args, model_time, model_version)
         self.net = models.resnet18(pretrained=True)

@@ -15,7 +15,13 @@ from fedhf.dataset import build_dataset
 
 
 class TestAlexNetCIFAR10(object):
-    args = Config(model="alexnet_cifar10", num_classes=10, dataset="cifar10", model_pretrained=True, gpus="-1")
+    args = Config(
+        model="alexnet_cifar10",
+        num_classes=10,
+        dataset="cifar10",
+        model_pretrained=True,
+        gpus="-1",
+    )
 
     def test_alexnet_cifar10(self):
         model = build_model(self.args.model)(self.args)

@@ -63,7 +63,11 @@ class DefaultEvaluator(BaseEvaluator):
         if self.args.use_wandb:
             if client_id == -1:
                 self.logger.to_wandb(
-                    {"acc on server": acc, "loss on server": losses, "epoch": model.get_model_version()}
+                    {
+                        "acc on server": acc,
+                        "loss on server": losses,
+                        "epoch": model.get_model_version(),
+                    }
                 )
 
         return {"test_loss": losses, "test_acc": acc}

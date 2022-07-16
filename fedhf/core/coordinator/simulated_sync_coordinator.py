@@ -41,14 +41,18 @@ class SimulatedSyncCoordinator(SimulatedBaseCoordinator):
                     )
                     model, result = client.train(self.data[client_id], model)
                     self.server.update(
-                        model, server_model_version=self.server.model.get_model_version(), client_id=client_id
+                        model,
+                        server_model_version=self.server.model.get_model_version(),
+                        client_id=client_id,
                     )
 
                 result = self.server.evaluate(self.dataset.testset)
                 self.logger.info(f"Server result: {result}")
 
                 if self.server.model.get_model_version() % self.args.chkp_interval == 0:
-                    self.server.model.save(f"{self.args.exp_name}-{self.server.model.get_model_version()}.pth")
+                    self.server.model.save(
+                        f"{self.args.exp_name}-{self.server.model.get_model_version()}.pth"
+                    )
 
             self.logger.info(f"All rounds finished.")
 

@@ -21,11 +21,19 @@ class FedAsyncAggregator(AsyncAggregator):
         assert self.algor != "" and self.algor is not None
 
         self.stragegy = args[self.algor].strategy
-        assert self.stragegy != "" and self.stragegy in ["constant", "hinge", "polynomial"]
+        assert self.stragegy != "" and self.stragegy in [
+            "constant",
+            "hinge",
+            "polynomial",
+        ]
 
         self.a = args[self.algor].a if args[self.algor].get("a") is not None else None
         self.b = args[self.algor].b if args[self.algor].get("b") is not None else None
-        self.alpha = args[self.algor].alpha if args[self.algor].get("alpha") is not None else None
+        self.alpha = (
+            args[self.algor].alpha
+            if args[self.algor].get("alpha") is not None
+            else None
+        )
 
         # asserts
         assert self.alpha is not None, "alpha is required"
@@ -62,7 +70,9 @@ class FedAsyncAggregator(AsyncAggregator):
         self.logger.info(
             f"Aggregated server model version: {server_model_version}, client model version: {client_model_version}"
         )
-        self.logger.info(f"FedAsyncAggregator agg alpha: {alpha} with stragegy: {self.stragegy}")
+        self.logger.info(
+            f"FedAsyncAggregator agg alpha: {alpha} with stragegy: {self.stragegy}"
+        )
 
         result = {
             "param": new_param,

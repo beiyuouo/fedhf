@@ -17,7 +17,6 @@ from fedhf.model import build_criterion, build_optimizer
 
 
 class AbsAttactor(ABC):
-
     def __init__(self, args):
         self.args = args
 
@@ -27,17 +26,24 @@ class AbsAttactor(ABC):
 
 
 class BaseAttactor(AbsAttactor):
-
     def __init__(self, args):
         super(BaseAttactor, self).__init__(args)
         self.crit = build_criterion(self.args.train_loss)
-        self.data_size = (self.args.batch_size, self.args.input_c, self.args.image_size,
-                          self.args.image_size)
+        self.data_size = (
+            self.args.batch_size,
+            self.args.input_c,
+            self.args.image_size,
+            self.args.image_size,
+        )
         self.label_size = (self.args.batch_size, self.args.num_classes)
 
     def attack(self, model, origin_grad):
-        dummy_data = torch.randn(self.data_size).to(self.args.device).requires_grad_(True)
-        dummy_label = torch.randn(self.label_size).to(self.args.device).requires_grad_(True)
+        dummy_data = (
+            torch.randn(self.data_size).to(self.args.device).requires_grad_(True)
+        )
+        dummy_label = (
+            torch.randn(self.label_size).to(self.args.device).requires_grad_(True)
+        )
         optimizer = torch.optim.LBFGS([dummy_data, dummy_label])
 
         for iters in range(300):
@@ -50,7 +56,7 @@ class BaseAttactor(AbsAttactor):
 
                 grad_diff = 0
                 for gx, gy in zip(dummy_grad, origin_grad):
-                    grad_diff += ((gx - gy)**2).sum()
+                    grad_diff += ((gx - gy) ** 2).sum()
                 grad_diff.backward()
                 return grad_diff
 

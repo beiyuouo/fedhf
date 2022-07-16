@@ -52,43 +52,63 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
                         high=min(
                             self.max_staleness,
                             max(self.server.model.get_model_version(), 0) + 1,
-                            self.server.model.get_model_version() - self._last_update_time[client_id] + 1,
+                            self.server.model.get_model_version()
+                            - self._last_update_time[client_id]
+                            + 1,
                         )
                         + 1,
                     )
 
-                    assert staleness <= max(0, self.server.model.get_model_version()) + 1
+                    assert (
+                        staleness <= max(0, self.server.model.get_model_version()) + 1
+                    )
                     assert staleness <= len(self._model_queue)
-                    assert staleness <= self.server.model.get_model_version() - self._last_update_time[client_id] + 1
+                    assert (
+                        staleness
+                        <= self.server.model.get_model_version()
+                        - self._last_update_time[client_id]
+                        + 1
+                    )
 
                     self.logger.info(
                         f"Client {client_id} staleness: {staleness} start train from model version : {self._model_queue[-staleness].get_model_version()}"
                     )
 
                     model, result = client.train(
-                        data=self.data[client_id], model=deepcopy(self._model_queue[-staleness])
+                        data=self.data[client_id],
+                        model=deepcopy(self._model_queue[-staleness]),
                     )
 
                     self.server.update(
                         model,
-                        server_model_version=max(0, self.server.model.get_model_version()),
+                        server_model_version=max(
+                            0, self.server.model.get_model_version()
+                        ),
                         client_model_version=max(0, model.get_model_version()),
                     )
 
                     result = self.server.evaluate(self.dataset.testset)
-                    self.logger.info(f"Server model version {self.server.model.get_model_version()} result: {result}")
-                    if self.server.model.get_model_version() % self.args.chkp_interval == 0:
+                    self.logger.info(
+                        f"Server model version {self.server.model.get_model_version()} result: {result}"
+                    )
+                    if (
+                        self.server.model.get_model_version() % self.args.chkp_interval
+                        == 0
+                    ):
                         self.logger.info(
                             f"Save model: {self.args.exp_name}-{self.server.model.get_model_version()}.pth"
                         )
                         self.server.model.save(
                             os.path.join(
-                                self.args.save_dir, f"{self.args.exp_name}-{self.server.model.get_model_version()}.pth"
+                                self.args.save_dir,
+                                f"{self.args.exp_name}-{self.server.model.get_model_version()}.pth",
                             )
                         )
 
                     self._model_queue.append(deepcopy(self.server.model))
-                    self._last_update_time[client_id] = self.server.model.get_model_version()
+                    self._last_update_time[
+                        client_id
+                    ] = self.server.model.get_model_version()
 
                     while len(self._model_queue) > self.max_staleness + 1:
                         self._model_queue.pop(0)

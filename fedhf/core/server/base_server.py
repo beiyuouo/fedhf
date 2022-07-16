@@ -10,7 +10,12 @@ from abc import ABC
 from torch.utils.data.dataloader import DataLoader
 
 from fedhf.api import Logger
-from fedhf.component import build_aggregator, build_selector, build_evaluator, build_encryptor
+from fedhf.component import (
+    build_aggregator,
+    build_selector,
+    build_evaluator,
+    build_encryptor,
+)
 from fedhf.model import build_model
 
 
@@ -47,4 +52,6 @@ class BaseServer(AbsServer):
 
     def evaluate(self, dataset, **kwargs):
         dataloader = DataLoader(dataset, batch_size=self.args.batch_size, shuffle=False)
-        return self.evaluator.evaluate(dataloader=dataloader, model=self.model, device=self.args.device, **kwargs)
+        return self.evaluator.evaluate(
+            dataloader=dataloader, model=self.model, device=self.args.device, **kwargs
+        )

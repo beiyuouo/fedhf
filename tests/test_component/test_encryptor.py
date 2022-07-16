@@ -16,7 +16,11 @@ class TestEncryptor:
     TestEncryptor is the class for testing the encryptor.
     """
 
-    args = Config(lr=0.1, dp={"mechanism": "none", "clip": 0.1, "epsilon": 0.1, "delta": 0.1}, gpus="-1")
+    args = Config(
+        lr=0.1,
+        dp={"mechanism": "none", "clip": 0.1, "epsilon": 0.1, "delta": 0.1},
+        gpus="-1",
+    )
 
     def test_none_encryptor(self):
         """

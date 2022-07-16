@@ -18,7 +18,12 @@ from fedhf.component import (
     selector_factory,
     trainer_factory,
 )
-from fedhf.model import model_factory, optimizer_factory, criterion_factory, lr_schedule_factory
+from fedhf.model import (
+    model_factory,
+    optimizer_factory,
+    criterion_factory,
+    lr_schedule_factory,
+)
 from fedhf.dataset import dataset_factory
 from fedhf.core import coordinator_factory, server_factory, client_factory
 
