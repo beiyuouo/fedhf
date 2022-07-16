@@ -8,7 +8,7 @@
 
 import os
 from typing import Any
-from fedhf.api import Config
+from fedhf.api import EmptyConfig
 from .fedasync_aggregator import FedAsyncAggregator
 from .fedasync_trainer import FedAsyncTrainer
 
@@ -17,5 +17,5 @@ components = {
     "trainer": {"fedasync": FedAsyncTrainer},
 }
 
-default_params = Config()
+default_params = EmptyConfig()
 default_params.load(os.path.join(os.path.dirname(__file__), "default_params.yaml"))

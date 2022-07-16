@@ -15,6 +15,8 @@ import torch
 from .opts import opts
 from ..path import *
 
+from ezkfg import Config as EmptyConfig
+
 
 class Config(ez.Config):
     def __init__(self, *args, **kwargs):

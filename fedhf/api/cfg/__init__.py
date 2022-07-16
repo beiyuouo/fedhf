@@ -6,7 +6,7 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-__all__ = ["opts", "Config"]
+__all__ = ["opts", "Config", "EmptyConfig"]
 
 from .opts import opts
-from .cfg import Config
+from .cfg import Config, EmptyConfig
