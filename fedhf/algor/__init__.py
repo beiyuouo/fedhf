@@ -9,15 +9,20 @@
 from typing import Any
 from .base import build_algor
 from fedhf.core.registor import register
+from fedhf.api import EmptyConfig
 
 
 def init_algor(args) -> Any:
     # register components
     algor = build_algor(args.algor)
+    temp_cfg = None
+    if args.get(args.algor, None) is not None:
+        temp_cfg = EmptyConfig(args.get(args.algor))
 
     # update parameters
-    algor.default_params.update(args)
-    args = algor.default_params
+    args.update(algor.default_params)
+    if temp_cfg is not None:
+        args[args.algor].update(temp_cfg)
 
     for component_name, component in algor.components.items():
         register(component_name, component)
