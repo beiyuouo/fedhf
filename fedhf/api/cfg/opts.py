@@ -92,8 +92,14 @@ class opts(object):
         self.parser.add_argument(
             "--save_dir",
             type=str,
-            default="./chkp",
-            help="where to save the model and result to disk.",
+            default="./runs",
+            help="where to save the result to disk.",
+        )
+        self.parser.add_argument(
+            "--weights_dir",
+            type=str,
+            default=None,
+            help="where to save the model weights to disk.",
         )
 
         # model setting

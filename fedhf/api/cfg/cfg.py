@@ -54,7 +54,11 @@ class Config(ez.Config):
         self.save_dir = increment_path(
             self.save_dir, exist_ok=self.exist_ok, mkdir=True
         )
-        # self.save_dir.mkdir(parents=True, exist_ok=True)
+        if not self.weights_dir:
+            self.weights_dir = self.save_dir / "weights"
+        else:
+            self.weights_dir = self.save_dir / self.weights_dir
+        self.weights_dir.mkdir(parents=True, exist_ok=True)
         self.data_dir = Path(self.data_dir)
 
         # logger
