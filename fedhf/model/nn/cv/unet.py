@@ -113,7 +113,7 @@ class UNet(BaseModel):
     def __init__(self, args, model_time=None, model_version=0):
         super().__init__(args, model_time, model_version)
         self.add_default_args(self.default_params)
-        print("UNet:", self.args.unet)
+        # print("UNet:", self.args.unet)
 
         self.input_c = self.args.input_c
         self.output_c = self.args.output_c

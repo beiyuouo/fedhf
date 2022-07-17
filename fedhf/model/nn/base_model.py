@@ -54,5 +54,4 @@ class BaseModel(nn.Module):
         self.load_state_dict(checkpoint["state_dict"])
 
     def add_default_args(self, args) -> None:
-        args.update(self.args)
-        self.args = args
+        self.args.merge(args, overwrite=False)
