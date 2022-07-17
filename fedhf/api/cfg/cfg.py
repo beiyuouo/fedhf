@@ -71,9 +71,13 @@ class Config(ez.Config):
 
         if self.log_file is None:
             self.log_file = self.log_dir / f"{self.exp_name}.log"
+        else:
+            self.log_file = self.log_dir / self.log_file
 
         if self.log_metric is None:
             self.log_metric = self.log_dir / f"{self.exp_name}.metric.log"
+        else:
+            self.log_metric = self.log_dir / self.log_metric
 
         # device
         self.gpus_str = str(self.gpus)
