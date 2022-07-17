@@ -75,6 +75,9 @@ class opts(object):
             "--log_file", default=None, type=str, help="where to save log"
         )
         self.parser.add_argument(
+            "--log_metric", default=None, type=str, help="where to save metric"
+        )
+        self.parser.add_argument(
             "--log_level",
             default="debug",
             type=str,

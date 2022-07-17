@@ -72,6 +72,9 @@ class Config(ez.Config):
         if self.log_file is None:
             self.log_file = self.log_dir / f"{self.exp_name}.log"
 
+        if self.log_metric is None:
+            self.log_metric = self.log_dir / f"{self.exp_name}.metric.log"
+
         # device
         self.gpus_str = str(self.gpus)
         self.gpus = [int(gpu) for gpu in self.gpus.split(",")]
