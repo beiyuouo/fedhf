@@ -79,7 +79,9 @@ class SimulatedBaseCoordinator(AbsCoordinator):
     def evaluate_on_client(self) -> None:
         self.logger.info("evaluate on client")
         for client_id in self.client_list:
-            client = build_client(self.args.deploy_mode)(self.args, client_id)
+            client = build_client(self.args.deploy_mode)(
+                self.args, client_id, data_size=len(self.data[client_id])
+            )
             result = client.evaluate(data=self.data[client_id], model=self.server.model)
             self.logger.info(f"client {client_id} result: {result}")
         result = self.server.evaluate(self.dataset.testset)
