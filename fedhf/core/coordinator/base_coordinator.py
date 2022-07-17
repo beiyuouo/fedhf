@@ -7,9 +7,6 @@
 # @License :   Apache License 2.0
 
 from abc import ABC, abstractmethod
-
-import threading
-
 from fedhf.api import Logger
 from fedhf.core import build_server, build_client
 from fedhf.component import build_sampler
@@ -17,7 +14,6 @@ from fedhf.dataset import ClientDataset, build_dataset
 
 
 class AbsCoordinator(ABC):
-
     def __init__(self) -> None:
         super().__init__()
 
@@ -39,7 +35,6 @@ class AbsCoordinator(ABC):
 
 
 class SimulatedBaseCoordinator(AbsCoordinator):
-
     def __init__(self, args) -> None:
         super().__init__()
         self.args = args
@@ -52,8 +47,10 @@ class SimulatedBaseCoordinator(AbsCoordinator):
         if self.args.test:
             # reduce data for test
             self.data = [
-                ClientDataset(self.dataset.trainset,
-                              range(i * self.args.batch_size, (i + 1) * self.args.batch_size))
+                ClientDataset(
+                    self.dataset.trainset,
+                    range(i * self.args.batch_size, (i + 1) * self.args.batch_size),
+                )
                 for i in range(self.args.num_clients)
             ]
         else:
@@ -73,16 +70,20 @@ class SimulatedBaseCoordinator(AbsCoordinator):
                 self.logger.info("Evaluate on client")
                 for client_id in self.client_list:
                     client = build_client(self.args.deploy_mode)(self.args, client_id)
-                    result = client.evaluate(data=self.data[client_id], model=self.server.model)
-                    self.logger.info(f'Client {client_id} result: {result}')
+                    result = client.evaluate(
+                        data=self.data[client_id], model=self.server.model
+                    )
+                    self.logger.info(f"Client {client_id} result: {result}")
 
             result = self.server.evaluate(self.dataset.testset)
-            self.logger.info(f'Server result: {result}')
-            self.logger.info(f'Final server model version: {self.server.model.get_model_version()}')
+            self.logger.info(f"Server result: {result}")
+            self.logger.info(
+                f"Final server model version: {self.server.model.get_model_version()}"
+            )
         except KeyboardInterrupt:
-            self.logger.info(f'Interrupted by user.')
+            self.logger.info(f"Interrupted by user.")
 
-        self.logger.info(f'All finished.')
+        self.logger.info(f"All finished.")
 
     def run(self) -> None:
         self.prepare()

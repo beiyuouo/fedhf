@@ -18,7 +18,6 @@ from .base_aggregator import BaseAggregator
 
 
 class AsyncAggregator(BaseAggregator):
-
     def __init__(self, args) -> None:
         super(AsyncAggregator, self).__init__(args)
         self.alpha = 0.6
@@ -28,17 +27,14 @@ class AsyncAggregator(BaseAggregator):
             return
 
         alpha = self.alpha
-        new_param = torch.mul(1 - alpha, server_param) + \
-                                torch.mul(alpha, client_param)
+        new_param = torch.mul(1 - alpha, server_param) + torch.mul(alpha, client_param)
 
         result = {
-            'param':
-                new_param,
-            'model_version':
-                kwargs["server_model_version"] +
-                1 if "server_model_version" in kwargs.keys() else 0,
-            'model_time':
-                time.time()
+            "param": new_param,
+            "model_version": kwargs["server_model_version"] + 1
+            if "server_model_version" in kwargs.keys()
+            else 0,
+            "model_time": time.time(),
         }
         return result
 

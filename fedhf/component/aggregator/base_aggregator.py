@@ -11,7 +11,6 @@ from fedhf.api import Logger
 
 
 class AbsAggregator(ABC):
-
     def __init__(self) -> None:
         super().__init__()
 
@@ -25,7 +24,6 @@ class AbsAggregator(ABC):
 
 
 class BaseAggregator(AbsAggregator):
-
     def __init__(self, args) -> None:
         self.args = args
         self.logger = Logger(self.args)

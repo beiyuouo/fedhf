@@ -10,9 +10,9 @@ from .base_encryptor import AbsEncryptor, BaseEncryptor
 from .dp_encryptor import DPEncryptor
 
 encryptor_factory = {
-    'none': BaseEncryptor,
-    'base': BaseEncryptor,
-    'dp': DPEncryptor,
+    "none": BaseEncryptor,
+    "base": BaseEncryptor,
+    "dp": DPEncryptor,
 }
 
 
@@ -23,5 +23,5 @@ def build_encryptor(encryptor_name):
     :return: the crypor mechanism
     """
     if encryptor_name not in encryptor_factory:
-        raise ValueError('Unknown crypor mechanism: {}'.format(encryptor_name))
+        raise ValueError("Unknown crypor mechanism: {}".format(encryptor_name))
     return encryptor_factory[encryptor_name]

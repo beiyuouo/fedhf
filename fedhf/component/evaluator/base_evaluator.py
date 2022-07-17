@@ -13,7 +13,6 @@ from fedhf.api import Logger
 
 
 class AbsEvaluator(ABC):
-
     def __init__(self) -> None:
         super().__init__()
 
@@ -23,7 +22,6 @@ class AbsEvaluator(ABC):
 
 
 class BaseEvaluator(AbsEvaluator):
-
     def __init__(self, args) -> None:
         self.args = args
         self.crit = build_criterion(self.args.loss)

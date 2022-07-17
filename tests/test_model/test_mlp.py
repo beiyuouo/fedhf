@@ -7,25 +7,22 @@
 # @License :   Apache License 2.0
 
 import torch
-from torch import optim
 from torch.utils.data import DataLoader
 
-from fedhf.api import opts
+import fedhf
+from fedhf import Config
 from fedhf.model import build_model, build_optimizer
 from fedhf.dataset import build_dataset
 
 
 class TestMLP(object):
-    args = opts().parse([
-        '--model', 'mlp', '--num_classes', '10', '--dataset', 'mnist', '--gpus', '-1', '--task',
-        'classification'
-    ])
+    args = fedhf.init(model="mlp", num_classes=10, dataset="mnist", gpus="-1")
 
     def test_mlp(self):
         model = build_model(self.args.model)(self.args)
         print(model)
 
-        assert model.__class__.__name__ == 'MLP'
+        assert model.__class__.__name__ == "MLP"
         assert model.layer_hidden.out_features == 10
 
         dataset = build_dataset(self.args.dataset)(self.args)
@@ -38,7 +35,7 @@ class TestMLP(object):
             output = model(data)
             assert output.shape == (1, 10)
             assert output.dtype == torch.float32
-            assert output.device == torch.device('cpu')
+            assert output.device == torch.device("cpu")
             break
 
         model.save()

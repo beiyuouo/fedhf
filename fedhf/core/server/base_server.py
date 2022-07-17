@@ -9,13 +9,17 @@
 from abc import ABC
 from torch.utils.data.dataloader import DataLoader
 
-from fedhf.api import Logger, Serializer, Deserializer
-from fedhf.component import build_aggregator, build_selector, build_evaluator, build_trainer, build_encryptor
-from fedhf.model import build_criterion, build_model, build_optimizer
+from fedhf.api import Logger
+from fedhf.component import (
+    build_aggregator,
+    build_selector,
+    build_evaluator,
+    build_encryptor,
+)
+from fedhf.model import build_model
 
 
 class AbsServer(ABC):
-
     def __init__(self) -> None:
         super().__init__()
 
@@ -30,7 +34,6 @@ class AbsServer(ABC):
 
 
 class BaseServer(AbsServer):
-
     def __init__(self, args) -> None:
         self.args = args
 
@@ -39,14 +42,16 @@ class BaseServer(AbsServer):
 
         self.model = build_model(self.args.model)(self.args, model_version=0)
         self.evaluator = build_evaluator(self.args.evaluator)(self.args)
-        # self.encryptor = build_encryptor(self.args.encryptor)(self.args)
+        if self.args.get("encryptor"):
+            self.encryptor = build_encryptor(self.args.encryptor)(self.args)
+
         self.logger = Logger(self.args)
 
     def select(self, client_list: list):
         return self.selector.select(client_list)
 
-    def evaluate(self, dataset):
+    def evaluate(self, dataset, **kwargs):
         dataloader = DataLoader(dataset, batch_size=self.args.batch_size, shuffle=False)
-        return self.evaluator.evaluate(dataloader=dataloader,
-                                       model=self.model,
-                                       device=self.args.device)
+        return self.evaluator.evaluate(
+            dataloader=dataloader, model=self.model, device=self.args.device, **kwargs
+        )

@@ -1,30 +1,24 @@
-#!/usr/bin/env python 
-# -*- coding: utf-8 -*- 
-# @File    :   tests\test_dataset\test_clientdataset.py 
-# @Time    :   2022-05-03 12:01:34 
-# @Author  :   Bingjie Yan 
-# @Email   :   bj.yan.pa@qq.com 
-# @License :   Apache License 2.0 
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @File    :   tests\test_dataset\test_clientdataset.py
+# @Time    :   2022-05-03 12:01:34
+# @Author  :   Bingjie Yan
+# @Email   :   bj.yan.pa@qq.com
+# @License :   Apache License 2.0
 
 
-import torch
-
-from fedhf.api import opts
+import fedhf
+from fedhf import Config
 from fedhf.dataset import ClientDataset, build_dataset
-from fedhf.component import build_sampler
 
 
 class TestClientDataset(object):
-    args = opts().parse([
-        '--num_classes', '10', '--dataset_root', './dataset', '--dataset',
-        'mnist'
-    ])
+    args = fedhf.init(num_classes=10, dataset="mnist")
 
     def test_clientdataset_mnist(self):
         dataset = build_dataset(self.args.dataset)(self.args)
 
-        client_dataset = ClientDataset(dataset.trainset,
-                                       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+        client_dataset = ClientDataset(dataset.trainset, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 
         assert len(client_dataset) == 10
         assert type(client_dataset) == ClientDataset

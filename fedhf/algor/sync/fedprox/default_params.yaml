@@ -1,0 +1,6 @@
+scheme: sync
+algor: fedprox
+agg: fedprox
+
+fedprox:
+  rho: 0.005

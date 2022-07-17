@@ -10,7 +10,6 @@ from abc import ABC, abstractmethod
 
 from fedhf.api import Logger
 from fedhf.component import build_evaluator, build_trainer, build_encryptor
-from fedhf.model import build_criterion, build_model, build_optimizer
 
 
 class AbsClient(ABC):
@@ -32,6 +31,8 @@ class BaseClient(AbsClient):
 
         self.trainer = build_trainer(self.args.trainer)(self.args)
         self.evaluator = build_evaluator(self.args.evaluator)(self.args)
-        # self.encryptor = build_encryptor(self.args.encryptor)(self.args)
+        self.encryptor = None
+        if self.args.get("encryptor"):
+            self.encryptor = build_encryptor(self.args.encryptor)(self.args)
 
-        self.logger = Logger(args)
+        self.logger = Logger(self.args)

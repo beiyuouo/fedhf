@@ -11,14 +11,15 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from fedhf.api import opts, dpm
+from fedhf import Config, dpm
+import fedhf
 
 from fedhf.model.nn import MLP
 from fedhf.dataset.random import RandomDataset
 
 
 class TestDPM:
-    args = opts().parse([])
+    args = fedhf.init()
 
     def test_calculate_sensitivity(self):
         lr = 0.1
@@ -28,19 +29,23 @@ class TestDPM:
         assert sensitivity == 2 * lr * clip / data_size
 
     def test_none(self):
-        dpm.build_mechanism('none', dpm.calculate_sensitivity(0.1, 10, 100), 100, 0.1)
+        dpm.build_mechanism("none", dpm.calculate_sensitivity(0.1, 10, 100), 100, 0.1)
         assert np.all(
-            dpm.build_mechanism('none', dpm.calculate_sensitivity(0.1, 10, 100), 100, 0.1) == 0)
+            dpm.build_mechanism(
+                "none", dpm.calculate_sensitivity(0.1, 10, 100), 100, 0.1
+            )
+            == 0
+        )
 
     def test_gaussian_noise(self):
-        dpm.build_mechanism('gaussian',
-                            dpm.calculate_sensitivity(0.1, 10, 100),
-                            100,
-                            0.1,
-                            delta=0.1)
+        dpm.build_mechanism(
+            "gaussian", dpm.calculate_sensitivity(0.1, 10, 100), 100, 0.1, delta=0.1
+        )
 
     def test_laplace_noise(self):
-        dpm.build_mechanism('laplace', dpm.calculate_sensitivity(0.1, 10, 100), 100, 0.1)
+        dpm.build_mechanism(
+            "laplace", dpm.calculate_sensitivity(0.1, 10, 100), 100, 0.1
+        )
 
     def test_none_clip(self):
         model = MLP(None, input_dim=10 * 10, output_dim=10)
@@ -63,7 +68,7 @@ class TestDPM:
             # optim.zero_grad()
 
         grads = {k: v.grad.detach().numpy().copy() for k, v in model.named_parameters()}
-        dpm.build_clip_grad('none', model, 0.1)
+        dpm.build_clip_grad("none", model, 0.1)
 
         # check grad is not changed
 
@@ -92,7 +97,7 @@ class TestDPM:
         clip = 1e-8
         grads = {k: v.grad.detach().numpy().copy() for k, v in model.named_parameters()}
         print(grads)
-        dpm.build_clip_grad('gaussian', model, clip)
+        dpm.build_clip_grad("gaussian", model, clip)
 
         for k, v in model.named_parameters():
             assert np.all(np.abs(v.grad.detach().numpy()) <= clip)
@@ -120,7 +125,7 @@ class TestDPM:
         clip = 1e-8
         grads = {k: v.grad.detach().numpy().copy() for k, v in model.named_parameters()}
         print(grads)
-        dpm.build_clip_grad('laplace', model, clip)
+        dpm.build_clip_grad("laplace", model, clip)
 
         for k, v in model.named_parameters():
             assert np.all(np.abs(v.grad.detach().numpy()) <= clip)

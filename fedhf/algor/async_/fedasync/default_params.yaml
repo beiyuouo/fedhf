@@ -1,0 +1,10 @@
+scheme: async # sync | async
+algor: fedasync
+agg: fedasync
+trainer: fedasync
+
+fedasync:
+  strategy: constant # constant | hinge | polynomial
+  alpha: 0.6
+  rho: 0.005
+  max_staleness: 16

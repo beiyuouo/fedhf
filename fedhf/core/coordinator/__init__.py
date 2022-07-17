@@ -7,8 +7,11 @@
 # @License :   Apache License 2.0
 
 __all__ = [
-    "SimulatedSyncCoordinator", "SimulatedAsyncCoordinator", "build_coordinator",
-    "coordinator_factory", "SimulatedBaseCoordinator"
+    "build_coordinator",
+    "coordinator_factory",
+    "SimulatedBaseCoordinator",
+    "SimulatedSyncCoordinator",
+    "SimulatedAsyncCoordinator",
 ]
 
 from .base_coordinator import SimulatedBaseCoordinator
@@ -17,13 +20,13 @@ from .simulated_sync_coordinator import SimulatedSyncCoordinator
 from .simulated_async_coordinator import SimulatedAsyncCoordinator
 
 coordinator_factory = {
-    'simulated_sync': SimulatedSyncCoordinator,
-    'simulated_async': SimulatedAsyncCoordinator,
+    "simulated_sync": SimulatedSyncCoordinator,
+    "simulated_async": SimulatedAsyncCoordinator,
 }
 
 
 def build_coordinator(coordinator_type):
     if coordinator_type not in coordinator_factory:
-        raise ValueError(f'Unknown coordinator type: {coordinator_type}')
+        raise ValueError(f"Unknown coordinator type: {coordinator_type}")
     coordinator = coordinator_factory[coordinator_type]
     return coordinator

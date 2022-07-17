@@ -23,7 +23,7 @@ def fopen(filepath, *args, **kwargs):
         return open(filepath, *args, **kwargs)
     elif isinstance(filepath, Path):
         return filepath.open(*args, **kwargs)
-    raise ValueError('`filepath` should be a string or a Path')
+    raise ValueError("`filepath` should be a string or a Path")
 
 
 def check_file_exist(filename, msg_tmpl='file "{}" does not exist'):
@@ -32,7 +32,7 @@ def check_file_exist(filename, msg_tmpl='file "{}" does not exist'):
 
 
 def mkdir_or_exist(dir_name, mode=0o777):
-    if dir_name == '':
+    if dir_name == "":
         return
     dir_name = osp.expanduser(dir_name)
     os.makedirs(dir_name, mode=mode, exist_ok=True)
@@ -66,14 +66,17 @@ def scandir(dir_path, suffix=None, recursive=False, case_sensitive=True):
         raise TypeError('"suffix" must be a string or tuple of strings')
 
     if suffix is not None and not case_sensitive:
-        suffix = suffix.lower() if isinstance(suffix, str) else tuple(item.lower()
-                                                                      for item in suffix)
+        suffix = (
+            suffix.lower()
+            if isinstance(suffix, str)
+            else tuple(item.lower() for item in suffix)
+        )
 
     root = dir_path
 
     def _scandir(dir_path, suffix, recursive, case_sensitive):
         for entry in os.scandir(dir_path):
-            if not entry.name.startswith('.') and entry.is_file():
+            if not entry.name.startswith(".") and entry.is_file():
                 rel_path = osp.relpath(entry.path, root)
                 _rel_path = rel_path if case_sensitive else rel_path.lower()
                 if suffix is None or _rel_path.endswith(suffix):
@@ -85,7 +88,7 @@ def scandir(dir_path, suffix=None, recursive=False, case_sensitive=True):
     return _scandir(dir_path, suffix, recursive, case_sensitive)
 
 
-def find_vcs_root(path, markers=('.git', )):
+def find_vcs_root(path, markers=(".git",)):
     """Finds the root directory (including itself) of specified markers.
     Args:
         path (str): Path of directory or file.
@@ -102,3 +105,21 @@ def find_vcs_root(path, markers=('.git', )):
             return cur
         prev, cur = cur, osp.split(cur)[0]
     return None
+
+
+def increment_path(path, exist_ok=False, sep="", mkdir=False):
+    path = Path(path)  # os-agnostic
+    if path.exists() and not exist_ok:
+        path, suffix = (
+            (path.with_suffix(""), path.suffix) if path.is_file() else (path, "")
+        )
+
+        for n in range(2, 9999):
+            p = f"{path}{sep}{n}{suffix}"  # increment path
+            if not os.path.exists(p):
+                break
+        path = Path(p)
+
+    if mkdir:
+        path.mkdir(parents=True, exist_ok=True)  # make directory
+    return path

@@ -6,4 +6,24 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-__version__ = "0.2.3"
+# import utils api
+from .api import *
+from .algor import *
+from .core import register, register_all
+
+
+def init(*args, **kwargs):
+    args = Config().parse_cfg(*args, **kwargs)
+    args = init_algor(args)
+    return args
+
+
+def run(args=None):
+    if args is None:
+        args = init()
+
+    from .core import build_coordinator
+
+    coordinator_type = args.get("coordinator", f"{args.deploy_mode}_{args.scheme}")
+    coordinator = build_coordinator(coordinator_type)(args)
+    coordinator.run()

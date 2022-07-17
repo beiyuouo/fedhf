@@ -19,8 +19,8 @@ def gaussian_noise(sensitivity, size, epsilon, **kwargs):
     :param kwargs: other parameters
     :return: the generated noise
     """
-    assert 'delta' in kwargs, 'delta is required'
-    delta = kwargs['delta']
+    assert "delta" in kwargs, "delta is required"
+    delta = kwargs["delta"]
     noise_scale = np.sqrt(2 * np.log(1.25 / delta)) * sensitivity / epsilon
     return np.random.normal(0, noise_scale, size)
 

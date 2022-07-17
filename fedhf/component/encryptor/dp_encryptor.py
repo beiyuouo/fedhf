@@ -25,10 +25,12 @@ class DPEncryptor(BaseEncryptor):
         :param args: the arguments
         """
         super().__init__(args)
-        assert kwargs['data_size'] is not None
-        self.data_size = kwargs['data_size']
-        self.sensitivity = dpm.calculate_sensitivity(self.args.lr, self.args.dp_clip,
-                                                     self.data_size)
+        assert kwargs["data_size"] is not None
+        self.data_size = kwargs["data_size"]
+        assert hasattr(args, "dp"), "The args must have the dp attribute."
+        self.sensitivity = dpm.calculate_sensitivity(
+            self.args.lr, self.args.dp.clip, self.data_size
+        )
 
     def generate_noise(self, size):
         """
@@ -37,11 +39,11 @@ class DPEncryptor(BaseEncryptor):
         :return: the encrypted data
         """
         return dpm.build_mechanism(
-            self.args.dp_mechanism,
+            self.args.dp.mechanism,
             self.sensitivity,
             size,
-            self.args.dp_epsilon,
-            delta=self.args.dp_delta if hasattr(self.args, 'dp_delta') else None,
+            self.args.dp.epsilon,
+            delta=self.args.dp.delta if hasattr(self.args.dp, "delta") else None,
         )
 
     def clip_grad(self, model):
@@ -50,9 +52,9 @@ class DPEncryptor(BaseEncryptor):
         :param model: the model
         """
         dpm.build_clip_grad(
-            self.args.dp_mechanism,
+            self.args.dp.mechanism,
             model,
-            self.args.dp_clip,
+            self.args.dp.clip,
         )
 
     def encrypt_model(self, model):

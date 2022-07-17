@@ -13,7 +13,6 @@ from .base_sampler import BaseSampler
 
 
 class NonIIDSampler(BaseSampler):
-
     def __init__(self, args) -> None:
         super(NonIIDSampler, self).__init__(args)
 
@@ -30,7 +29,19 @@ class NonIIDSampler(BaseSampler):
             [type]: [description]
         """
         num_items_train = int(len(train_dataset) / self.args.num_clients)
-        num_shards_train = len(train_dataset) // self.args.sampler_num_samples
+        sampler_num_samples = (
+            self.args.sampler_num_samples
+            if self.args.get("sampler_num_samples") is not None
+            else 1
+        )
+        sampler_num_samples = int(sampler_num_samples)
+        sampler_num_classes = (
+            self.args.sampler_num_classes
+            if self.args.get("sampler_num_classes") is not None
+            else 1
+        )
+        sampler_num_classes = int(sampler_num_classes)
+        num_shards_train = len(train_dataset) // sampler_num_samples
 
         if test_dataset is not None:
             num_items_test = len(test_dataset) // self.args.num_classes
@@ -60,48 +71,86 @@ class NonIIDSampler(BaseSampler):
         client_data_train = {i: np.array([]) for i in range(self.args.num_clients)}
         client_data_test = {i: np.array([]) for i in range(self.args.num_clients)}
 
-        unbalance_rate = 1.0 if self.args.sampler_unbalance_rate is None else self.args.sampler_unbalance_rate
+        unbalance_rate = (
+            1.0
+            if self.args.get("sampler_unbalance_rate") is None
+            else self.args.sampler_unbalance_rate
+        )
+        unbalance_rate = float(unbalance_rate)
 
         for i in range(self.args.num_clients):
-            rand_set = set(np.random.choice(idx_shard, self.args.sampler_num_classes,
-                                            replace=False))
+            rand_set = set(
+                np.random.choice(idx_shard, sampler_num_classes, replace=False)
+            )
             idx_shard = list(set(idx_shard) - rand_set)
 
             unbalance_flag = 0
             client_data_train[i] = np.array([], dtype=np.int32)
             client_label = np.array([])
 
-            for rand in rand_set:
+            for rand_item in rand_set:
                 if unbalance_flag == 0:
                     client_data_train[i] = np.concatenate(
-                        (client_data_train[i],
-                         idxs[self.args.sampler_num_samples * rand:self.args.sampler_num_samples *
-                              (rand + 1)]),
-                        axis=0)
+                        (
+                            client_data_train[i],
+                            idxs[
+                                sampler_num_samples
+                                * rand_item : int(sampler_num_samples * (rand_item + 1))
+                            ],
+                        ),
+                        axis=0,
+                    )
                     client_label = np.concatenate(
-                        (client_label, labels[self.args.sampler_num_samples *
-                                              rand:self.args.sampler_num_samples * (rand + 1)]),
-                        axis=0)
+                        (
+                            client_label,
+                            labels[
+                                sampler_num_samples
+                                * rand_item : int(sampler_num_samples * (rand_item + 1))
+                            ],
+                        ),
+                        axis=0,
+                    )
                 else:
                     client_data_train[i] = np.concatenate(
-                        (client_data_train[i],
-                         idxs[self.args.sampler_num_samples * rand:self.args.sampler_num_samples *
-                              (rand + unbalance_rate)]),
-                        axis=0)
+                        (
+                            client_data_train[i],
+                            idxs[
+                                sampler_num_samples
+                                * rand_item : int(
+                                    sampler_num_samples * (rand_item + unbalance_rate)
+                                )
+                            ],
+                        ),
+                        axis=0,
+                    )
                     client_label = np.concatenate(
-                        (client_label,
-                         labels[self.args.sampler_num_samples * rand:self.args.sampler_num_samples *
-                                (rand + unbalance_rate)]),
-                        axis=0)
+                        (
+                            client_label,
+                            labels[
+                                sampler_num_samples
+                                * rand_item : int(
+                                    sampler_num_samples * (rand_item + unbalance_rate)
+                                )
+                            ],
+                        ),
+                        axis=0,
+                    )
                 unbalance_flag = 1
             client_label_set = set(client_label)
 
             if test_dataset is not None:
                 for label in client_label_set:
                     client_data_test[i] = np.concatenate(
-                        (client_data_test[i],
-                         idxs_test[int(label) * num_items_test:int(label + 1) * num_items_test]),
-                        axis=0)
+                        (
+                            client_data_test[i],
+                            idxs_test[
+                                int(label)
+                                * num_items_test : int(label + 1)
+                                * num_items_test
+                            ],
+                        ),
+                        axis=0,
+                    )
 
         if test_dataset is None:
             return [
@@ -109,6 +158,10 @@ class NonIIDSampler(BaseSampler):
                 for i in range(self.args.num_clients)
             ]
         else:
-            return [(ClientDataset(train_dataset, list(client_data_train[i])),
-                     ClientDataset(test_dataset, list(client_data_test[i])))
-                    for i in range(self.args.num_clients)]
+            return [
+                (
+                    ClientDataset(train_dataset, list(client_data_train[i])),
+                    ClientDataset(test_dataset, list(client_data_test[i])),
+                )
+                for i in range(self.args.num_clients)
+            ]

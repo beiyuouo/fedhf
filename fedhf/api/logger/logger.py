@@ -9,20 +9,20 @@
 import os
 import logging
 import sys
-import wandb
 import time
+from typing import Dict, Optional, Union
 
 from .base_logger import BaseLogger, logger_map
 
-logging.basicConfig(stream=sys.stdout,
-                    level=logging.INFO,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    stream=sys.stdout,
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
 
 
 class Logger(BaseLogger):
-
     class __Logger(BaseLogger):
-
         def __init__(self, args):
             if args.log_level in logger_map:
                 self.log_level = logger_map[args.log_level]
@@ -37,13 +37,13 @@ class Logger(BaseLogger):
             self.logger = logging.getLogger(self.log_name)
             self.logger.setLevel(self.log_level)
 
-            formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+            formatter = logging.Formatter(
+                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+            )
 
-            if args.log_file is None:
-                os.makedirs(os.path.join('log'), exist_ok=True)
-                args.log_file = os.path.join('log', f'log_{int(time.time())}.log')
+            self.log_metric = args.log_metric
 
-            file_handler = logging.FileHandler(args.log_file, mode='w')
+            file_handler = logging.FileHandler(args.log_file, mode="w")
             file_handler.setLevel(level=self.log_level)
             file_handler.setFormatter(formatter)
             self.logger.addHandler(file_handler)
@@ -55,11 +55,15 @@ class Logger(BaseLogger):
             self.logger.addHandler(stream_handler)
 
             if args.use_wandb:
+                import wandb
+
                 self.use_wandb = args.use_wandb
-                wandb.init(project=args.project_name,
-                           config=args,
-                           reinit=args.wandb_reinit,
-                           name=args.name)
+                wandb.init(
+                    project=args.project_name,
+                    config=args,
+                    reinit=args.wandb_reinit,
+                    name=args.name,
+                )
 
         def debug(self, log_str: str) -> None:
             self.logger.debug(log_str)
@@ -75,15 +79,21 @@ class Logger(BaseLogger):
 
         def log(self, log_dict: dict, *args, **kwargs) -> None:
             # log one line in result.csv
-
-            with open(args.log_file, 'a') as f:
-                f.write(str(log_dict) + '\n')
+            with open(self.log_file, "a") as f:
+                f.write(str(log_dict) + "\n")
 
             if self.use_wandb:
                 self.to_wandb(log_dict, *args, **kwargs)
 
         def to_wandb(self, log_dict: dict, *args, **kwargs) -> None:
+            import wandb
+
             wandb.log(log_dict, *args, **kwargs)
+
+        def log_metric(self, log_info: Union[Dict, str] = None) -> None:
+            # log one line in result.csv
+            with open(self.log_metric, "a") as f:
+                f.write(str(log_info) + "\n")
 
     __instance = None
 
@@ -104,9 +114,12 @@ class Logger(BaseLogger):
     def error(self, log_str: str) -> None:
         self.__instance.error(log_str)
 
-    def log(self, log_dict: dict, *args, **kwargs) -> None:
+    def log(self, log_dict, *args, **kwargs) -> None:
         self.__instance.log(log_dict, args, kwargs)
 
-    def to_wandb(self, log_dict: dict, *args, **kwargs) -> None:
+    def log_metric(self, log_info, *args, **kwargs) -> None:
+        self.__instance.log_metric(log_info, args, kwargs)
+
+    def to_wandb(self, log_dict, *args, **kwargs) -> None:
         if self.__instance.use_wandb:
             self.__instance.to_wandb(log_dict, args, kwargs)

@@ -1,0 +1,8 @@
+scheme: async # sync | async
+algor: fedasync
+select_ratio: 1.0
+deploy_mode: simulated # simulated | standalone | distributed
+
+fedasync:
+  strategy: constant # constant | hinge | polynomial
+  alpha: 0.5
