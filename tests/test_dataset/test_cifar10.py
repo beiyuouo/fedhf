@@ -8,12 +8,13 @@
 
 import numpy as np
 
+import fedhf
 from fedhf import Config
 from fedhf.dataset import build_dataset
 
 
 class TestCIFAR10(object):
-    args = Config(num_classes=10, dataset="cifar10")
+    args = fedhf.init(num_classes=10, dataset="cifar10")
 
     def test_cifar10(self):
         dataset = build_dataset(self.args.dataset)(self.args)

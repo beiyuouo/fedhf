@@ -13,7 +13,7 @@ from .core import register, register_all
 
 
 def init(*args, **kwargs):
-    args = Config(*args, **kwargs)
+    args = Config().parse_cfg(*args, **kwargs)
     args = init_algor(args)
     return args
 

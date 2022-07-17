@@ -7,6 +7,7 @@
 # @License :   Apache License 2.0
 
 from fedhf import Config
+import fedhf
 from fedhf.component import build_encryptor
 from fedhf.model.nn import MLP
 
@@ -16,7 +17,7 @@ class TestEncryptor:
     TestEncryptor is the class for testing the encryptor.
     """
 
-    args = Config(
+    args = fedhf.init(
         lr=0.1,
         dp={"mechanism": "none", "clip": 0.1, "epsilon": 0.1, "delta": 0.1},
         gpus="-1",

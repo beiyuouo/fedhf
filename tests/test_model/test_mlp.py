@@ -9,13 +9,14 @@
 import torch
 from torch.utils.data import DataLoader
 
+import fedhf
 from fedhf import Config
 from fedhf.model import build_model, build_optimizer
 from fedhf.dataset import build_dataset
 
 
 class TestMLP(object):
-    args = Config(model="mlp", num_classes=10, dataset="mnist", gpus="-1")
+    args = fedhf.init(model="mlp", num_classes=10, dataset="mnist", gpus="-1")
 
     def test_mlp(self):
         model = build_model(self.args.model)(self.args)

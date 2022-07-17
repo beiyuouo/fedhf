@@ -9,7 +9,7 @@
 from typing import Any
 from .base import build_algor
 from fedhf.core.registor import register
-from fedhf.api import EmptyConfig
+from fedhf.api import Config
 
 
 def init_algor(args) -> Any:

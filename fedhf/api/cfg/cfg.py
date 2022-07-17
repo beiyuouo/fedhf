@@ -15,7 +15,7 @@ import torch
 from .opts import opts
 from ..path import *
 
-from ezkfg import Config as EmptyConfig
+from ezkfg import Config as EConfig
 
 
 class Config(ez.Config):
@@ -24,6 +24,12 @@ class Config(ez.Config):
         self.__parent__ = None
         self.__key__ = None
 
+        # print("args:", args)
+        # print("kwargs:", kwargs)
+        self.load_args_kwargs(*args, **kwargs)  # load args and kwargs, highest priority
+        # print("init called")
+
+    def parse_cfg(self, *args, **kwargs):
         opt = opts().parse()  # default opts
         self.load(opt)
 
@@ -32,16 +38,11 @@ class Config(ez.Config):
             cfg = self.cfg if self.cfg else opt.cfg
             self.load_from_file(cfg)
 
-        # print("args:", args)
-        # print("kwargs:", kwargs)
-        self.load_args_kwargs(*args, **kwargs)  # load args and kwargs, highest priority
+        self.load_args_kwargs(*args, **kwargs)  # load args and kwargs, lowest priority
 
         if self.cfg and cfg != self.cfg:
             self.load_from_file(self.cfg)
 
-        self.parse_cfg()
-
-    def parse_cfg(self):
         np.random.seed(self.seed)
         torch.manual_seed(self.seed)
 
@@ -105,3 +106,4 @@ class Config(ez.Config):
 
         # if opt.resume and opt.load_model == "":
         #     opt.load_model = os.path.join(opt.save_dir, f"{opt.name}.pth")
+        return self

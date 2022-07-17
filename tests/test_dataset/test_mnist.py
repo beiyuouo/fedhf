@@ -9,12 +9,13 @@
 
 import numpy as np
 
+import fedhf
 from fedhf import Config
 from fedhf.dataset import build_dataset
 
 
 class TestMNIST(object):
-    args = Config(num_classes=10, dataset="mnist")
+    args = fedhf.init(num_classes=10, dataset="mnist")
 
     def test_mnist(self):
         print(self.args)

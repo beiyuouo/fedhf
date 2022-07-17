@@ -12,13 +12,14 @@ import torch
 import torch.nn as nn
 
 from fedhf import Config, dpm
+import fedhf
 
 from fedhf.model.nn import MLP
 from fedhf.dataset.random import RandomDataset
 
 
 class TestDPM:
-    args = Config()
+    args = fedhf.init()
 
     def test_calculate_sensitivity(self):
         lr = 0.1

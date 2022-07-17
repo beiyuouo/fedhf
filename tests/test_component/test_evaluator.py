@@ -11,13 +11,14 @@ import torch
 from torch.utils.data import DataLoader
 
 from fedhf import Config
+import fedhf
 from fedhf.component import DefaultEvaluator as Evaluator
 from fedhf.dataset import build_dataset, ClientDataset
 from fedhf.model import build_model
 
 
 class TestEvaluator:
-    args = Config(
+    args = fedhf.init(
         num_classes=10,
         model="mlp",
         dataset="mnist",

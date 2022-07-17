@@ -8,12 +8,13 @@
 
 
 from fedhf import Config
+import fedhf
 from fedhf.component import build_selector
 
 
 class TestSelector(object):
     client_list = [i for i in range(10)]
-    args = Config(num_clients=10, select_ratio=0.5)
+    args = fedhf.init(num_clients=10, select_ratio=0.5)
 
     def test_random_selector(self):
         selector = build_selector("random")(self.args)

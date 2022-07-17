@@ -8,16 +8,13 @@
 
 import os
 import fedhf
-from fedhf import Config, opts
+from fedhf import Config
 import yaml
 
 
 class TestConfig(object):
     def test_config(self):
-        cfg = Config(
-            [f"--cfg={os.path.join('tests', 'config', 'fedavg.yaml')}"], a=1, b=2, c=3
-        )
-        cfg = Config(
+        cfg = Config().parse_cfg(
             cfg=f"{os.path.join('tests', 'config', 'fedavg.yaml')}", a=1, b=2, c=3
         )
 

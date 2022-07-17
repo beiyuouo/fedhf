@@ -7,7 +7,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from fedhf.api import EmptyConfig
+from fedhf.api import Config
 from ..base_model import BaseModel
 
 """
@@ -108,7 +108,7 @@ class OutConv(nn.Module):
 
 class UNet(BaseModel):
 
-    default_params = EmptyConfig(unet={"bilinear": None, "n1": None})
+    default_params = Config(unet={"bilinear": None, "n1": None})
 
     def __init__(self, args, model_time=None, model_version=0):
         super().__init__(args, model_time, model_version)
@@ -161,7 +161,7 @@ class UNet(BaseModel):
 
 
 class UNetMini(BaseModel):
-    default_params = EmptyConfig(unet={"bilinear": None, "n1": None})
+    default_params = Config(unet={"bilinear": None, "n1": None})
 
     def __init__(self, args, model_time=None, model_version=0):
         super().__init__(args, model_time, model_version)

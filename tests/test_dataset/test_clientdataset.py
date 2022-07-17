@@ -7,12 +7,13 @@
 # @License :   Apache License 2.0
 
 
+import fedhf
 from fedhf import Config
 from fedhf.dataset import ClientDataset, build_dataset
 
 
 class TestClientDataset(object):
-    args = Config(num_classes=10, dataset="mnist")
+    args = fedhf.init(num_classes=10, dataset="mnist")
 
     def test_clientdataset_mnist(self):
         dataset = build_dataset(self.args.dataset)(self.args)

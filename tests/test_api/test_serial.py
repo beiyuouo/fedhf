@@ -11,12 +11,13 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader
 
+import fedhf
 from fedhf import Config, Serializer, Deserializer
 from fedhf.model import build_model
 
 
 class TestSerializer(object):
-    args = Config(num_classes=10, model="resnet")
+    args = fedhf.init(num_classes=10, model="resnet")
 
     def test_serializer_resnet(self):
         self.args.model = "resnet"

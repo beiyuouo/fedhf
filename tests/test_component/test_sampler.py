@@ -8,13 +8,14 @@
 
 
 from fedhf import Config
+import fedhf
 from fedhf.component import build_sampler
 from fedhf.dataset import build_dataset
 
 
 class TestSampler(object):
 
-    args = Config(
+    args = fedhf.init(
         num_clients=100,
         dataset="mnist",
         num_classes=10,

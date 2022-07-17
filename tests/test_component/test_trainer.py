@@ -11,13 +11,14 @@ import torch
 from torch.utils.data import DataLoader
 
 from fedhf import Config
+import fedhf
 from fedhf.component import DefaultTrainer as Trainer
 from fedhf.model import build_model, build_criterion, build_optimizer
 from fedhf.dataset import build_dataset, ClientDataset
 
 
 class TestTrainer(object):
-    args = Config(
+    args = fedhf.init(
         num_classes=10,
         model="mlp",
         dataset="mnist",

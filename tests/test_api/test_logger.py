@@ -7,10 +7,11 @@
 # @License :   Apache License 2.0
 
 from fedhf import Logger, Config
+import fedhf
 
 
 class TestLogger:
-    args = Config(project_name="fedhf")
+    args = fedhf.init(prj_name="fedhf")
 
     def test_logger(self):
         self.logger = Logger(self.args)

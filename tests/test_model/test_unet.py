@@ -9,13 +9,14 @@
 import torch
 from torch.utils.data import DataLoader
 
+import fedhf
 from fedhf import Config
 from fedhf.model import build_model, build_optimizer
 from fedhf.dataset import build_dataset
 
 
 class TestUNet(object):
-    args = Config(
+    args = fedhf.init(
         model="unet",
         model_pretrained=True,
         dataset="cifar10",

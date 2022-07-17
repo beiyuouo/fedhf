@@ -7,7 +7,7 @@
 # @License :   Apache License 2.0
 
 import os
-from fedhf import EmptyConfig
+from fedhf import Config
 from .fedprox_aggregator import FedProxAggregator
 from .fedprox_trainer import FedProxTrainer
 
@@ -16,5 +16,5 @@ components = {
     "trainer": {"fedprox": FedProxTrainer},
 }
 
-default_params = EmptyConfig()
+default_params = Config()
 default_params.load(os.path.join(os.path.dirname(__file__), "default_params.yaml"))

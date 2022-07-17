@@ -9,13 +9,14 @@
 import torch
 from torch.utils.data import DataLoader
 
+import fedhf
 from fedhf import Config
 from fedhf.model import build_model, build_optimizer
 from fedhf.dataset import build_dataset
 
 
 class TestDenseNet(object):
-    args = Config(
+    args = fedhf.init(
         model="densenet",
         num_classes=10,
         dataset="cifar10",
