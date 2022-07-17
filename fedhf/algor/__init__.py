@@ -17,7 +17,7 @@ def init_algor(args) -> Any:
     algor = build_algor(args.algor)
     temp_cfg = None
     if args.get(args.algor, None) is not None:
-        temp_cfg = EmptyConfig(args.get(args.algor))
+        temp_cfg = args.get(args.algor).deepcopy()
 
     # update parameters
     args.update(algor.default_params)
