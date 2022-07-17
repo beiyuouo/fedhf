@@ -41,7 +41,7 @@ class Logger(BaseLogger):
                 "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
             )
 
-            self.log_metric = args.log_metric
+            self.log_metric_file = args.log_metric
 
             file_handler = logging.FileHandler(args.log_file, mode="w")
             file_handler.setLevel(level=self.log_level)
@@ -91,8 +91,9 @@ class Logger(BaseLogger):
             wandb.log(log_dict, *args, **kwargs)
 
         def log_metric(self, log_info: Union[Dict, str] = None) -> None:
+            self.info(log_info)
             # log one line in result.csv
-            with open(self.log_metric, "a") as f:
+            with open(self.log_metric_file, "a") as f:
                 f.write(str(log_info) + "\n")
 
     __instance = None
