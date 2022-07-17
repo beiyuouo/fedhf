@@ -8,6 +8,7 @@
 
 
 import time
+import numpy as np
 import torch
 import torch.nn as nn
 
@@ -29,6 +30,9 @@ class FedAvgAggregator(SyncAggregator):
 
         if not self._check_agg():
             return
+
+        self._model_weight = np.array(self._model_weight, dtype=np.float32)
+        self._model_weight = self._model_weight / self._model_weight.sum()  # normalize
 
         self.logger.info("Aggregate models")
 

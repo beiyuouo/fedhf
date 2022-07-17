@@ -40,6 +40,17 @@ class SimulatedBaseCoordinator(AbsCoordinator):
         self.args = args
         self.logger = Logger(self.args)
 
+    @classmethod
+    def interrupt_exception(self, func):
+        def wrapper(*args, **kwargs):
+            try:
+                func(*args, **kwargs)
+            except KeyboardInterrupt:
+                self.server.model.save()
+                self.logger.info(f"interrupted by user.")
+
+        return wrapper
+
     def prepare(self) -> None:
         self.dataset = build_dataset(self.args.dataset)(self.args)
         self.sampler = build_sampler(self.args.sampler)(self.args)
@@ -62,27 +73,28 @@ class SimulatedBaseCoordinator(AbsCoordinator):
     def main(self) -> None:
         pass
 
+    def evaluate_on_server(self) -> None:
+        pass
+
+    def evaluate_on_client(self) -> None:
+        self.logger.info("evaluate on client")
+        for client_id in self.client_list:
+            client = build_client(self.args.deploy_mode)(self.args, client_id)
+            result = client.evaluate(data=self.data[client_id], model=self.server.model)
+            self.logger.info(f"client {client_id} result: {result}")
+        result = self.server.evaluate(self.dataset.testset)
+        self.logger.info(f"server result: {result}")
+        self.logger.info(
+            f"final server model version: {self.server.model.get_model_version()}"
+        )
+
     def finish(self) -> None:
         self.server.model.save()
-
-        try:
-            if self.args.evaluate_on_client:
-                self.logger.info("Evaluate on client")
-                for client_id in self.client_list:
-                    client = build_client(self.args.deploy_mode)(self.args, client_id)
-                    result = client.evaluate(
-                        data=self.data[client_id], model=self.server.model
-                    )
-                    self.logger.info(f"Client {client_id} result: {result}")
-
-            result = self.server.evaluate(self.dataset.testset)
-            self.logger.info(f"Server result: {result}")
-            self.logger.info(
-                f"Final server model version: {self.server.model.get_model_version()}"
-            )
-        except KeyboardInterrupt:
-            self.logger.info(f"Interrupted by user.")
-
+        if self.args.evaluate_on_client:
+            try:
+                self.evaluate_on_client()
+            except KeyboardInterrupt:
+                self.logger.info(f"interrupted by user.")
         self.logger.info(f"All finished.")
 
     def run(self) -> None:

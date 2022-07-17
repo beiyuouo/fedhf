@@ -42,7 +42,7 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
 
                 selected_clients = self.server.select(self.client_list)
 
-                self.logger.info(f"Round {i} Selected clients: {selected_clients}")
+                self.logger.info(f"round {i} selected clients: {selected_clients}")
 
                 for client_id in selected_clients:
                     client = build_client(self.args.deploy_mode)(
@@ -73,7 +73,7 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
                     )
 
                     self.logger.info(
-                        f"Client {client_id} staleness: {staleness} start train from model version : {self._model_queue[-staleness].get_model_version()}"
+                        f"client {client_id} staleness: {staleness} start train from model version : {self._model_queue[-staleness].get_model_version()}"
                     )
 
                     model, result = client.train(
@@ -91,14 +91,14 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
 
                     result = self.server.evaluate(self.dataset.testset)
                     self.logger.info(
-                        f"Server model version {self.server.model.get_model_version()} result: {result}"
+                        f"server model version {self.server.model.get_model_version()} result: {result}"
                     )
                     if (
                         self.server.model.get_model_version() % self.args.chkp_interval
                         == 0
                     ):
                         self.logger.info(
-                            f"Save model: {self.args.exp_name}-{self.server.model.get_model_version()}.pth"
+                            f"save model: {self.args.exp_name}-{self.server.model.get_model_version()}.pth"
                         )
                         self.server.model.save(
                             os.path.join(
@@ -114,11 +114,11 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
 
                     while len(self._model_queue) > self.max_staleness + 1:
                         self._model_queue.pop(0)
-            self.logger.info(f"All rounds finished.")
+            self.logger.info(f"all rounds finished.")
 
         except KeyboardInterrupt:
             self.server.model.save()
-            self.logger.info(f"Interrupted by user.")
+            self.logger.info(f"interrupted by user.")
 
     def finish(self) -> None:
         super(SimulatedAsyncCoordinator, self).finish()

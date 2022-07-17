@@ -32,7 +32,7 @@ class SimulatedSyncCoordinator(SimulatedBaseCoordinator):
             for i in range(self.args.num_rounds):
                 selected_client = self.server.select(self.client_list)
 
-                self.logger.info(f"Round {i} selected client: {selected_client}")
+                self.logger.info(f"round {i} selected clients: {selected_client}")
 
                 for client_id in selected_client:
                     model = deepcopy(self.server.model)
@@ -44,21 +44,22 @@ class SimulatedSyncCoordinator(SimulatedBaseCoordinator):
                         model,
                         server_model_version=self.server.model.get_model_version(),
                         client_id=client_id,
+                        weight=len(self.data[client_id]),
                     )
 
                 result = self.server.evaluate(self.dataset.testset)
-                self.logger.info(f"Server result: {result}")
+                self.logger.info(f"server result: {result}")
 
                 if self.server.model.get_model_version() % self.args.chkp_interval == 0:
                     self.server.model.save(
                         f"{self.args.exp_name}-{self.server.model.get_model_version()}.pth"
                     )
 
-            self.logger.info(f"All rounds finished.")
+            self.logger.info(f"all rounds finished.")
 
         except KeyboardInterrupt:
             self.server.model.save()
-            self.logger.info(f"Interrupted by user.")
+            self.logger.info(f"interrupted by user.")
 
     def finish(self) -> None:
         super(SimulatedSyncCoordinator, self).finish()
