@@ -27,12 +27,12 @@ class FedAsyncAggregator(AsyncAggregator):
             "polynomial",
         ]
 
-        self.a = args[self.algor].a if args[self.algor].get("a") is not None else None
-        self.b = args[self.algor].b if args[self.algor].get("b") is not None else None
-        self.alpha = (
-            args[self.algor].alpha
-            if args[self.algor].get("alpha") is not None
-            else None
+        self.a = args[self.algor].a if args[self.algor].get("a") else None
+        self.b = args[self.algor].b if args[self.algor].get("b") else None
+        self.alpha = args[self.algor].alpha if args[self.algor].get("alpha") else None
+
+        print(
+            f"self.args = {args}, self.algor = {self.algor}, self.stragegy = {self.stragegy}, self.a = {self.a}, self.b = {self.b}, self.alpha = {self.alpha}"
         )
 
         # asserts

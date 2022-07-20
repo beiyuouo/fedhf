@@ -7,24 +7,22 @@
 # @License :   Apache License 2.0
 
 from typing import Any
-from .base import build_algor
+from .base import build_algor, algor_factory
 from fedhf.core.registor import register
 from fedhf.api import Config
 
 
+def register_components() -> Any:
+    for algor in algor_factory.values():
+        for component_name, component in algor.components.items():
+            register(component_name, component)
+
+
 def init_algor(args) -> Any:
+    register_components()
     # register components
     algor = build_algor(args.algor)
-    temp_cfg = None
-    if args.get(args.algor, None) is not None:
-        temp_cfg = args.get(args.algor).deepcopy()
 
-    # update parameters
-    args.update(algor.default_params)
-    if temp_cfg is not None:
-        args[args.algor].update(temp_cfg)
-
-    for component_name, component in algor.components.items():
-        register(component_name, component)
+    args.merge(algor.default_args, overwrite=False)
 
     return args

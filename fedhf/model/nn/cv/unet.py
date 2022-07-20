@@ -108,12 +108,14 @@ class OutConv(nn.Module):
 
 class UNet(BaseModel):
 
-    default_params = Config(unet={"bilinear": None, "n1": None})
+    default_args = Config(unet={"bilinear": None, "n1": None})
 
     def __init__(self, args, model_time=None, model_version=0):
         super().__init__(args, model_time, model_version)
-        self.add_default_args(self.default_params)
-        # print("UNet:", self.args.unet)
+        print("args:", args)
+        self.add_default_args()
+        print("UNet:", self.args.unet)
+        print("args:", self.args)
 
         self.input_c = self.args.input_c
         self.output_c = self.args.output_c
@@ -161,11 +163,11 @@ class UNet(BaseModel):
 
 
 class UNetMini(BaseModel):
-    default_params = Config(unet={"bilinear": None, "n1": None})
+    default_args = Config(unet={"bilinear": None, "n1": None})
 
     def __init__(self, args, model_time=None, model_version=0):
         super().__init__(args, model_time, model_version)
-        self.add_default_args(self.default_params)
+        self.add_default_args()
 
         self.input_c = self.args.input_c
         self.output_c = self.args.output_c

@@ -26,7 +26,7 @@ class TestServer(object):
         lr=0.01,
         loss="ce",
         gpus="-1",
-        test=True,
+        debug=True,
         algor="fedasync",
     )
 

@@ -55,7 +55,7 @@ class SimulatedBaseCoordinator(AbsCoordinator):
         self.dataset = build_dataset(self.args.dataset)(self.args)
         self.sampler = build_sampler(self.args.sampler)(self.args)
 
-        if self.args.test:
+        if self.args.debug:
             # reduce data for test
             self.data = [
                 ClientDataset(

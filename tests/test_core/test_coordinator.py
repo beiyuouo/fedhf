@@ -22,7 +22,7 @@ class TestCoordinator(object):
             num_epochs=1,
             num_clients=3,
             gpus="-1",
-            test=True,
+            debug=True,
             algor="fedasync",
         )
 
@@ -37,7 +37,7 @@ class TestCoordinator(object):
             num_epochs=1,
             num_clients=3,
             gpus="-1",
-            test=True,
+            deebug=True,
             select_ratio=0.5,
             algor="fedavg",
         )

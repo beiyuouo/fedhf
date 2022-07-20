@@ -24,6 +24,6 @@ def run(args=None):
 
     from .core import build_coordinator
 
-    coordinator_type = args.get("coordinator", f"{args.deploy_mode}_{args.scheme}")
+    coordinator_type = args.get("coordinator") or f"{args.deploy_mode}_{args.scheme}"
     coordinator = build_coordinator(coordinator_type)(args)
     coordinator.run()

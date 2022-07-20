@@ -15,6 +15,6 @@ class TestFedHF:
         assert args is not None
 
     def test_run(self):
-        args = fedhf.init(test=True, num_clients=3, num_rounds=1, num_epochs=1)
+        args = fedhf.init(debug=True, num_clients=3, num_rounds=1, num_epochs=1)
         # print(args.model)
         fedhf.run(args)

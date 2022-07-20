@@ -9,9 +9,12 @@
 from copy import deepcopy
 import time
 import os
+from typing import Any
 
 import torch
 import torch.nn as nn
+
+from fedhf import Config
 
 
 class BaseModel(nn.Module):
@@ -53,5 +56,13 @@ class BaseModel(nn.Module):
         self.model_time = checkpoint["model_time"]
         self.load_state_dict(checkpoint["state_dict"])
 
-    def add_default_args(self, args) -> None:
+    def add_default_args(self, args=None) -> Any:
+        if args is None:
+            if not hasattr(self, "default_args"):
+                args = Config()
+            else:
+                args = deepcopy(self.default_args)
+        print("func args:", args)
         self.args.merge(args, overwrite=False)
+        print("func args:", self.args)
+        # return self.args
