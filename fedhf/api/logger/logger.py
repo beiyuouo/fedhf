@@ -27,7 +27,7 @@ class Logger(BaseLogger):
             if args.log_level in logger_map:
                 self.log_level = logger_map[args.log_level]
             else:
-                raise "No such log level!"
+                raise "no such log level!"
 
             if args.log_name is not None:
                 self.log_name = args.log_name
@@ -38,7 +38,8 @@ class Logger(BaseLogger):
             self.logger.setLevel(self.log_level)
 
             formatter = logging.Formatter(
-                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+                "%(asctime)s - %(levelname)s - %(module)s:%(lineno)d - %(message)s",
+                "%Y-%m-%d %H:%M:%S",
             )
 
             self.log_metric_file = args.log_metric
