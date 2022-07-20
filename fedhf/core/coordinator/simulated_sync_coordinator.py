@@ -6,6 +6,7 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
+import os
 from copy import deepcopy
 
 from fedhf.core import build_client
@@ -52,7 +53,10 @@ class SimulatedSyncCoordinator(SimulatedBaseCoordinator):
 
                 if self.server.model.get_model_version() % self.args.chkp_interval == 0:
                     self.server.model.save(
-                        f"{self.args.exp_name}-{self.server.model.get_model_version()}.pth"
+                        os.path.join(
+                                self.args.save_dir,
+                                f"{self.args.exp_name}-{self.server.model.get_model_version()}.pth",
+                            )
                     )
 
             self.logger.info(f"all rounds finished.")
