@@ -27,7 +27,7 @@ sampler_factory = {
 
 def build_sampler(sam_name: str):
     if sam_name not in sampler_factory.keys():
-        raise ValueError(f"Sampler {sam_name} not found.")
+        raise ValueError(f"unknown sampler name: {sam_name}")
 
     sampler = sampler_factory[sam_name]
 

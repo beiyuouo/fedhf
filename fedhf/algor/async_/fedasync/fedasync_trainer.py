@@ -52,7 +52,7 @@ class FedAsyncTrainer(BaseTrainer):
         if self.lr_scheduler is not None:
             lr_scheduler = self.lr_scheduler(optim, self.args.lr_step)
 
-        self.logger.info(f"Start training on {client_id}")
+        self.logger.info(f"start training on {client_id}")
 
         train_loss = []
         pbar = tqdm(total=num_epochs * len(dataloader))
@@ -60,7 +60,7 @@ class FedAsyncTrainer(BaseTrainer):
         for epoch in range(num_epochs):
             losses = []
             pbar.set_description(
-                f"Client:{client_id} Training on Epoch {epoch+1}/{num_epochs} Loss: {0 if len(train_loss)==0 else train_loss[-1]:.5f}"
+                f"client:{client_id} training on Epoch {epoch+1}/{num_epochs} loss: {0 if len(train_loss)==0 else train_loss[-1]:.5f}"
             )
             for idx, (inputs, labels) in enumerate(dataloader):
                 inputs = inputs.to(device)
@@ -96,7 +96,7 @@ class FedAsyncTrainer(BaseTrainer):
             # )
 
         time.sleep(0.3)
-        self.logger.info(f"Client:{client_id} Train Loss:{train_loss}")
+        self.logger.info(f"client:{client_id} train loss:{train_loss}")
 
         if self.args.use_wandb and self.args.wandb_log_client:
             import wandb

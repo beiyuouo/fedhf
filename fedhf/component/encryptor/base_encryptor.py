@@ -56,14 +56,14 @@ class BaseEncryptor(AbsEncryptor):
 
     def __init__(self, args, **kwargs):
         """
-        Constructor.
+        constructor.
         :param args: the arguments
         """
         super().__init__(args)
 
     def generate_noise(self, size):
         """
-        Generate noise.
+        generate noise.
         :param size: the size
         :return: the noise
         """
@@ -71,14 +71,14 @@ class BaseEncryptor(AbsEncryptor):
 
     def clip_grad(self, model):
         """
-        Clip the gradient of the given model.
+        clip the gradient of the given model.
         :param model: the model
         """
         return
 
     def encrypt_model(self, model):
         """
-        Encrypt the given model.
+        encrypt the given model.
         :param model: the model
         :return: the encrypted model
         """

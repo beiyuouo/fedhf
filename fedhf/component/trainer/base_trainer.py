@@ -39,4 +39,4 @@ class BaseTrainer(AbsTrainer):
             pass
 
     def train(self):
-        print("BaseTrainer")
+        print("base trainer")

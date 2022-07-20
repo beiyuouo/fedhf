@@ -32,7 +32,7 @@ class SimulatedServer(BaseServer):
         )
 
         if not result:
-            self.logger.info("It's not time to update.")
+            self.logger.info("it's not time to update.")
             return
         # print(self.model.get_model_version(), model.get_model_version())
         Deserializer.deserialize_model(self.model, result["param"])

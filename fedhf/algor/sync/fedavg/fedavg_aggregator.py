@@ -34,7 +34,7 @@ class FedAvgAggregator(SyncAggregator):
         self._model_weight = np.array(self._model_weight, dtype=np.float32)
         self._model_weight = self._model_weight / self._model_weight.sum()  # normalize
 
-        self.logger.info("Aggregate models")
+        self.logger.info("aggregate models")
 
         new_param = torch.zeros_like(server_param)
         for i in range(self.num_clients_per_round):

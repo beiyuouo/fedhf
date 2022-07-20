@@ -8,10 +8,11 @@
 
 
 import time
+import numpy as np
 import torch
 import torch.nn as nn
 
-from ....component.aggregator.sync_aggregator import SyncAggregator
+from fedhf.component.aggregator.sync_aggregator import SyncAggregator
 
 
 class FedProxAggregator(SyncAggregator):
@@ -30,7 +31,10 @@ class FedProxAggregator(SyncAggregator):
         if not self._check_agg():
             return
 
-        self.logger.info("Aggregate models")
+        self._model_weight = np.array(self._model_weight, dtype=np.float32)
+        self._model_weight = self._model_weight / self._model_weight.sum()  # normalize
+
+        self.logger.info("aggregate models")
 
         new_param = torch.zeros_like(server_param)
         for i in range(self.num_clients_per_round):

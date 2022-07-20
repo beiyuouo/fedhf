@@ -33,7 +33,7 @@ class SyncAggregator(BaseAggregator):
         if not self._check_agg():
             return
 
-        self.logger.info("Aggregate models")
+        self.logger.info("aggregate models")
 
         new_param = torch.zeros_like(server_param)
         for i in range(self.num_clients_per_round):

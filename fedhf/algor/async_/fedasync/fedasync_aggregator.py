@@ -68,10 +68,10 @@ class FedAsyncAggregator(AsyncAggregator):
         # assert torch.equal(new_param, client_param) == False
 
         self.logger.info(
-            f"Aggregated server model version: {server_model_version}, client model version: {client_model_version}"
+            f"aggregated server model version: {server_model_version}, client model version: {client_model_version}"
         )
         self.logger.info(
-            f"FedAsyncAggregator agg alpha: {alpha} with stragegy: {self.stragegy}"
+            f"fedasync aggregator agg alpha: {alpha} with stragegy: {self.stragegy}"
         )
 
         result = {
@@ -92,4 +92,4 @@ class FedAsyncAggregator(AsyncAggregator):
         elif self.stragegy == "polynomial" and self.a is not None:
             return torch.mul(self.alpha, (staleness + 1) ** (-self.a))
         else:
-            raise ValueError("Unknown strategy: {}".format(self.stragegy))
+            raise ValueError("unknown strategy: {}".format(self.stragegy))

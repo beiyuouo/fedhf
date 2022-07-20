@@ -53,6 +53,6 @@ class SimulatedClient(BaseClient):
             result.pop("model")
 
         self.logger.info(
-            f"Finish evaluating on client {self.client_id}, result: {result}"
+            f"finish evaluating on client {self.client_id}, result: {result}"
         )
         return result

@@ -27,6 +27,6 @@ coordinator_factory = {
 
 def build_coordinator(coordinator_type):
     if coordinator_type not in coordinator_factory:
-        raise ValueError(f"Unknown coordinator type: {coordinator_type}")
+        raise ValueError(f"unknown coordinator type: {coordinator_type}")
     coordinator = coordinator_factory[coordinator_type]
     return coordinator

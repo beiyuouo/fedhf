@@ -20,5 +20,5 @@ evaluator_factory = {
 
 def build_evaluator(name):
     if name not in evaluator_factory.keys():
-        raise ValueError(f"Unknown evaluator name: {name}")
+        raise ValueError(f"unknown evaluator name: {name}")
     return evaluator_factory[name]
