@@ -13,11 +13,9 @@ from ..base_model import BaseModel
 
 
 class AlexNetCIFAR10(BaseModel):
-    def __init__(self, args, model_time=0):
-        super().__init__(args, model_time)
-
-        self.args = args
-        self.num_classes = args.num_classes
+    def __init__(self, args, **kwargs):
+        super().__init__(args, **kwargs)
+        self.num_classes = self.args.num_classes
 
         self.features = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=3, stride=2, padding=1),
@@ -41,7 +39,7 @@ class AlexNetCIFAR10(BaseModel):
             # nn.Dropout(),
             nn.Linear(4096, 4096),
             nn.ReLU(inplace=True),
-            nn.Linear(4096, args.num_classes),
+            nn.Linear(4096, self.args.num_classes),
         )
 
     def forward(self, x):

@@ -21,8 +21,6 @@ from ezkfg import Config as EConfig
 class Config(ez.Config):
     def __init__(self, *args, **kwargs):
         super().__init__()
-        self.__parent__ = None
-        self.__key__ = None
 
         # print("args:", args)
         # print("kwargs:", kwargs)

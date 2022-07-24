@@ -9,24 +9,31 @@
 import torch
 import torch.nn as nn
 
+from fedhf import Config
 from ..base_model import BaseModel
 
 
 class MLP(BaseModel):
+    default_args = Config(
+        mlp={"input_dim": 28 * 28, "hidden_dim": 128, "output_dim": 10}
+    )
+
     def __init__(
         self,
         args,
-        model_time=None,
-        model_version=0,
-        input_dim=28 * 28,
-        hidden_dim=128,
-        output_dim=10,
+        **kwargs,
     ):
-        super().__init__(args, model_time, model_version)
-        self.layer_input = nn.Linear(input_dim, hidden_dim)
+        super().__init__(args, **kwargs)
+        self.add_default_args()
+
+        self.layer_input = nn.Linear(
+            self.args.mlp.get("input_dim"), self.args.mlp.get("hidden_dim")
+        )
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout()
-        self.layer_hidden = nn.Linear(hidden_dim, output_dim)
+        self.layer_hidden = nn.Linear(
+            self.args.mlp.get("hidden_dim"), self.args.mlp.get("output_dim")
+        )
 
     def forward(self, x):
         x = x.view(-1, x.shape[1] * x.shape[-2] * x.shape[-1])

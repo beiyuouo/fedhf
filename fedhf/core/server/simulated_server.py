@@ -6,6 +6,7 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
+import time
 from copy import deepcopy
 import torch
 import torch.nn as nn
@@ -39,10 +40,10 @@ class SimulatedServer(BaseServer):
 
         # self.model = self.encryptor.encrypt_model(self.model)
 
-        self.model.set_model_version(result["model_version"])
-        self.model.set_model_time(result["model_time"])
+        self.model.set_model_version(self.model.get_model_version() + 1)
+        self.model.set_model_time(time.time())
         # print(result['model_version'], result['model_time'])
         self.logger.info(
-            f'get model version {result["model_version"]} at time {result["model_time"]}'
+            f"get model version {self.model.get_model_version()} at time {self.model.get_model_time()}"
         )
         return

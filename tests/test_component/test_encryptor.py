@@ -29,7 +29,7 @@ class TestEncryptor:
         """
         encryptor = build_encryptor("none")(self.args)
 
-        model = MLP(None, input_dim=10 * 10, output_dim=10)
+        model = MLP(None, mlp={"input_dim": 10 * 10, "output_dim": 10})
 
         encryptor.encrypt_model(model)
 
@@ -39,6 +39,6 @@ class TestEncryptor:
         """
         encryptor = build_encryptor("dp")(self.args, data_size=100)
 
-        model = MLP(None, input_dim=10 * 10, output_dim=10)
+        model = MLP(None, mlp={"input_dim": 10 * 10, "output_dim": 10})
 
         encryptor.encrypt_model(model)

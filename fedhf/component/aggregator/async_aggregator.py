@@ -11,9 +11,7 @@ import time
 import torch
 import torch.nn as nn
 
-from fedhf import model
-
-from fedhf.api import Logger
+from fedhf import Config
 from .base_aggregator import BaseAggregator
 
 
@@ -25,16 +23,13 @@ class AsyncAggregator(BaseAggregator):
     def agg(self, server_param: torch.Tensor, client_param: torch.Tensor, **kwargs):
         if not self._check_agg():
             return
+        kwargs = Config(**kwargs)
 
         alpha = self.alpha
         new_param = torch.mul(1 - alpha, server_param) + torch.mul(alpha, client_param)
 
         result = {
             "param": new_param,
-            "model_version": kwargs["server_model_version"] + 1
-            if "server_model_version" in kwargs.keys()
-            else 0,
-            "model_time": time.time(),
         }
         return result
 

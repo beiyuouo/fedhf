@@ -110,8 +110,9 @@ class UNet(BaseModel):
 
     default_args = Config(unet={"bilinear": None, "n1": None})
 
-    def __init__(self, args, model_time=None, model_version=0):
-        super().__init__(args, model_time, model_version)
+    def __init__(self, args, **kwargs):
+        super().__init__(args, **kwargs)
+        self.add_default_args()
         print("args:", args)
         self.add_default_args()
         print("UNet:", self.args.unet)
@@ -165,8 +166,8 @@ class UNet(BaseModel):
 class UNetMini(BaseModel):
     default_args = Config(unet={"bilinear": None, "n1": None})
 
-    def __init__(self, args, model_time=None, model_version=0):
-        super().__init__(args, model_time, model_version)
+    def __init__(self, args, **kwargs):
+        super().__init__(args, **kwargs)
         self.add_default_args()
 
         self.input_c = self.args.input_c

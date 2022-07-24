@@ -14,8 +14,8 @@ from ..base_model import BaseModel
 
 
 class DenseNet(BaseModel):
-    def __init__(self, args, model_time=None, model_version=0):
-        super().__init__(args, model_time, model_version)
+    def __init__(self, args, **kwargs):
+        super().__init__(args, **kwargs)
         self.net = models.densenet121(pretrained=True)
         self.num_classes = args.num_classes
         self.net.classifier = nn.Linear(1024, args.num_classes)

@@ -10,7 +10,9 @@
 import time
 import torch
 import torch.nn as nn
-from ....component.aggregator.async_aggregator import AsyncAggregator
+
+from fedhf import Config
+from fedhf.component.aggregator.async_aggregator import AsyncAggregator
 
 
 class FedAsyncAggregator(AsyncAggregator):
@@ -31,7 +33,7 @@ class FedAsyncAggregator(AsyncAggregator):
         self.b = args[self.algor].b if args[self.algor].get("b") else None
         self.alpha = args[self.algor].alpha if args[self.algor].get("alpha") else None
 
-        print(
+        self.logger.info(
             f"self.args = {args}, self.algor = {self.algor}, self.stragegy = {self.stragegy}, self.a = {self.a}, self.b = {self.b}, self.alpha = {self.alpha}"
         )
 
@@ -47,14 +49,16 @@ class FedAsyncAggregator(AsyncAggregator):
         if not self._check_agg():
             return
 
+        kwargs = Config(**kwargs)
+
         # model version is required for staleness
-        if "server_model_version" not in kwargs.keys():
+        if kwargs.get("server_model_version") is None:
             raise ValueError("Missing key: server_model_version")
-        if "client_model_version" not in kwargs.keys():
+        if kwargs.get("client_model_version") is None:
             raise ValueError("Missing key: client_model_version")
 
-        server_model_version = kwargs["server_model_version"]
-        client_model_version = kwargs["client_model_version"]
+        server_model_version = kwargs.get("server_model_version")
+        client_model_version = kwargs.get("client_model_version")
 
         if server_model_version < client_model_version:
             raise ValueError(
@@ -76,8 +80,6 @@ class FedAsyncAggregator(AsyncAggregator):
 
         result = {
             "param": new_param,
-            "model_version": server_model_version + 1,
-            "model_time": time.time(),
         }
         return result
 
