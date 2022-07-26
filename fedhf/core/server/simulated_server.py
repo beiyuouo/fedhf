@@ -49,17 +49,17 @@ class SimulatedServer(BaseServer):
         )
         return
 
-    def train(self, data: Dataset, model: nn.Module, device="cpu", **kwargs):
+    def evaluate(self, data: Dataset, model: nn.Module, device="cpu", **kwargs):
+        if data is None or len(data) == 0:
+            return None
         dataloader = DataLoader(data, batch_size=self.args.batch_size)
 
         result = self.evaluator.evaluate(
-            dataloader=dataloader, model=model, client_id=self.client_id, device=device
+            dataloader=dataloader, model=model, client_id=-1, device=device
         )
         if "model" in result:
             model = result["model"]
             result.pop("model")
 
-        self.logger.info(
-            f"finish evaluating on client {self.client_id}, result: {result}"
-        )
+        self.logger.info(f"finish evaluating on client {-1}, result: {result}")
         return result
