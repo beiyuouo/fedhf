@@ -84,6 +84,9 @@ class opts(object):
             help="log level, it could be in [ error | warning | info | debug ]",
         )
         self.parser.add_argument(
+            "--log_interval", type=int, default=100, help="log interval"
+        )
+        self.parser.add_argument(
             "--eval_interval", type=int, default=5, help="evaluation interval"
         )
         self.parser.add_argument(
