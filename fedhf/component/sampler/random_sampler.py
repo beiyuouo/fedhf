@@ -16,16 +16,36 @@ class RandomSampler(BaseSampler):
     def __init__(self, args) -> None:
         super(RandomSampler, self).__init__(args)
 
-    def sample(self, dataset):
-        num_items = int(len(dataset) / self.args.num_clients)
-        client_data_dict, all_idxs = {}, [i for i in range(len(dataset))]
+    def sample(self, train_dataset, test_dataset=None):
+        num_items = int(len(train_dataset) / self.args.num_clients)
+        client_data_dict, all_idxs = {}, [i for i in range(len(train_dataset))]
         for i in range(self.args.num_clients):
             client_data_dict[i] = list(
                 np.random.choice(all_idxs, num_items, replace=False)
             )
             all_idxs = list(set(all_idxs) - set(client_data_dict[i]))
 
-        return [
-            ClientDataset(dataset, client_data_dict[i])
+        if test_dataset is not None:
+            num_items_test = int(len(test_dataset) / self.args.num_clients)
+            client_data_dict_test, all_idxs_test = {}, [
+                i for i in range(len(test_dataset))
+            ]
+            for i in range(self.args.num_clients):
+                client_data_dict_test[i] = list(
+                    np.random.choice(all_idxs_test, num_items_test, replace=False)
+                )
+                all_idxs_test = list(set(all_idxs_test) - set(client_data_dict_test[i]))
+
+        train_data = {
+            i: ClientDataset(train_dataset, client_data_dict[i])
             for i in range(self.args.num_clients)
-        ]
+        }
+        if test_dataset is not None:
+            test_data = {
+                i: ClientDataset(test_dataset, client_data_dict_test[i])
+                for i in range(self.args.num_clients)
+            }
+        else:
+            test_data = {i: None for i in range(self.args.num_clients)}
+
+        return train_data, test_data

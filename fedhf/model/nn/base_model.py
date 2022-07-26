@@ -63,7 +63,7 @@ class BaseModel(nn.Module):
                 args = Config()
             else:
                 args = deepcopy(self.default_args)
-        print("func args:", args)
+        # print("func args:", args)
         self.args.merge(args, overwrite=False)
-        print("func args:", self.args)
+        # print("func args:", self.args)
         # return self.args

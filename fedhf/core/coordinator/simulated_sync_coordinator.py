@@ -28,42 +28,34 @@ class SimulatedSyncCoordinator(SimulatedBaseCoordinator):
 
         assert self.args.deploy_mode == "simulated"
 
-    def main(self) -> None:
-        try:
-            for i in range(self.args.num_rounds):
-                selected_client = self.server.select(self.client_list)
+    def run_round(self, round_idx) -> None:
+        selected_client = self.server.select(self.client_list)
 
-                self.logger.info(f"round {i} selected clients: {selected_client}")
+        self.logger.info(f"round {round_idx} selected clients: {selected_client}")
 
-                for client_id in selected_client:
-                    model = deepcopy(self.server.model)
-                    client = build_client(self.args.deploy_mode)(
-                        self.args, client_id, data_size=len(self.data[client_id])
-                    )
-                    model, result = client.train(self.data[client_id], model)
-                    self.server.update(
-                        model,
-                        server_model_version=self.server.model.get_model_version(),
-                        client_id=client_id,
-                        weight=len(self.data[client_id]),
-                    )
+        for client_id in selected_client:
+            model = deepcopy(self.server.model)
+            client = build_client(self.args.deploy_mode)(
+                self.args, client_id, data_size=len(self.train_data[client_id])
+            )
+            model, result = client.train(self.train_data[client_id], model)
+            self.server.update(
+                model,
+                server_model_version=self.server.model.get_model_version(),
+                client_id=client_id,
+                weight=len(self.train_data[client_id]),
+            )
 
-                result = self.server.evaluate(self.dataset.testset)
-                self.logger.info(f"server result: {result}")
+        if self.args.evaluate_on_client and round_idx % self.args.eval_interval == 0:
+            self.evaluate_on_client()
 
-                if self.server.model.get_model_version() % self.args.chkp_interval == 0:
-                    self.server.model.save(
-                        os.path.join(
-                                self.args.save_dir,
-                                f"{self.args.exp_name}-{self.server.model.get_model_version()}.pth",
-                            )
-                    )
-
-            self.logger.info(f"all rounds finished.")
-
-        except KeyboardInterrupt:
-            self.server.model.save()
-            self.logger.info(f"interrupted by user.")
+        if self.server.model.get_model_version() % self.args.chkp_interval == 0:
+            self.server.model.save(
+                os.path.join(
+                    self.args.save_dir,
+                    f"{self.args.exp_name}-{self.server.model.get_model_version()}.pth",
+                )
+            )
 
     def finish(self) -> None:
         super(SimulatedSyncCoordinator, self).finish()
