@@ -14,12 +14,6 @@ from typing import Dict, Optional, Union
 
 from .base_logger import BaseLogger, logger_map
 
-logging.basicConfig(
-    stream=sys.stdout,
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-)
-
 
 class Logger(BaseLogger):
     class __Logger(BaseLogger):
@@ -38,7 +32,7 @@ class Logger(BaseLogger):
             self.logger.setLevel(self.log_level)
 
             formatter = logging.Formatter(
-                "%(asctime)s - %(levelname)s - %(module)s:%(lineno)d - %(message)s",
+                "%(asctime)s - %(levelname)s - %(message)s",
                 "%Y-%m-%d %H:%M:%S",
             )
 
