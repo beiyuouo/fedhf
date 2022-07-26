@@ -20,10 +20,7 @@ class DefaultTrainer(BaseTrainer):
 
     def train_epoch(self, dataloader):
         losses = []
-        self.logger.info(
-            f"client:{self.client_id} training on epoch {self.epoch+1}/{self.args.num_epochs} loss: {0 if len(self.train_loss)==0 else self.train_loss[-1]:.5f}"
-        )
-        for idx, (inputs, labels) in enumerate(dataloader):
+        for batch_idx, (inputs, labels) in enumerate(dataloader):
             inputs = inputs.to(self.args.device)
             labels = labels.to(self.args.device)
 
@@ -40,7 +37,21 @@ class DefaultTrainer(BaseTrainer):
 
             losses.append(loss.item())
 
+            if batch_idx % self.args.log_interval == 0:
+                self.logger.info(
+                    "train epoch: {} [{}/{} ({:.0f}%)]\tloss: {:.6f}".format(
+                        self.epoch,
+                        batch_idx * self.args.batch_size,
+                        len(dataloader.dataset),
+                        100.0 * batch_idx / len(dataloader),
+                        loss.item(),
+                    )
+                )
+
         self.train_loss.append(sum(losses) / len(losses))
+        self.logger.info(
+            f"client:{self.client_id} training on epoch {self.epoch+1}/{self.args.num_epochs} loss: {self.train_loss[-1]:.5f}"
+        )
 
     def train(
         self,

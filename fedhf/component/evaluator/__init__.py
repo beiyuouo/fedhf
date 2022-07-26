@@ -13,7 +13,9 @@ from .default_evaluator import DefaultEvaluator
 
 
 evaluator_factory = {
+    "base": BaseEvaluator,
     "base_evaluator": BaseEvaluator,
+    "default": DefaultEvaluator,
     "default_evaluator": DefaultEvaluator,
 }
 

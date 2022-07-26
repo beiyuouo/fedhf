@@ -49,9 +49,3 @@ class BaseServer(AbsServer):
 
     def select(self, client_list: list):
         return self.selector.select(client_list)
-
-    def evaluate(self, dataset, **kwargs):
-        dataloader = DataLoader(dataset, batch_size=self.args.batch_size, shuffle=False)
-        return self.evaluator.evaluate(
-            dataloader=dataloader, model=self.model, device=self.args.device, **kwargs
-        )

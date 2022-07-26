@@ -13,7 +13,9 @@ from .default_trainer import DefaultTrainer
 
 
 trainer_factory = {
+    "base": BaseTrainer,
     "base_trainer": BaseTrainer,
+    "default": DefaultTrainer,
     "default_trainer": DefaultTrainer,
 }
 

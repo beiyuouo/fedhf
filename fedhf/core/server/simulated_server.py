@@ -10,6 +10,7 @@ import time
 from copy import deepcopy
 import torch
 import torch.nn as nn
+from torch.utils.data import DataLoader, Dataset
 
 from fedhf.api import Serializer, Deserializer
 
@@ -47,3 +48,18 @@ class SimulatedServer(BaseServer):
             f"get model version {self.model.get_model_version()} at time {self.model.get_model_time()}"
         )
         return
+
+    def train(self, data: Dataset, model: nn.Module, device="cpu", **kwargs):
+        dataloader = DataLoader(data, batch_size=self.args.batch_size)
+
+        result = self.evaluator.evaluate(
+            dataloader=dataloader, model=model, client_id=self.client_id, device=device
+        )
+        if "model" in result:
+            model = result["model"]
+            result.pop("model")
+
+        self.logger.info(
+            f"finish evaluating on client {self.client_id}, result: {result}"
+        )
+        return result
