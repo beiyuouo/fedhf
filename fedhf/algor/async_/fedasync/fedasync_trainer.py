@@ -18,8 +18,8 @@ class FedAsyncTrainer(BaseTrainer):
     def __init__(self, args) -> None:
         super(FedAsyncTrainer, self).__init__(args)
 
-        self.rho = args.fedasync.get("rho") or 0.005
-        self.args.fedasync.update({"rho": self.rho})
+        self.rho = self.args[self.args.algor].get("rho") or 0.005
+        self.args[self.args.algor].update({"rho": self.rho})
 
     def train(
         self,

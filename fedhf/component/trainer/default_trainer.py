@@ -89,21 +89,4 @@ class DefaultTrainer(BaseTrainer):
                 self.scheduler.step()
 
         self.logger.info(f"client:{self.client_id} train loss:{self.train_loss}")
-
-        if self.args.use_wandb and self.args.wandb_log_client:
-            import wandb
-
-            data = [[x, y] for (x, y) in zip(range(1, num_epochs + 1), self.train_loss)]
-            table = wandb.Table(data=data, columns=["epoch", "train_loss"])
-            self.logger.to_wandb(
-                {
-                    f"train at client {client_id} model_version {model.get_model_version()}": wandb.plot.line(
-                        table,
-                        "epoch",
-                        "train_loss",
-                        title=f"train loss at client {client_id}",
-                    )
-                }
-            )
-
         return {"train_loss": self.train_loss, "model": model}
