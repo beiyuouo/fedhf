@@ -38,5 +38,12 @@ class BaseTrainer(AbsTrainer):
         else:
             pass
 
+    def train_epoch(self):
+        pass
+
     def train(self):
-        print("base trainer")
+        for epoch in range(self.args.epochs):
+            self.train_epoch(epoch)
+            self.epoch = epoch
+            if self.lr_scheduler:
+                self.scheduler.step()
