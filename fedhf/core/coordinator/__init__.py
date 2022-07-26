@@ -17,11 +17,15 @@ __all__ = [
 from .base_coordinator import SimulatedBaseCoordinator
 
 from .simulated_sync_coordinator import SimulatedSyncCoordinator
-from .simulated_async_coordinator import SimulatedAsyncCoordinator
+from .simulated_async_coordinator import (
+    SimulatedAsyncCoordinator,
+    SimulatedAsyncRealCoordinator,
+)
 
 coordinator_factory = {
     "simulated_sync": SimulatedSyncCoordinator,
     "simulated_async": SimulatedAsyncCoordinator,
+    "simulated_async_real": SimulatedAsyncRealCoordinator,
 }
 
 

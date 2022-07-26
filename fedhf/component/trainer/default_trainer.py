@@ -9,7 +9,6 @@
 import time
 from copy import deepcopy
 
-from tqdm import tqdm
 from torch.utils.data import DataLoader
 from fedhf.model import build_criterion, build_optimizer
 from .base_trainer import BaseTrainer
@@ -57,11 +56,10 @@ class DefaultTrainer(BaseTrainer):
         self.logger.info(f"start training on {client_id}")
 
         train_loss = []
-        pbar = tqdm(total=num_epochs * len(dataloader))
         model.train()
         for epoch in range(num_epochs):
             losses = []
-            pbar.set_description(
+            self.logger.info(
                 f"client:{client_id} training on epoch {epoch+1}/{num_epochs} loss: {0 if len(train_loss)==0 else train_loss[-1]:.5f}"
             )
             for idx, (inputs, labels) in enumerate(dataloader):
@@ -80,7 +78,6 @@ class DefaultTrainer(BaseTrainer):
                 optim.step()
 
                 losses.append(loss.item())
-                pbar.update(1)
 
             train_loss.append(sum(losses) / len(losses))
             if lr_scheduler is not None:

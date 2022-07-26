@@ -127,3 +127,11 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
         self.prepare()
         self.main()
         self.finish()
+
+
+class SimulatedAsyncRealCoordinator(SimulatedAsyncCoordinator):
+    def __init__(self, args) -> None:
+        super(SimulatedAsyncRealCoordinator, self).__init__(args)
+
+    def prepare(self) -> None:
+        return super().prepare()
