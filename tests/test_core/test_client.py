@@ -6,7 +6,7 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-from unittest import result
+import pytest
 from torch.utils.data import DataLoader
 
 import fedhf
@@ -15,7 +15,7 @@ from fedhf.core import SimulatedClient
 from fedhf.model import build_model
 from fedhf.dataset import build_dataset, ClientDataset
 
-
+@pytest.mark.order(4)
 class TestClient(object):
     args = fedhf.init(
         num_classes=10,

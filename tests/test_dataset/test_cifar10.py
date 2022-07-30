@@ -6,6 +6,7 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
+import pytest
 import numpy as np
 
 import fedhf
@@ -13,6 +14,7 @@ from fedhf import Config
 from fedhf.dataset import build_dataset
 
 
+@pytest.mark.order(2)
 class TestCIFAR10(object):
     args = fedhf.init(num_classes=10, dataset="cifar10")
 

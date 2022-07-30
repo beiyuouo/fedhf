@@ -6,15 +6,17 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-
+import pytest
 import os
 import torch
 from fedhf import model
 from fedhf import Config, Serializer
-from fedhf.api import cfg
+import fedhf
 from fedhf.component import build_aggregator
 from fedhf.model import build_model
 
 
+@pytest.mark.order(3)
 class TestAggregator(object):
-    pass
+    def test_agg_fedavg(self):
+        args = fedhf.init(algor="fedavg")

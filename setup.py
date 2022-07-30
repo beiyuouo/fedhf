@@ -36,8 +36,9 @@ setup(
         "urllib3==1.25.3",
     ],
     extras_require={
-        "dev": ["nox", "pytest", "mkdocs"],
-        "test": ["pytest", "mkdocs"],
+        "dev": ["pytest", "pytest-order", "mkdocs"],
+        "test": ["pytest", "pytest-order"],
+        "docs": ["mkdocs"],
     },
     python_requires=">=3.6",
     classifiers=[

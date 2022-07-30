@@ -7,12 +7,13 @@
 # @License :   Apache License 2.0
 
 
-from pyexpat import model
+import pytest
 import fedhf
 from fedhf import algor
 from fedhf.core import SimulatedSyncCoordinator, SimulatedAsyncCoordinator
 
 
+@pytest.mark.order(4)
 class TestCoordinator(object):
     def test_simulated_async_coordinator(self):
         args = fedhf.init(

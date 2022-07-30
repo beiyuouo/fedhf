@@ -6,12 +6,13 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-
+import pytest
 from fedhf import Config
 import fedhf
 from fedhf.component import build_selector
 
 
+@pytest.mark.order(3)
 class TestSelector(object):
     client_list = [i for i in range(10)]
     args = fedhf.init(num_clients=10, select_ratio=0.5)

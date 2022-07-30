@@ -6,16 +6,16 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-import pickle
+import pytest
 import numpy as np
 import torch
-from torch.utils.data import DataLoader
 
 import fedhf
-from fedhf import Config, Serializer, Deserializer
+from fedhf import Serializer, Deserializer
 from fedhf.model import build_model
 
 
+@pytest.mark.order(1)
 class TestSerializer(object):
     args = fedhf.init(num_classes=10, model="resnet")
 

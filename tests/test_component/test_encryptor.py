@@ -6,12 +6,14 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
+import pytest
 from fedhf import Config
 import fedhf
 from fedhf.component import build_encryptor
 from fedhf.model.nn import MLP
 
 
+@pytest.mark.order(3)
 class TestEncryptor:
     """
     TestEncryptor is the class for testing the encryptor.

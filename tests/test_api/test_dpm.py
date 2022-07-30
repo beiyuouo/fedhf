@@ -6,18 +6,19 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-from copy import copy, deepcopy
 import numpy as np
+import pytest
 import torch
 import torch.nn as nn
 
-from fedhf import Config, dpm
+from fedhf import dpm
 import fedhf
 
 from fedhf.model.nn import MLP
 from fedhf.dataset.random import RandomDataset
 
 
+@pytest.mark.order(1)
 class TestDPM:
     args = fedhf.init()
 

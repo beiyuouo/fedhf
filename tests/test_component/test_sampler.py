@@ -6,13 +6,14 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-
+import pytest
 from fedhf import Config
 import fedhf
 from fedhf.component import build_sampler
 from fedhf.dataset import build_dataset
 
 
+@pytest.mark.order(3)
 class TestSampler(object):
 
     args = fedhf.init(

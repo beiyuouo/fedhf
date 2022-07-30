@@ -6,7 +6,7 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-
+import pytest
 import torch
 from torch.utils.data import DataLoader
 
@@ -17,6 +17,7 @@ from fedhf.model import build_model, build_criterion, build_optimizer
 from fedhf.dataset import build_dataset, ClientDataset
 
 
+@pytest.mark.order(3)
 class TestTrainer(object):
     args = fedhf.init(
         num_classes=10,

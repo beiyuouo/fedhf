@@ -7,11 +7,13 @@
 # @License :   Apache License 2.0
 
 
+import pytest
 import fedhf
 
 from fedhf import Config
 
 
+@pytest.mark.order(-1)
 class TestFedAsync:
     args = Config()
 

@@ -1,14 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @File    :   tests\test_fedhf.py
-# @Time    :   2022-07-16 23:59:29
+# @File    :   tests\test_algor\test_fedhf.py
+# @Time    :   2022-07-30 18:42:17
 # @Author  :   Bingjie Yan
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
+
+import pytest
 import fedhf
 
 
+@pytest.mark.order(-2)
 class TestFedHF:
     def test_init(self):
         args = fedhf.init()

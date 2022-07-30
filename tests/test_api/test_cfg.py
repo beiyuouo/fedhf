@@ -7,11 +7,14 @@
 # @License :   Apache License 2.0
 
 import os
+
+import pytest
 import fedhf
 from fedhf import Config
 import yaml
 
 
+@pytest.mark.order(1)
 class TestConfig(object):
     def test_config(self):
         cfg = Config().parse_cfg(

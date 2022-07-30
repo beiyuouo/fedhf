@@ -6,7 +6,7 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-
+import pytest
 from fedhf import Config
 import fedhf
 from fedhf.core import SimulatedServer
@@ -14,6 +14,7 @@ from fedhf.dataset import build_dataset, ClientDataset
 from fedhf.model import build_model
 
 
+@pytest.mark.order(4)
 class TestServer(object):
     args = fedhf.init(
         num_clients=10,

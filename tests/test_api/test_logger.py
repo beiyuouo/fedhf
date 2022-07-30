@@ -6,10 +6,12 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-from fedhf import Logger, Config
+import pytest
+from fedhf import Logger
 import fedhf
 
 
+@pytest.mark.order(1)
 class TestLogger:
     args = fedhf.init(prj_name="fedhf")
 
