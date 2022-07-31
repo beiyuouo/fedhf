@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install .
-          pip install pytest
+          pip install .[test]
       # pylint
       # - name: Analysing the code with pylint
       #   run: |
