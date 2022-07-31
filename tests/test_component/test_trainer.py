@@ -10,7 +10,6 @@ import pytest
 import torch
 from torch.utils.data import DataLoader
 
-from fedhf import Config
 import fedhf
 from fedhf.component import DefaultTrainer as Trainer
 from fedhf.model import build_model, build_criterion, build_optimizer

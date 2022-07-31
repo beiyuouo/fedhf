@@ -10,10 +10,10 @@
 import time
 from copy import deepcopy
 
-from fedhf.component.trainer.base_trainer import BaseTrainer
+from fedhf.component.trainer import DefaultTrainer
 
 
-class FedProxTrainer(BaseTrainer):
+class FedProxTrainer(DefaultTrainer):
     def __init__(self, args) -> None:
         super(FedProxTrainer, self).__init__(args)
 

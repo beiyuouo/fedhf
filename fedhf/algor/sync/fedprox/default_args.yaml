@@ -1,6 +1,7 @@
 scheme: sync
 algor: fedprox
 agg: fedprox
+trainer: fedprox
 
 fedprox:
   rho: 0.005

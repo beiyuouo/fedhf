@@ -23,6 +23,6 @@ def init_algor(args) -> Any:
     # register components
     algor = build_algor(args.algor)
 
-    args.merge(algor.default_args, overwrite=False)
+    args.merge(algor.default_args, overwrite=True)
 
     return args

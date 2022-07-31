@@ -19,7 +19,7 @@ optimizer_factory = {
 
 def build_optimizer(optim_name: str):
     if optim_name not in optimizer_factory.keys():
-        raise ValueError(f"Unknown optimizer name: {optim_name}")
+        raise ValueError(f"unknown optimizer name: {optim_name}")
 
     optimizer = optimizer_factory[optim_name]
 

@@ -16,4 +16,11 @@ class TestLogger:
     args = fedhf.init(prj_name="fedhf")
 
     def test_logger(self):
-        self.logger = Logger(self.args)
+        logger1 = Logger(self.args)
+        logger1.info("test_logger")
+        logger1.debug("test_logger")
+        logger1.warning("test_logger")
+        logger1.error("test_logger")
+        logger1.log_metric("test_logger")
+        logger2 = Logger(self.args)
+        assert logger1 == logger2

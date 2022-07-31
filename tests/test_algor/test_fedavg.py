@@ -15,7 +15,17 @@ from fedhf import Config
 
 @pytest.mark.order(-1)
 class TestFedAvg:
-    args = Config()
+    args = fedhf.init(
+        debug=True,
+        algor="fedavg",
+        num_clients=3,
+        num_rounds=1,
+        num_epochs=1,
+        model="mlp",
+        dataset="mnist",
+        scheme="sync",
+        agg="fedavg",
+    )
 
     def test_fedavg(self):
-        pass
+        fedhf.run(self.args)

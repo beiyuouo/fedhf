@@ -13,8 +13,11 @@ from .core import register, register_all
 
 
 def init(*args, **kwargs):
-    args = Config().parse_cfg(*args, **kwargs)
-    args = init_algor(args)
+    args = Config().parse_cfg(*args, **kwargs)  # init class
+    args = init_algor(args)  # init algor overwrite args
+    args = (
+        args.reload_cfg()
+    )  # reload args, tempory solution, solve algor args overwrite config args
     return args
 
 

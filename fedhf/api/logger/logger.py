@@ -16,7 +16,11 @@ from .base_logger import BaseLogger, logger_map
 
 
 class Logger(BaseLogger):
-    class __Logger(BaseLogger):
+    """
+    Singleton Pattern
+    """
+
+    class __logger__(BaseLogger):
         def __init__(self, args):
             if args.log_level in logger_map:
                 self.log_level = logger_map[args.log_level]
@@ -91,31 +95,31 @@ class Logger(BaseLogger):
             with open(self.log_metric_file, "a") as f:
                 f.write(str(log_info) + "\n")
 
-    __instance = None
+    __instance__ = None
 
     def __new__(cls, args):
-        if not cls.__instance:
-            cls.__instance = Logger.__Logger(args)
-        return cls.__instance
+        if not cls.__instance__:
+            cls.__instance__ = Logger.__logger__(args)
+        return cls.__instance__
 
     def debug(self, log_str: str) -> None:
-        self.__instance.debug(log_str)
+        self.__instance__.debug(log_str)
 
     def info(self, log_str: str) -> None:
-        self.__instance.info(log_str)
+        self.__instance__.info(log_str)
 
     def warning(self, log_str: str) -> None:
-        self.__instance.warning(log_str)
+        self.__instance__.warning(log_str)
 
     def error(self, log_str: str) -> None:
-        self.__instance.error(log_str)
+        self.__instance__.error(log_str)
 
     def log(self, log_dict, *args, **kwargs) -> None:
-        self.__instance.log(log_dict, args, kwargs)
+        self.__instance__.log(log_dict, args, kwargs)
 
     def log_metric(self, log_info, *args, **kwargs) -> None:
-        self.__instance.log_metric(log_info, args, kwargs)
+        self.__instance__.log_metric(log_info, args, kwargs)
 
     def to_wandb(self, log_dict, *args, **kwargs) -> None:
-        if self.__instance.use_wandb:
-            self.__instance.to_wandb(log_dict, args, kwargs)
+        if self.__instance__.use_wandb:
+            self.__instance__.to_wandb(log_dict, args, kwargs)

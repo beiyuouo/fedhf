@@ -9,7 +9,6 @@
 
 import pytest
 import fedhf
-from fedhf import algor
 from fedhf.core import SimulatedSyncCoordinator, SimulatedAsyncCoordinator
 
 

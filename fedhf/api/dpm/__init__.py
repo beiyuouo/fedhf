@@ -41,7 +41,7 @@ def build_mechanism(mechanism, sensitivity, size, epsilon, **kwargs):
     elif mechanism in dp_mechanism_factory:
         return dp_mechanism_factory[mechanism](sensitivity, size, epsilon, **kwargs)
     else:
-        raise ValueError("Unknown mechanism: %s" % mechanism)
+        raise ValueError("unknown mechanism: %s" % mechanism)
 
 
 def build_clip_grad(mechanism, model, clip, **kwargs):
@@ -58,7 +58,7 @@ def build_clip_grad(mechanism, model, clip, **kwargs):
     elif mechanism in dp_clip_factory:
         dp_clip_factory[mechanism](model, clip, **kwargs)
     else:
-        raise ValueError("Unknown mechanism: %s" % mechanism)
+        raise ValueError("un mechanism: %s" % mechanism)
 
 
 __all__ = [

@@ -105,3 +105,8 @@ class Config(ez.Config):
         # if opt.resume and opt.load_model == "":
         #     opt.load_model = os.path.join(opt.save_dir, f"{opt.name}.pth")
         return self
+
+    def reload_cfg(self):
+        if self.cfg:
+            self.load_from_file(self.cfg)
+        return self

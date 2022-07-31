@@ -10,7 +10,6 @@ import pytest
 import torch
 from torch.utils.data import DataLoader
 
-from fedhf import Config
 import fedhf
 from fedhf.component import DefaultEvaluator as Evaluator
 from fedhf.dataset import build_dataset, ClientDataset
