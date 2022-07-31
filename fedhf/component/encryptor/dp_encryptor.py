@@ -21,7 +21,7 @@ class DPEncryptor(BaseEncryptor):
 
     def __init__(self, args, **kwargs):
         """
-        Constructor.
+        constructor.
         :param args: the arguments
         """
         super().__init__(args)
@@ -34,7 +34,7 @@ class DPEncryptor(BaseEncryptor):
 
     def generate_noise(self, size):
         """
-        Encrypt the given data.
+        encrypt the given data.
         :param x: the data
         :return: the encrypted data
         """
@@ -48,7 +48,7 @@ class DPEncryptor(BaseEncryptor):
 
     def clip_grad(self, model):
         """
-        Clip the gradient of the given model.
+        clip the gradient of the given model.
         :param model: the model
         """
         dpm.build_clip_grad(
@@ -59,7 +59,7 @@ class DPEncryptor(BaseEncryptor):
 
     def encrypt_model(self, model):
         """
-        Encrypt the given model.
+        encrypt the given model.
         :param model: the model
         :return: the encrypted model
         """

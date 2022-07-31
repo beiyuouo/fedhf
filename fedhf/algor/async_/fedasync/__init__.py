@@ -16,5 +16,5 @@ components = {
     "trainer": {"fedasync": FedAsyncTrainer},
 }
 
-default_params = Config()
-default_params.load(os.path.join(os.path.dirname(__file__), "default_params.yaml"))
+default_args = Config()
+default_args.load(os.path.join(os.path.dirname(__file__), "default_args.yaml"))

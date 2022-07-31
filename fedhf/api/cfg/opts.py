@@ -84,6 +84,9 @@ class opts(object):
             help="log level, it could be in [ error | warning | info | debug ]",
         )
         self.parser.add_argument(
+            "--log_interval", type=int, default=100, help="log interval"
+        )
+        self.parser.add_argument(
             "--eval_interval", type=int, default=5, help="evaluation interval"
         )
         self.parser.add_argument(
@@ -150,7 +153,9 @@ class opts(object):
         self.parser.add_argument(
             "--num_classes", type=int, default=10, help="number of classes"
         )
-
+        self.parser.add_argument(
+            "--coordinator", type=str, default=None, help="coordinator."
+        )
         self.parser.add_argument(
             "--trainer", type=str, default="default_trainer", help="trainer."
         )
@@ -213,6 +218,7 @@ class opts(object):
         )
 
         # test setting
+        self.parser.add_argument("--debug", action="store_true", help="debug mode")
         self.parser.add_argument("--test", action="store_true", help="test mode")
 
     def parse(self, args=""):

@@ -20,7 +20,7 @@ criterion_factory = {
 
 def build_criterion(criter_name: str):
     if criter_name not in criterion_factory.keys():
-        raise ValueError(f"Unknown criterion name: {criter_name}")
+        raise ValueError(f"unknown criterion name: {criter_name}")
 
     cirter = criterion_factory[criter_name]
     return cirter

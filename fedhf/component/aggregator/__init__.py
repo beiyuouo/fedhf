@@ -27,6 +27,6 @@ aggregator_factory = {
 
 def build_aggregator(agg_name: str):
     if agg_name not in aggregator_factory.keys():
-        raise ValueError(f"Unknown aggregator name: {agg_name}")
+        raise ValueError(f"unknown aggregator name: {agg_name}")
     agg = aggregator_factory[agg_name]
     return agg

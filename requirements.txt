@@ -61,7 +61,6 @@ toml
 torch
 torchaudio
 torchvision
-tqdm
 typing-extensions
 urllib3
 virtualenv

@@ -27,6 +27,6 @@ model_factory = {
 
 def build_model(model_name: str):
     if model_name not in model_factory.keys():
-        raise ValueError(f"Unknown model name: {model_name}")
+        raise ValueError(f"unknown model name: {model_name}")
     model = model_factory[model_name]
     return model

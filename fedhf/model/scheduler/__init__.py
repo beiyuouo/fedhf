@@ -20,7 +20,7 @@ lr_schedule_factory = {
 
 def build_lr_scheduler(lr_schedule_name: str):
     if lr_schedule_name not in lr_schedule_factory.keys():
-        raise ValueError(f"Unknown lr_schedule name: {lr_schedule_name}")
+        raise ValueError(f"unknown lr_schedule name: {lr_schedule_name}")
 
     lr_scheduler = lr_schedule_factory[lr_schedule_name]
     return lr_scheduler

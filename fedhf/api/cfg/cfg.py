@@ -21,8 +21,6 @@ from ezkfg import Config as EConfig
 class Config(ez.Config):
     def __init__(self, *args, **kwargs):
         super().__init__()
-        self.__parent__ = None
-        self.__key__ = None
 
         # print("args:", args)
         # print("kwargs:", kwargs)
@@ -106,4 +104,9 @@ class Config(ez.Config):
 
         # if opt.resume and opt.load_model == "":
         #     opt.load_model = os.path.join(opt.save_dir, f"{opt.name}.pth")
+        return self
+
+    def reload_cfg(self):
+        if self.cfg:
+            self.load_from_file(self.cfg)
         return self

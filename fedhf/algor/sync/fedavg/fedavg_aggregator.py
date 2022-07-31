@@ -8,10 +8,12 @@
 
 
 import time
+import numpy as np
 import torch
 import torch.nn as nn
 
-from ....component.aggregator.sync_aggregator import SyncAggregator
+from fedhf import Config
+from fedhf.component.aggregator.sync_aggregator import SyncAggregator
 
 
 class FedAvgAggregator(SyncAggregator):
@@ -22,15 +24,16 @@ class FedAvgAggregator(SyncAggregator):
         self._model_cached.append(client_param)
         self._model_counter += 1
 
-        if "weight" not in kwargs.keys():
-            kwargs["weight"] = 1 / self.num_clients_per_round
-
-        self._model_weight[self._model_counter - 1] = kwargs["weight"]
+        kwargs = Config(**kwargs)
+        self._model_weight[self._model_counter - 1] = kwargs.get("weight", 1.0)
 
         if not self._check_agg():
             return
 
-        self.logger.info("Aggregate models")
+        self._model_weight = np.array(self._model_weight, dtype=np.float32)
+        self._model_weight = self._model_weight / self._model_weight.sum()  # normalize
+
+        self.logger.info("aggregate models")
 
         new_param = torch.zeros_like(server_param)
         for i in range(self.num_clients_per_round):
@@ -38,15 +41,9 @@ class FedAvgAggregator(SyncAggregator):
 
         self._model_cached = []
         self._model_counter = 0
-        self._model_weight = [
-            1 / self.num_clients_per_round for i in range(self.num_clients_per_round)
-        ]
+        self._model_weight = [1.0 for i in range(self.num_clients_per_round)]
 
         result = {
             "param": new_param,
-            "model_version": kwargs["server_model_version"] + 1
-            if "server_model_version" in kwargs.keys()
-            else 0,
-            "model_time": time.time(),
         }
         return result

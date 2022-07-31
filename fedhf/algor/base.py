@@ -19,6 +19,6 @@ algor_factory = {
 
 def build_algor(algor_type: str):
     if algor_type not in algor_factory.keys():
-        raise ValueError(f"{algor_type} is not a valid algor name")
+        raise ValueError(f"unknown algor type: {algor_type}")
 
     return algor_factory[algor_type]

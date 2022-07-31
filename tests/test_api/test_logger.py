@@ -6,12 +6,21 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-from fedhf import Logger, Config
+import pytest
+from fedhf import Logger
 import fedhf
 
 
+@pytest.mark.order(1)
 class TestLogger:
     args = fedhf.init(prj_name="fedhf")
 
     def test_logger(self):
-        self.logger = Logger(self.args)
+        logger1 = Logger(self.args)
+        logger1.info("test_logger")
+        logger1.debug("test_logger")
+        logger1.warning("test_logger")
+        logger1.error("test_logger")
+        logger1.log_metric("test_logger")
+        logger2 = Logger(self.args)
+        assert logger1 == logger2

@@ -153,15 +153,15 @@ class NonIIDSampler(BaseSampler):
                     )
 
         if test_dataset is None:
-            return [
-                ClientDataset(train_dataset, list(client_data_train[i]))
+            return {
+                i: ClientDataset(train_dataset, list(client_data_train[i]))
                 for i in range(self.args.num_clients)
-            ]
+            }, {i: None for i in range(self.args.num_clients)}
         else:
-            return [
-                (
-                    ClientDataset(train_dataset, list(client_data_train[i])),
-                    ClientDataset(test_dataset, list(client_data_test[i])),
-                )
+            return {
+                i: ClientDataset(train_dataset, list(client_data_train[i]))
                 for i in range(self.args.num_clients)
-            ]
+            }, {
+                i: ClientDataset(test_dataset, list(client_data_test[i]))
+                for i in range(self.args.num_clients)
+            }

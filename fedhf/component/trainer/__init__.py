@@ -13,13 +13,15 @@ from .default_trainer import DefaultTrainer
 
 
 trainer_factory = {
+    "base": BaseTrainer,
     "base_trainer": BaseTrainer,
+    "default": DefaultTrainer,
     "default_trainer": DefaultTrainer,
 }
 
 
 def build_trainer(trainer_type: str):
     if trainer_type not in trainer_factory.keys():
-        raise ValueError(f"{trainer_type} is not a valid trainer name")
+        raise ValueError(f"unknown trainer type: {trainer_type}")
 
     return trainer_factory[trainer_type]

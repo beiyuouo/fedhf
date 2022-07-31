@@ -6,12 +6,13 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-from fedhf import Config
+import pytest
 import fedhf
 from fedhf.component import build_encryptor
 from fedhf.model.nn import MLP
 
 
+@pytest.mark.order(3)
 class TestEncryptor:
     """
     TestEncryptor is the class for testing the encryptor.
@@ -29,7 +30,7 @@ class TestEncryptor:
         """
         encryptor = build_encryptor("none")(self.args)
 
-        model = MLP(None, input_dim=10 * 10, output_dim=10)
+        model = MLP(None, mlp={"input_dim": 10 * 10, "output_dim": 10})
 
         encryptor.encrypt_model(model)
 
@@ -39,6 +40,6 @@ class TestEncryptor:
         """
         encryptor = build_encryptor("dp")(self.args, data_size=100)
 
-        model = MLP(None, input_dim=10 * 10, output_dim=10)
+        model = MLP(None, mlp={"input_dim": 10 * 10, "output_dim": 10})
 
         encryptor.encrypt_model(model)

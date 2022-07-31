@@ -18,8 +18,8 @@ class CNN4CIFAR10(BaseModel):
     Implentation of the cnn described in the fedasync
     """
 
-    def __init__(self, args, model_time=None, model_version=0):
-        super().__init__(args, model_time, model_version)
+    def __init__(self, args, **kwargs):
+        super().__init__(args, **kwargs)
 
         self.num_classes = args.num_classes
 
@@ -57,10 +57,10 @@ class CNN2CIFAR10(BaseModel):
     Implentation of the cnn described in the fedasync
     """
 
-    def __init__(self, args, model_time=None, model_version=0):
-        super().__init__(args, model_time, model_version)
+    def __init__(self, args, **kwargs):
+        super().__init__(args, **kwargs)
 
-        self.num_classes = args.num_classes
+        self.num_classes = self.args.num_classes
 
         self.net = nn.Sequential(
             nn.Conv2d(3, 32, kernel_size=3, padding=1),

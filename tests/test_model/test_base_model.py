@@ -6,6 +6,7 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
+import pytest
 import torch
 from torch.utils.data import DataLoader
 
@@ -15,6 +16,7 @@ from fedhf.model import build_model, build_optimizer
 from fedhf.dataset import build_dataset
 
 
+@pytest.mark.order(2)
 class TestCNNCIFAR10(object):
     args = fedhf.init(
         model="cnn2_cifar10",
@@ -47,10 +49,10 @@ class TestCNNCIFAR10(object):
             assert output.device == torch.device("cpu")
             break
 
-        model.save()
-        torch.save(model.state_dict(), "./model.pth")
+        model.save("model_base.pth")
+        torch.save(model.state_dict(), "model.pth")
 
-        _model_state_dict = torch.load("./model.pth")
+        _model_state_dict = torch.load("model.pth")
         # print(torch.load('./model.pth'))
         # print('-' * 10)
         # print(model.state_dict())
@@ -62,7 +64,7 @@ class TestCNNCIFAR10(object):
             assert v.view(-1).eq(_model_state_dict[k].view(-1)).all()
             # assert v.device == _model_state_dict[k].device
 
-        model.load()
+        model.load("model_base.pth")
 
         for k, v in model.state_dict().items():
             assert v.shape == _model_state_dict[k].shape

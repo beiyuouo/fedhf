@@ -21,8 +21,8 @@ from ..base_model import BaseModel
 
 
 class ResNet(BaseModel):
-    def __init__(self, args, model_time=None, model_version=0):
-        super().__init__(args, model_time, model_version)
+    def __init__(self, args, **kwargs):
+        super().__init__(args, **kwargs)
         self.net = models.resnet18(pretrained=True)
         self.net.fc = nn.Linear(512, args.num_classes)
 

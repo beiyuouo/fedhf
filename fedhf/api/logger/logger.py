@@ -14,20 +14,18 @@ from typing import Dict, Optional, Union
 
 from .base_logger import BaseLogger, logger_map
 
-logging.basicConfig(
-    stream=sys.stdout,
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-)
-
 
 class Logger(BaseLogger):
-    class __Logger(BaseLogger):
+    """
+    Singleton Pattern
+    """
+
+    class __logger__(BaseLogger):
         def __init__(self, args):
             if args.log_level in logger_map:
                 self.log_level = logger_map[args.log_level]
             else:
-                raise "No such log level!"
+                raise "no such log level!"
 
             if args.log_name is not None:
                 self.log_name = args.log_name
@@ -38,10 +36,11 @@ class Logger(BaseLogger):
             self.logger.setLevel(self.log_level)
 
             formatter = logging.Formatter(
-                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+                "%(asctime)s - %(levelname)s - %(message)s",
+                "%Y-%m-%d %H:%M:%S",
             )
 
-            self.log_metric = args.log_metric
+            self.log_metric_file = args.log_metric
 
             file_handler = logging.FileHandler(args.log_file, mode="w")
             file_handler.setLevel(level=self.log_level)
@@ -91,35 +90,36 @@ class Logger(BaseLogger):
             wandb.log(log_dict, *args, **kwargs)
 
         def log_metric(self, log_info: Union[Dict, str] = None) -> None:
+            self.info(log_info)
             # log one line in result.csv
-            with open(self.log_metric, "a") as f:
+            with open(self.log_metric_file, "a") as f:
                 f.write(str(log_info) + "\n")
 
-    __instance = None
+    __instance__ = None
 
     def __new__(cls, args):
-        if not cls.__instance:
-            cls.__instance = Logger.__Logger(args)
-        return cls.__instance
+        if not cls.__instance__:
+            cls.__instance__ = Logger.__logger__(args)
+        return cls.__instance__
 
     def debug(self, log_str: str) -> None:
-        self.__instance.debug(log_str)
+        self.__instance__.debug(log_str)
 
     def info(self, log_str: str) -> None:
-        self.__instance.info(log_str)
+        self.__instance__.info(log_str)
 
     def warning(self, log_str: str) -> None:
-        self.__instance.warning(log_str)
+        self.__instance__.warning(log_str)
 
     def error(self, log_str: str) -> None:
-        self.__instance.error(log_str)
+        self.__instance__.error(log_str)
 
     def log(self, log_dict, *args, **kwargs) -> None:
-        self.__instance.log(log_dict, args, kwargs)
+        self.__instance__.log(log_dict, args, kwargs)
 
     def log_metric(self, log_info, *args, **kwargs) -> None:
-        self.__instance.log_metric(log_info, args, kwargs)
+        self.__instance__.log_metric(log_info, args, kwargs)
 
     def to_wandb(self, log_dict, *args, **kwargs) -> None:
-        if self.__instance.use_wandb:
-            self.__instance.to_wandb(log_dict, args, kwargs)
+        if self.__instance__.use_wandb:
+            self.__instance__.to_wandb(log_dict, args, kwargs)

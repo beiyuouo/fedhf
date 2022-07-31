@@ -6,12 +6,13 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-
+import pytest
 import fedhf
 from fedhf import Config
 from fedhf.dataset import ClientDataset, build_dataset
 
 
+@pytest.mark.order(2)
 class TestClientDataset(object):
     args = fedhf.init(num_classes=10, dataset="mnist")
 

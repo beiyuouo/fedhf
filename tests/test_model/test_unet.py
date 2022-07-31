@@ -6,6 +6,7 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
+import pytest
 import torch
 from torch.utils.data import DataLoader
 
@@ -15,6 +16,7 @@ from fedhf.model import build_model, build_optimizer
 from fedhf.dataset import build_dataset
 
 
+@pytest.mark.order(2)
 class TestUNet(object):
     args = fedhf.init(
         model="unet",

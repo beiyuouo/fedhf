@@ -149,6 +149,9 @@ cython_debug/
 # Pypi
 .pypirc
 
+# workspace
+*.code-workspace
+
 # logger
 /wandb/
 

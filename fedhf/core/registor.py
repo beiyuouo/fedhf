@@ -53,7 +53,7 @@ components = {
 
 def register(component_name: str, component_dict: dict):
     if component_name not in components.keys():
-        raise ValueError(f"Unknown component name: {component_name}")
+        raise ValueError(f"unknown component name: {component_name}")
     components[component_name].update(component_dict)
 
 

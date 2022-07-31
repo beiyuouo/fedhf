@@ -13,12 +13,14 @@ from .default_evaluator import DefaultEvaluator
 
 
 evaluator_factory = {
+    "base": BaseEvaluator,
     "base_evaluator": BaseEvaluator,
+    "default": DefaultEvaluator,
     "default_evaluator": DefaultEvaluator,
 }
 
 
 def build_evaluator(name):
     if name not in evaluator_factory.keys():
-        raise ValueError(f"Unknown evaluator name: {name}")
+        raise ValueError(f"unknown evaluator name: {name}")
     return evaluator_factory[name]

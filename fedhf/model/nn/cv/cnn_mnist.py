@@ -8,7 +8,6 @@
 
 import torch
 import torch.nn as nn
-from torch.nn.modules.activation import Softmax
 
 from ..base_model import BaseModel
 
@@ -18,8 +17,8 @@ class CNNMNIST(BaseModel):
     Implentation of the cnn described in the fedasync
     """
 
-    def __init__(self, args, model_time=None, model_version=0):
-        super().__init__(args, model_time, model_version)
+    def __init__(self, args, **kwargs):
+        super().__init__(args, **kwargs)
 
         self.num_classes = args.num_classes
 

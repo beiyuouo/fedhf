@@ -18,7 +18,7 @@ class Deserializer(object):
     @staticmethod
     def deserialize_model(
         model: torch.nn.Module, serialized_parameters: torch.Tensor, mode="copy"
-    ):
+    ) -> None:
         cur_idx = 0
         for parameter in model.parameters():
             numel = parameter.data.numel()
@@ -32,5 +32,5 @@ class Deserializer(object):
                     serialized_parameters[cur_idx : cur_idx + numel].view(size)
                 )
             else:
-                raise ValueError("Unknown mode: {}".format(mode))
+                raise ValueError("unknown mode: {}".format(mode))
             cur_idx += numel

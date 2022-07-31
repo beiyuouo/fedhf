@@ -6,7 +6,11 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
+import pytest
 
+
+@pytest.mark.skip(reason="TODO")
+@pytest.mark.order(3)
 class TestAttactor:
     def test_base(self):
         pass

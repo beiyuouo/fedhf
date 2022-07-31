@@ -17,7 +17,7 @@ selector_factory = {
 
 def build_selector(sele_name: str):
     if sele_name not in selector_factory.keys():
-        raise ValueError(f"{sele_name} is not a valid selector name")
+        raise ValueError(f"unknown selector name: {sele_name}")
 
     selector = selector_factory[sele_name]
 

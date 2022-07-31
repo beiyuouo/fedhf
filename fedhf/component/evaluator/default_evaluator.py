@@ -10,7 +10,6 @@ from typing import Any, Optional, Union
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
-from tqdm import tqdm
 
 from fedhf.model import build_criterion, build_optimizer
 from .base_evaluator import BaseEvaluator
@@ -37,12 +36,12 @@ class DefaultEvaluator(BaseEvaluator):
         model = model.to(device)
         crit = self.crit()
 
-        self.logger.info(f"Start evaluation on {client_id}")
+        self.logger.info(f"start evaluation on {client_id}")
 
         model.eval()
         losses = 0.0
         acc = 0.0
-        for inputs, labels in tqdm(dataloader, desc=f"Test on client {client_id}"):
+        for batch_idx, (inputs, labels) in enumerate(dataloader):
             inputs = inputs.to(device)
             labels = labels.to(device)
 
@@ -55,10 +54,9 @@ class DefaultEvaluator(BaseEvaluator):
             losses += loss.item()
 
         losses /= len(dataloader)
-        # self.logger.info(f'Client {client_id} test loss: {losses:.4f}, acc: {acc}')
         acc /= len(dataloader.dataset)
-
-        self.logger.info(f"Evaluation on {client_id} finished")
+        self.logger.info(f"evaluation on {client_id}: loss {losses}, acc {acc}")
+        self.logger.info(f"evaluation on {client_id} finished")
 
         if self.args.use_wandb:
             if client_id == -1:

@@ -6,9 +6,11 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
+import time
 from copy import deepcopy
 import torch
 import torch.nn as nn
+from torch.utils.data import DataLoader, Dataset
 
 from fedhf.api import Serializer, Deserializer
 
@@ -32,17 +34,32 @@ class SimulatedServer(BaseServer):
         )
 
         if not result:
-            self.logger.info("It's not time to update.")
+            self.logger.info("it's not time to update.")
             return
         # print(self.model.get_model_version(), model.get_model_version())
         Deserializer.deserialize_model(self.model, result["param"])
 
         # self.model = self.encryptor.encrypt_model(self.model)
 
-        self.model.set_model_version(result["model_version"])
-        self.model.set_model_time(result["model_time"])
+        self.model.set_model_version(self.model.get_model_version() + 1)
+        self.model.set_model_time(time.time())
         # print(result['model_version'], result['model_time'])
         self.logger.info(
-            f'get model version {result["model_version"]} at time {result["model_time"]}'
+            f"get model version {self.model.get_model_version()} at time {self.model.get_model_time()}"
         )
         return
+
+    def evaluate(self, data: Dataset, model: nn.Module, device="cpu", **kwargs):
+        if data is None or len(data) == 0:
+            return None
+        dataloader = DataLoader(data, batch_size=self.args.batch_size)
+
+        result = self.evaluator.evaluate(
+            dataloader=dataloader, model=model, client_id=-1, device=device
+        )
+        if "model" in result:
+            model = result["model"]
+            result.pop("model")
+
+        self.logger.info(f"finish evaluating on client {-1}, result: {result}")
+        return result

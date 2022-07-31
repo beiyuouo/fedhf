@@ -17,6 +17,6 @@ server_factory = {
 
 def build_server(server_type: str):
     if server_type not in server_factory:
-        raise ValueError("Unknown server type: {}".format(server_type))
+        raise ValueError("unknown server type: {}".format(server_type))
     server = server_factory[server_type]
     return server

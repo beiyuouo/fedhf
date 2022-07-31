@@ -6,18 +6,19 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
-from copy import copy, deepcopy
 import numpy as np
+import pytest
 import torch
 import torch.nn as nn
 
-from fedhf import Config, dpm
+from fedhf import dpm
 import fedhf
 
 from fedhf.model.nn import MLP
 from fedhf.dataset.random import RandomDataset
 
 
+@pytest.mark.order(1)
 class TestDPM:
     args = fedhf.init()
 
@@ -48,7 +49,7 @@ class TestDPM:
         )
 
     def test_none_clip(self):
-        model = MLP(None, input_dim=10 * 10, output_dim=10)
+        model = MLP(None, mlp={"input_dim": 10 * 10, "output_dim": 10})
         data = RandomDataset(None, 100, (1, 10, 10), 10)
 
         model.train()
@@ -76,7 +77,7 @@ class TestDPM:
             assert np.allclose(grads[k], v.grad.detach().numpy())
 
     def test_gaussian_clip(self):
-        model = MLP(None, input_dim=10 * 10, output_dim=10)
+        model = MLP(None, mlp={"input_dim": 10 * 10, "output_dim": 10})
         data = RandomDataset(None, 100, (1, 10, 10), 10)
 
         model.train()
@@ -104,7 +105,7 @@ class TestDPM:
             assert np.any(v.grad.detach().numpy() != grads[k])
 
     def test_laplace_clip(self):
-        model = MLP(None, input_dim=10 * 10, output_dim=10)
+        model = MLP(None, mlp={"input_dim": 10 * 10, "output_dim": 10})
         data = RandomDataset(None, 100, (1, 10, 10), 10)
 
         model.train()

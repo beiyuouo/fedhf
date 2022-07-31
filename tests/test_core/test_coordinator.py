@@ -7,12 +7,12 @@
 # @License :   Apache License 2.0
 
 
-from pyexpat import model
+import pytest
 import fedhf
-from fedhf import algor
 from fedhf.core import SimulatedSyncCoordinator, SimulatedAsyncCoordinator
 
 
+@pytest.mark.order(4)
 class TestCoordinator(object):
     def test_simulated_async_coordinator(self):
         args = fedhf.init(
@@ -22,7 +22,7 @@ class TestCoordinator(object):
             num_epochs=1,
             num_clients=3,
             gpus="-1",
-            test=True,
+            debug=True,
             algor="fedasync",
         )
 
@@ -37,7 +37,7 @@ class TestCoordinator(object):
             num_epochs=1,
             num_clients=3,
             gpus="-1",
-            test=True,
+            deebug=True,
             select_ratio=0.5,
             algor="fedavg",
         )

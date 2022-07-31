@@ -10,15 +10,18 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset
 
-from fedhf.component import build_encryptor
+from fedhf import Config
 from .base_client import BaseClient
 
 
 class SimulatedClient(BaseClient):
     def __init__(self, args, client_id, **kwargs) -> None:
         super(SimulatedClient, self).__init__(args, client_id)
-        assert "data_size" in kwargs.keys()
-        self.data_size = kwargs["data_size"]
+
+        self.cfg = Config(**kwargs)
+        if self.args.get("dp") and self.cfg.get("data_size") is None:
+            raise ValueError("data_size must be specified when dp is True")
+        self.data_size = self.cfg.get("data_size")
 
     def train(self, data: Dataset, model: nn.Module, device="cpu", **kwargs):
         dataloader = DataLoader(data, batch_size=self.args.batch_size)
@@ -53,6 +56,6 @@ class SimulatedClient(BaseClient):
             result.pop("model")
 
         self.logger.info(
-            f"Finish evaluating on client {self.client_id}, result: {result}"
+            f"finish evaluating on client {self.client_id}, result: {result}"
         )
         return result
