@@ -34,6 +34,7 @@ setup(
         "ezkfg",
         "pyyaml",
         "urllib3==1.25.3",
+        "click",
     ],
     extras_require={
         "dev": ["pytest", "pytest-order", "mkdocs"],

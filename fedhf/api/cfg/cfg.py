@@ -48,6 +48,8 @@ class Config(ez.Config):
 
         self.prj_name = self.prj_name if self.prj_name else _prj_name
 
+        self.root_dir = self.root_dir if self.root_dir else Path(os.getcwd())
+
         # make dirs
         self.save_dir = Path(self.save_dir) / self.exp_name
         self.save_dir = increment_path(
@@ -60,13 +62,18 @@ class Config(ez.Config):
         self.weights_dir.mkdir(parents=True, exist_ok=True)
         self.data_dir = Path(self.data_dir)
 
+        if self.temp_dir:
+            self.temp_dir = Path(self.temp_dir)
+        else:
+            self.temp_dir = self.save_dir / "temp"
+        self.temp_dir.mkdir(parents=True, exist_ok=True)
+
         # logger
         if self.log_dir:
             self.log_dir = Path(self.log_dir) / self.exp_name
-            self.log_dir.mkdir(parents=True, exist_ok=True)
         else:
             self.log_dir = self.save_dir / "log"
-            self.log_dir.mkdir(parents=True, exist_ok=True)
+        self.log_dir.mkdir(parents=True, exist_ok=True)
 
         if self.log_file is None:
             self.log_file = self.log_dir / f"{self.exp_name}.log"
@@ -103,7 +110,7 @@ class Config(ez.Config):
         self.num_clients_per_round = max(self.num_clients_per_round, 1)
 
         # if opt.resume and opt.load_model == "":
-        #     opt.load_model = os.path.join(opt.save_dir, f"{opt.name}.pth")
+        #     opt.load_model = os.path.join(opt.weights_dir, f"{opt.name}.pth")
         return self
 
     def reload_cfg(self):

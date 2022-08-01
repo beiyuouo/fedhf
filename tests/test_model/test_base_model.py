@@ -6,6 +6,7 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
+import os
 import pytest
 import torch
 from torch.utils.data import DataLoader
@@ -49,10 +50,14 @@ class TestCNNCIFAR10(object):
             assert output.device == torch.device("cpu")
             break
 
-        model.save("model_base.pth")
-        torch.save(model.state_dict(), "model.pth")
+        model.save(os.path.join(str(self.args.temp_dir), "model_base.pth"))
+        torch.save(
+            model.state_dict(), os.path.join(str(self.args.temp_dir), "model.pth")
+        )
 
-        _model_state_dict = torch.load("model.pth")
+        _model_state_dict = torch.load(
+            os.path.join(str(self.args.temp_dir), "model.pth")
+        )
         # print(torch.load('./model.pth'))
         # print('-' * 10)
         # print(model.state_dict())
@@ -64,7 +69,7 @@ class TestCNNCIFAR10(object):
             assert v.view(-1).eq(_model_state_dict[k].view(-1)).all()
             # assert v.device == _model_state_dict[k].device
 
-        model.load("model_base.pth")
+        model.load(os.path.join(str(self.args.temp_dir), "model_base.pth"))
 
         for k, v in model.state_dict().items():
             assert v.shape == _model_state_dict[k].shape

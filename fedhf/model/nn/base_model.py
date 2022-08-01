@@ -40,7 +40,7 @@ class BaseModel(nn.Module):
 
     def save(self, path: str = None) -> None:
         if path is None:
-            path = os.path.join(self.args.save_dir, f"{self.args.exp_name}.pth")
+            path = os.path.join(self.args.weights_dir, f"{self.args.exp_name}.pth")
         torch.save(
             obj={
                 "args": self.args,
@@ -51,11 +51,12 @@ class BaseModel(nn.Module):
 
     def load(self, path: str = None) -> None:
         if path is None:
-            path = os.path.join(self.args.save_dir, f"{self.args.exp_name}.pth")
+            path = os.path.join(self.args.weights_dir, f"{self.args.exp_name}.pth")
         checkpoint = torch.load(path)
 
         self.args = checkpoint["args"]
         self.load_state_dict(checkpoint["state_dict"])
+        return self
 
     def add_default_args(self, args=None) -> Any:
         if args is None:

@@ -7,7 +7,9 @@
 # @License :   Apache License 2.0
 
 from abc import ABC, abstractmethod
-from fedhf.api import Logger
+from copy import deepcopy
+from typing import Any
+from fedhf.api import Logger, Config
 from fedhf.core import build_server, build_client
 from fedhf.component import build_sampler
 from fedhf.dataset import ClientDataset, build_dataset
@@ -142,3 +144,12 @@ class SimulatedBaseCoordinator(AbsCoordinator):
         self.prepare()
         self.main()
         self.finish()
+
+    def add_default_args(self, args=None) -> Any:
+        if args is None:
+            if not hasattr(self, "default_args"):
+                args = Config()
+            else:
+                args = deepcopy(self.default_args)
+        # print("func args:", args)
+        self.args.merge(args, overwrite=False)

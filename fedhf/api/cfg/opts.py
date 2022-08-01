@@ -27,7 +27,9 @@ class opts(object):
             "--exp_name", default="exp", help="name of the experiment."
         )
         self.parser.add_argument(
-            "--exist_ok", action="store_true", help="allow to overwrite existing files."
+            "--exist_ok",
+            action="store_false",  # default=True
+            help="allow to overwrite existing files.",
         )
         self.parser.add_argument(
             "--prj_name", default=None, help="name of the project."
@@ -95,6 +97,7 @@ class opts(object):
             default=50,
             help="when to save the model and result to disk.",
         )
+        self.parser.add_argument("--root_dir", type=str, default=None, help="root dir")
         self.parser.add_argument(
             "--save_dir",
             type=str,
@@ -106,6 +109,9 @@ class opts(object):
             type=str,
             default=None,
             help="where to save the model weights to disk.",
+        )
+        self.parser.add_argument(
+            "--temp_dir", type=str, default=None, help="where to save temp"
         )
 
         # model setting
