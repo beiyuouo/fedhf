@@ -16,7 +16,7 @@ class NonIIDSampler(BaseSampler):
     def __init__(self, args) -> None:
         super(NonIIDSampler, self).__init__(args)
 
-    def sample(self, train_dataset, test_dataset=None):
+    def sample(self, train_dataset, test_dataset=None, export=True):
         """[summary]
 
         Reference: https://github.com/jeremy313/non-iid-dataset-for-personalized-federated-learning
@@ -153,15 +153,20 @@ class NonIIDSampler(BaseSampler):
                     )
 
         if test_dataset is None:
-            return {
+            train_data, test_data = {
                 i: ClientDataset(train_dataset, list(client_data_train[i]))
                 for i in range(self.args.num_clients)
             }, {i: None for i in range(self.args.num_clients)}
         else:
-            return {
+            train_data, test_data = {
                 i: ClientDataset(train_dataset, list(client_data_train[i]))
                 for i in range(self.args.num_clients)
             }, {
                 i: ClientDataset(test_dataset, list(client_data_test[i]))
                 for i in range(self.args.num_clients)
             }
+
+        if export:
+            self.export_data_partition(client_data_train, client_data_test)
+
+        return train_data, test_data

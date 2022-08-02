@@ -16,7 +16,7 @@ class RandomSampler(BaseSampler):
     def __init__(self, args) -> None:
         super(RandomSampler, self).__init__(args)
 
-    def sample(self, train_dataset, test_dataset=None):
+    def sample(self, train_dataset, test_dataset=None, export=True):
         num_items = int(len(train_dataset) / self.args.num_clients)
         client_data_dict, all_idxs = {}, [i for i in range(len(train_dataset))]
         for i in range(self.args.num_clients):
@@ -47,5 +47,8 @@ class RandomSampler(BaseSampler):
             }
         else:
             test_data = {i: None for i in range(self.args.num_clients)}
+
+        if export:
+            self.export_data_partition(client_data_dict, client_data_dict_test)
 
         return train_data, test_data
