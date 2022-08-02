@@ -14,6 +14,7 @@ from fedhf.core import (
     SimulatedAsyncCoordinator,
     SimulatedAsyncRandomCoordinator,
     SimulatedAsyncEstimateCoordinator,
+    SimulatedAsyncLimitedEstimateCoordinator,
 )
 
 
@@ -86,4 +87,21 @@ class TestCoordinator(object):
         )
 
         coordinator = SimulatedAsyncEstimateCoordinator(args)
+        coordinator.run()
+
+    def test_simulated_async_limited_estimate_coordinator(self):
+        args = fedhf.init(
+            model="mlp",
+            dataset="mnist",
+            num_rounds=3,
+            num_epochs=1,
+            num_clients=3,
+            gpus="-1",
+            debug=True,
+            algor="fedasync",
+            input_c=1,
+            image_size=28,
+        )
+
+        coordinator = SimulatedAsyncLimitedEstimateCoordinator(args)
         coordinator.run()

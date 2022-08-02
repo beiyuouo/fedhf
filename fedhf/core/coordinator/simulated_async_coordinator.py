@@ -399,3 +399,158 @@ class SimulatedAsyncEstimateCoordinator(SimulatedAsyncCoordinator):
             self._model_queue.append(path)
             # update time
             self._last_update_time[client_id] = self.server.model.get_model_version()
+
+
+class SimulatedAsyncLimitedEstimateCoordinator(SimulatedAsyncEstimateCoordinator):
+    def __init__(self, args) -> None:
+        super(SimulatedAsyncLimitedEstimateCoordinator, self).__init__(args)
+
+    def log_client_time(self, round_idx, client_id):
+        # format: time, round, rank, event_group, event, value
+        self.logger.log_metric(
+            f"{time.time()}, {round_idx}, {client_id}, {'time'}, {'client_start_train'}, {self._client_time[client_id]}"
+        )
+        self.logger.log_metric(
+            f"{time.time()}, {round_idx}, {client_id}, {'time'}, {'client_end_train'}, {self._client_time[client_id] + self._client_train_time[client_id]}"
+        )
+        self.logger.log_metric(
+            f"{time.time()}, {round_idx}, {client_id}, {'time'}, {'client_start_communication'}, {self._client_time[client_id] + self._client_train_time[client_id]}"
+        )
+        self.logger.log_metric(
+            f"{time.time()}, {round_idx}, {client_id}, {'time'}, {'client_end_communication'}, {self._client_time[client_id] + self._client_train_time[client_id] + self._client_communication_time[client_id]}"
+        )
+
+    def run_round(self, round_idx) -> None:
+        # self.logger.info(f'{self.server.model.get_model_version()}')
+        self._client_next_time = (
+            self._client_time
+            + self._client_train_time
+            + self._client_communication_time
+        )
+        selected_clients = [np.argmin(self._client_next_time)]
+        self.logger.info(f"round {round_idx} selected clients: {selected_clients}")
+
+        for client_id in selected_clients:
+            # add to queue
+            self._client_update_queue.append(client_id)
+
+            staleness = (
+                self.server.model.get_model_version()
+                - self._last_update_time[client_id]
+                + 1
+            )
+            self.log_client_time(round_idx, client_id)
+
+            while staleness > self.max_staleness:
+                # post process client
+                self.logger.log_metric(
+                    f"{time.time()}, {round_idx}, {client_id}, {'drop'}, {'staleness'}, {staleness}"
+                )
+                # next time train from the model from now
+                self._last_update_time[
+                    client_id
+                ] = self.server.model.get_model_version()
+                # update global time
+                self.global_time = max(
+                    self.global_time, self._client_next_time[client_id]
+                )
+                # change the client time
+                self._client_time[client_id] = (
+                    self.global_time + self._client_communication_time[client_id]
+                )
+                # update next time
+                self._client_next_time[client_id] = (
+                    self._client_time[client_id]
+                    + self._client_train_time[client_id]
+                    + self._client_communication_time[client_id]
+                )
+
+                # select next client
+                client_id = np.argmin(self._client_next_time)
+
+                staleness = (
+                    self.server.model.get_model_version()
+                    - self._last_update_time[client_id]
+                    + 1
+                )
+                self.log_client_time(round_idx, client_id)
+
+            client = build_client(self.args.deploy_mode)(
+                self.args, client_id, data_size=len(self.train_data[client_id])
+            )
+
+            _model = deepcopy(self.server.model)
+            _model = _model.load(self._model_queue[-staleness])
+
+            self.logger.info(
+                f"client {client_id} staleness: {staleness} start train from model version: {_model.get_model_version()}"
+            )
+
+            model, result = client.train(
+                data=self.train_data[client_id],
+                model=_model,
+            )
+
+            # update model
+            self.server.update(
+                model,
+                server_model_version=max(0, self.server.model.get_model_version()),
+                client_model_version=max(0, model.get_model_version()),
+            )
+
+            # update time
+            self.global_time = max(
+                self.global_time,
+                self._client_time[client_id]
+                + self._client_train_time[client_id]
+                + self._client_communication_time[client_id],
+            )  # to make sure the global time is greater than the client time
+            self.logger.log_metric(
+                f"{time.time()}, {round_idx}, {-1}, {'time'}, {'server_start_aggregation'}, {self.global_time}"
+            )
+
+            self.global_time += self._server_aggregated_time  # add aggregation time
+            self.logger.log_metric(
+                f"{time.time()}, {round_idx}, {-1}, {'time'}, {'server_end_aggregation'}, {self.global_time}"
+            )
+
+            self._client_time[client_id] = (
+                self.global_time + self._client_communication_time[client_id]
+            )  # model send to client after aggregation
+            self.logger.log_metric(
+                f"{time.time()}, {round_idx}, {client_id}, {'time'}, {'client_start_communication'}, {self._client_time[client_id]}"
+            )
+            self.logger.log_metric(
+                f"{time.time()}, {round_idx}, {client_id}, {'time'}, {'client_end_communication'}, {self._client_time[client_id] + self._client_communication_time[client_id]}"
+            )
+
+            if (
+                self.args.evaluate_on_client
+                and round_idx % self.args.eval_interval == 0
+            ):
+                self.evaluate_on_client()
+
+            # save check point model
+            if round_idx % self.args.chkp_interval == 0:
+                self.logger.info(f"save model: {self.args.exp_name}-{round_idx}.pth")
+                self.server.model.save(
+                    os.path.join(
+                        self.args.weights_dir,
+                        f"{self.args.exp_name}-{round_idx}.pth",
+                    )
+                )
+
+            # save temporary model
+            self.logger.info(
+                f"save temporary model: {self.args.exp_name}-model-tmp-{self.server.model.get_model_version()}.pth"
+            )
+            path = os.path.join(
+                self.args.temp_dir,
+                f"{self.args.exp_name}-model-tmp-{self.server.model.get_model_version()}.pth",
+            )
+            self.server.model.save(path)
+
+            # append model path
+            self._model_queue.append(path)
+            # update time
+            self._last_update_time[client_id] = self.server.model.get_model_version()
