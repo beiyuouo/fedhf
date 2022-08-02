@@ -9,7 +9,12 @@
 
 import pytest
 import fedhf
-from fedhf.core import SimulatedSyncCoordinator, SimulatedAsyncCoordinator
+from fedhf.core import (
+    SimulatedSyncCoordinator,
+    SimulatedAsyncCoordinator,
+    SimulatedAsyncRandomCoordinator,
+    SimulatedAsyncEstimateCoordinator,
+)
 
 
 @pytest.mark.order(4)
@@ -24,6 +29,8 @@ class TestCoordinator(object):
             gpus="-1",
             debug=True,
             algor="fedasync",
+            input_c=1,
+            image_size=28,
         )
 
         coordinator = SimulatedAsyncCoordinator(args)
@@ -40,7 +47,43 @@ class TestCoordinator(object):
             deebug=True,
             select_ratio=0.5,
             algor="fedavg",
+            input_c=1,
+            image_size=28,
         )
 
         coordinator = SimulatedSyncCoordinator(args)
+        coordinator.run()
+
+    def test_simulated_async_random_coordinator(self):
+        args = fedhf.init(
+            model="mlp",
+            dataset="mnist",
+            num_rounds=3,
+            num_epochs=1,
+            num_clients=3,
+            gpus="-1",
+            debug=True,
+            algor="fedasync",
+            input_c=1,
+            image_size=28,
+        )
+
+        coordinator = SimulatedAsyncRandomCoordinator(args)
+        coordinator.run()
+
+    def test_simulated_async_estimate_coordinator(self):
+        args = fedhf.init(
+            model="mlp",
+            dataset="mnist",
+            num_rounds=3,
+            num_epochs=1,
+            num_clients=3,
+            gpus="-1",
+            debug=True,
+            algor="fedasync",
+            input_c=1,
+            image_size=28,
+        )
+
+        coordinator = SimulatedAsyncEstimateCoordinator(args)
         coordinator.run()

@@ -12,6 +12,8 @@ __all__ = [
     "SimulatedBaseCoordinator",
     "SimulatedSyncCoordinator",
     "SimulatedAsyncCoordinator",
+    "SimulatedAsyncRandomCoordinator",
+    "SimulatedAsyncEstimateCoordinator",
 ]
 
 from .base_coordinator import SimulatedBaseCoordinator
@@ -19,13 +21,16 @@ from .base_coordinator import SimulatedBaseCoordinator
 from .simulated_sync_coordinator import SimulatedSyncCoordinator
 from .simulated_async_coordinator import (
     SimulatedAsyncCoordinator,
-    SimulatedAsyncRealCoordinator,
+    SimulatedAsyncRandomCoordinator,
+    SimulatedAsyncEstimateCoordinator,
 )
 
 coordinator_factory = {
     "simulated_sync": SimulatedSyncCoordinator,
     "simulated_async": SimulatedAsyncCoordinator,
-    "simulated_async_real": SimulatedAsyncRealCoordinator,
+    "simulated_async_limited": SimulatedAsyncCoordinator,
+    "simulated_async_random": SimulatedAsyncRandomCoordinator,
+    "simulated_async_estimate": SimulatedAsyncEstimateCoordinator,
 }
 
 

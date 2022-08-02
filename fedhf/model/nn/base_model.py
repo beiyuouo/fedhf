@@ -55,7 +55,12 @@ class BaseModel(nn.Module):
         checkpoint = torch.load(path)
 
         self.args = checkpoint["args"]
-        self.load_state_dict(checkpoint["state_dict"])
+
+        state_dict = checkpoint["state_dict"]
+        self.load_state_dict(
+            state_dict, strict=False
+        )  # strict=False: fix load key error when used thop package
+
         return self
 
     def add_default_args(self, args=None) -> Any:

@@ -89,10 +89,15 @@ class Logger(BaseLogger):
 
             wandb.log(log_dict, *args, **kwargs)
 
-        def log_metric(self, log_info: Union[Dict, str] = None) -> None:
+        def log_metric(self, log_info: Union[Dict, str] = None, **kwargs) -> None:
             self.info(log_info)
+            logf = self.log_metric_file
+            if "path" in kwargs:
+                logf = kwargs["path"]
+            if "file" in kwargs:
+                logf = kwargs["file"]
             # log one line in result.csv
-            with open(self.log_metric_file, "a") as f:
+            with open(logf, "a") as f:
                 f.write(str(log_info) + "\n")
 
     __instance__ = None
