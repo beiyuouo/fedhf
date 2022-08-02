@@ -7,6 +7,7 @@
 # @License :   Apache License 2.0
 
 import os
+import time
 from pathlib import Path
 import ezkfg as ez
 import numpy as np
@@ -81,7 +82,9 @@ class Config(ez.Config):
             self.log_file = self.log_dir / self.log_file
 
         if self.log_metric is None:
-            self.log_metric = self.log_dir / f"{self.exp_name}.metric.log"
+            self.log_metric = (
+                self.log_dir / f"{self.exp_name}_{int(time.time())}.metric.log"
+            )
         else:
             self.log_metric = self.log_dir / self.log_metric
 
