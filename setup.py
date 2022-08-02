@@ -51,4 +51,10 @@ setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python :: 3",
     ],
+    entry_points={
+        "console_scripts": [
+            "fedhfplot=fedhf.api.toolkits.plot:plot",
+            "fedhf=fedhf.api.toolkits.cli:cli",
+        ]
+    },
 )
