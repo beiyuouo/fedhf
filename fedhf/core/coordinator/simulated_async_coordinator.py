@@ -92,12 +92,12 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
 
             if (
                 self.args.evaluate_on_client
-                and round_idx % self.args.eval_interval == 0
+                and (round_idx + 1) % self.args.eval_interval == 0
             ):
                 self.evaluate_on_client()
 
             # save check point model
-            if round_idx % self.args.chkp_interval == 0:
+            if (round_idx + 1) % self.args.chkp_interval == 0:
                 self.logger.info(f"save model: {self.args.exp_name}-{round_idx}.pth")
                 self.server.model.save(
                     os.path.join(
@@ -180,12 +180,12 @@ class SimulatedAsyncRandomCoordinator(SimulatedAsyncCoordinator):
 
             if (
                 self.args.evaluate_on_client
-                and round_idx % self.args.eval_interval == 0
+                and (round_idx + 1) % self.args.eval_interval == 0
             ):
                 self.evaluate_on_client()
 
             # save check point model
-            if round_idx % self.args.chkp_interval == 0:
+            if (round_idx + 1) % self.args.chkp_interval == 0:
                 self.logger.info(f"save model: {self.args.exp_name}-{round_idx}.pth")
                 self.server.model.save(
                     os.path.join(
@@ -371,12 +371,12 @@ class SimulatedAsyncEstimateCoordinator(SimulatedAsyncCoordinator):
 
             if (
                 self.args.evaluate_on_client
-                and round_idx % self.args.eval_interval == 0
+                and (round_idx + 1) % self.args.eval_interval == 0
             ):
                 self.evaluate_on_client()
 
             # save check point model
-            if round_idx % self.args.chkp_interval == 0:
+            if (round_idx + 1) % self.args.chkp_interval == 0:
                 self.logger.info(f"save model: {self.args.exp_name}-{round_idx}.pth")
                 self.server.model.save(
                     os.path.join(
@@ -458,6 +458,14 @@ class SimulatedAsyncLimitedEstimateCoordinator(SimulatedAsyncEstimateCoordinator
                 self._client_time[client_id] = (
                     self.global_time + self._client_communication_time[client_id]
                 )
+                # log communication time
+                self.logger.log_metric(
+                    f"{time.time()}, {round_idx}, {client_id}, {'time'}, {'client_start_communication'}, {self.global_time}"
+                )
+                self.logger.log_metric(
+                    f"{time.time()}, {round_idx}, {client_id}, {'time'}, {'client_end_communication'}, {self.global_time + self._client_communication_time[client_id]}"
+                )
+
                 # update next time
                 self._client_next_time[client_id] = (
                     self._client_time[client_id]
@@ -526,12 +534,12 @@ class SimulatedAsyncLimitedEstimateCoordinator(SimulatedAsyncEstimateCoordinator
 
             if (
                 self.args.evaluate_on_client
-                and round_idx % self.args.eval_interval == 0
+                and (round_idx + 1) % self.args.eval_interval == 0
             ):
                 self.evaluate_on_client()
 
             # save check point model
-            if round_idx % self.args.chkp_interval == 0:
+            if (round_idx + 1) % self.args.chkp_interval == 0:
                 self.logger.info(f"save model: {self.args.exp_name}-{round_idx}.pth")
                 self.server.model.save(
                     os.path.join(
