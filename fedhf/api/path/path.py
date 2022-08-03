@@ -123,3 +123,21 @@ def increment_path(path, exist_ok=False, sep="", mkdir=False):
     if mkdir:
         path.mkdir(parents=True, exist_ok=True)  # make directory
     return path
+
+
+def pathlib_path(path):
+    if isinstance(path, Path):
+        return path
+    elif is_str(path):
+        return Path(path)
+    else:
+        raise TypeError("path must be a string or Path object")
+
+
+def os_path(path):
+    if isinstance(path, Path):
+        return str(path)
+    elif is_str(path):
+        return path
+    else:
+        raise TypeError("path must be a string or Path object")
