@@ -43,6 +43,9 @@ class SimulatedBaseCoordinator(AbsCoordinator):
         self.logger = Logger(self.args)
 
     def setup_data(self) -> None:
+        self.dataset = build_dataset(self.args.dataset)(self.args)
+        self.sampler = build_sampler(self.args.sampler)(self.args)
+
         # setup data for client
         if self.args.debug:
             # reduce data for test
@@ -71,9 +74,6 @@ class SimulatedBaseCoordinator(AbsCoordinator):
         self.test_data[-1] = None
 
     def prepare(self) -> None:
-        self.dataset = build_dataset(self.args.dataset)(self.args)
-        self.sampler = build_sampler(self.args.sampler)(self.args)
-
         self.setup_data()
 
         self.client_list = [i for i in range(self.args.num_clients)]
