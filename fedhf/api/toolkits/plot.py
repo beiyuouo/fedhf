@@ -24,10 +24,11 @@ def plot():
 @click.argument("filename", type=click.Path(exists=True))
 @click.argument(
     "output_dir",
-    default=os.path.join("runs", "exp", "plot"),
-    type=click.Path(exists=False),
+    default=None,
+    required=False,
 )
 def plot_timeline(filename, output_dir):
+    output_dir = output_dir or os.path.dirname(filename)
     # read from csv/log file
     # time, round, rank, event_group, event_type, event_content
     with open(filename, "r") as f:
@@ -69,7 +70,7 @@ def plot_timeline(filename, output_dir):
 
     total_client = np.max(time_data[:, 2].astype(np.int)) + 1
     print("total client:", total_client)
-    plt.figure(figsize=(12, 3))
+    plt.figure(figsize=(12, 5))
     line_height = 0.4
 
     for client_idx in range(-1, total_client):
@@ -128,9 +129,12 @@ def plot_timeline(filename, output_dir):
     y_keys = [f"client_{str(i)}" for i in range(total_client)]
     y_keys = ["server"] + y_keys
     plt.yticks(np.arange(0, total_client + 1) - 0.5, y_keys)
-    plt.xticks(np.arange(0, x_limit, 10))
+    # plt.xticks(np.arange(0, x_limit, 10))
+    # ignore xtricks
+    plt.xticks([])
     plt.title("timeline")
     plt.savefig(os.path.join(output_dir, "timeline.png"))
+    print("save to", os.path.join(output_dir, "timeline.png"))
     plt.show()
 
 

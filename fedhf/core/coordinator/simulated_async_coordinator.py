@@ -313,7 +313,7 @@ class SimulatedAsyncEstimateCoordinator(SimulatedAsyncCoordinator):
             _model = _model.load(self._model_queue[-staleness])
 
             self.logger.info(
-                f"client {client_id} staleness: {staleness} start train from model version: {_model.get_model_version()}"
+                f"client {client_id} staleness: {staleness} start train from model version: {_model.get_model_version()} {self._model_queue[-staleness]}"
             )
 
             model, result = client.train(
