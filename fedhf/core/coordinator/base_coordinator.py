@@ -110,6 +110,8 @@ class SimulatedBaseCoordinator(AbsCoordinator):
 
     def evaluate_on_client(self) -> None:
         self.logger.info("evaluate on client")
+        total_train_result = {}
+        total_test_result = {}
         for client_id in self.client_list:
             client = build_client(self.args.deploy_mode)(
                 self.args, client_id, data_size=len(self.train_data[client_id])
@@ -118,10 +120,59 @@ class SimulatedBaseCoordinator(AbsCoordinator):
                 data=self.train_data[client_id], model=self.server.model
             )
             self.logger.info(f"client {client_id} train result: {train_result}")
+            train_result.update({"data_size": len(self.train_data[client_id])})
+            total_train_result[client_id] = train_result
+
             test_result = client.evaluate(
                 data=self.test_data[client_id], model=self.server.model
             )
             self.logger.info(f"client {client_id} test result: {test_result}")
+            test_result.update({"data_size": len(self.test_data[client_id])})
+            total_test_result[client_id] = test_result
+
+        if len(self.client_list) <= 0:
+            self.logger.info(f"no client to evaluate")
+            return
+
+        total_train_metric = {}
+        total_test_metric = {}
+        for client_id in self.client_list:
+            for key in total_train_result[client_id]:
+                if key not in total_train_metric:
+                    total_train_metric[key] = 0.0
+
+                if key != "data_size":
+                    total_train_metric[key] += (
+                        total_train_result[client_id][key]
+                        * total_train_result[client_id]["data_size"]
+                    )
+                else:
+                    total_train_metric[key] += total_train_result[client_id][key]
+
+            for key in total_test_result[client_id]:
+                if key not in total_test_metric:
+                    total_test_metric[key] = 0.0
+
+                if key != "data_size":
+                    total_test_metric[key] += (
+                        total_test_result[client_id][key]
+                        * total_test_result[client_id]["data_size"]
+                    )
+                else:
+                    total_test_metric[key] += total_test_result[client_id][key]
+
+        assert total_train_metric["data_size"] > 0, "data_size is zero"
+
+        for key in total_train_metric:
+            if key != "data_size":
+                total_train_metric[key] /= total_train_metric["data_size"]
+
+        for key in total_test_metric:
+            if key != "data_size":
+                total_test_metric[key] /= total_test_metric["data_size"]
+
+        self.logger.info(f"total train result: {total_train_metric}")
+        self.logger.info(f"total test result: {total_test_metric}")
 
         self.logger.info(
             f"final server model version: {self.server.model.get_model_version()}"
