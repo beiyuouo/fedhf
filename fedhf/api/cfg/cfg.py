@@ -77,7 +77,7 @@ class Config(ez.Config):
         self.log_dir.mkdir(parents=True, exist_ok=True)
 
         if self.log_file is None:
-            self.log_file = self.log_dir / f"{self.exp_name}.log"
+            self.log_file = self.log_dir / f"{self.exp_name}_{int(time.time())}.log"
         else:
             self.log_file = self.log_dir / self.log_file
 
