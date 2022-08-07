@@ -3,6 +3,7 @@
 # @File    :   fedhf\model\nn\unet.py
 # @Time    :   2022-02-26 14:04:05
 
+from collections import OrderedDict
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -34,24 +35,34 @@ class DoubleConv(nn.Module):
         if not hidden_channel:
             hidden_channel = out_channel
         self.double_conv = nn.Sequential(
-            nn.Conv2d(
-                in_channel,
-                hidden_channel,
-                kernel_size=kernel_size,
-                padding=padding,
-                bias=bias,
-            ),
-            nn.BatchNorm2d(hidden_channel),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(
-                hidden_channel,
-                out_channel,
-                kernel_size=kernel_size,
-                padding=padding,
-                bias=bias,
-            ),
-            nn.BatchNorm2d(out_channel),
-            nn.ReLU(inplace=True),
+            OrderedDict(
+                [
+                    (
+                        "conv2d1",
+                        nn.Conv2d(
+                            in_channel,
+                            hidden_channel,
+                            kernel_size=kernel_size,
+                            padding=padding,
+                            bias=bias,
+                        ),
+                    ),
+                    ("bn2d1", nn.BatchNorm2d(hidden_channel)),
+                    ("relu1", nn.ReLU(inplace=True)),
+                    (
+                        "conv2d2",
+                        nn.Conv2d(
+                            hidden_channel,
+                            out_channel,
+                            kernel_size=kernel_size,
+                            padding=padding,
+                            bias=bias,
+                        ),
+                    ),
+                    ("bn2d2", nn.BatchNorm2d(out_channel)),
+                    ("relu2", nn.ReLU(inplace=True)),
+                ]
+            )
         )
 
     def forward(self, x):
