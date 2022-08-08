@@ -91,7 +91,7 @@ class DefaultTrainer(BaseTrainer):
         self.logger.info(f"start training on {client_id}")
 
         self.train_loss = []
-        model.train()
+        self.model.train()
         for epoch in range(num_epochs):
             self.epoch = epoch
             self.train_epoch(dataloader)
