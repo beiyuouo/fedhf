@@ -24,3 +24,22 @@ def get_communication_cost(obj) -> float:
     # return the communication cost of the object calculated by the binary size of the object
     # the unit is MB
     return len(pickle.dumps(obj))
+
+
+def model_merge_ignore_bn(model1: nn.Module, model2: nn.Module) -> nn.Module:
+    """
+    Copy the parameters from model2 to model1, skip the batchnorm layers
+    """
+    for (name1, param1), (name2, param2) in zip(
+        model1.named_parameters(), model2.named_parameters()
+    ):
+        assert name1 == name2
+
+    for (name1, param1), (name2, param2) in zip(
+        model1.named_parameters(), model2.named_parameters()
+    ):
+        if "bn" in name1:
+            continue
+        param1.data.copy_(param2.data)
+
+    return model1

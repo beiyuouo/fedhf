@@ -95,14 +95,20 @@ class SimulatedBaseCoordinator(AbsCoordinator):
 
     def evaluate_on_server(self) -> None:
         self.logger.info("evaluate on server")
-        train_result = self.server.evaluate(
-            data=self.train_data[-1], model=self.server.model
-        )
-        self.logger.info(f"train result: {train_result}")
-        test_result = self.server.evaluate(
-            data=self.test_data[-1], model=self.server.model
-        )
-        self.logger.info(f"test result: {test_result}")
+        if -1 not in self.train_data and -1 not in self.test_data:
+            self.logger.info("no train data on server")
+            return
+        if -1 in self.train_data:
+            train_result = self.server.evaluate(
+                data=self.train_data[-1], model=self.server.model
+            )
+            self.logger.info(f"train result: {train_result}")
+
+        if -1 in self.test_data:
+            test_result = self.server.evaluate(
+                data=self.test_data[-1], model=self.server.model
+            )
+            self.logger.info(f"test result: {test_result}")
 
         self.logger.info(
             f"final server model version: {self.server.model.get_model_version()}"

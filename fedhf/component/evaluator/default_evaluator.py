@@ -11,7 +11,6 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 
-from fedhf.model import build_criterion, build_optimizer
 from .base_evaluator import BaseEvaluator
 
 
