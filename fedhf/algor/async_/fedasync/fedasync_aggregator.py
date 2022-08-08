@@ -66,6 +66,8 @@ class FedAsyncAggregator(AsyncAggregator):
             )
 
         alpha = self._get_alpha(staleness=server_model_version - client_model_version)
+        self.logger.info(f"aggregate with alpha = {alpha}")
+
         new_param = torch.mul(1 - alpha, server_param) + torch.mul(alpha, client_param)
 
         # assert torch.equal(new_param, server_param) == False
