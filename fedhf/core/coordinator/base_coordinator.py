@@ -101,7 +101,7 @@ class SimulatedBaseCoordinator(AbsCoordinator):
         self.logger.info(f"client {client_id} {event_type} metric: {metric}")
         for k, v in metric.items():
             # time, round, client, event_type, metric_name, metric_value
-            self.logger.info(
+            self.logger.log_metric(
                 f"{time.time()}, {self.round_idx}, {client_id}, {event_type}, {k}, {v}"
             )
 
