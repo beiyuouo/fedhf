@@ -6,6 +6,7 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
+import time
 from abc import ABC, abstractmethod
 from copy import deepcopy
 from typing import Any
@@ -85,6 +86,7 @@ class SimulatedBaseCoordinator(AbsCoordinator):
     def main(self) -> None:
         try:
             for round_idx in range(self.args.num_rounds):
+                self.round_idx = round_idx
                 self.run_round(round_idx=round_idx)
 
             self.logger.info(f"all rounds finished.")
@@ -92,6 +94,16 @@ class SimulatedBaseCoordinator(AbsCoordinator):
         except KeyboardInterrupt:
             self.server.model.save()
             self.logger.info(f"interrupted by user.")
+
+    def log_metric(
+        self, client_id: int = -1, metric: dict = None, event_type: str = "train"
+    ) -> None:
+        self.logger.info(f"client {client_id} {event_type} metric: {metric}")
+        for k, v in metric.items():
+            # time, round, client, event_type, metric_name, metric_value
+            self.logger.info(
+                f"{time.time()}, {self.round_idx}, {client_id}, {event_type}, {k}, {v}"
+            )
 
     def evaluate_on_server(self) -> None:
         self.logger.info("evaluate on server")
@@ -136,6 +148,9 @@ class SimulatedBaseCoordinator(AbsCoordinator):
             test_result.update({"data_size": len(self.test_data[client_id])})
             total_test_result[client_id] = test_result
 
+            self.log_metric(client_id, train_result, "train")
+            self.log_metric(client_id, test_result, "test")
+
         if len(self.client_list) <= 0:
             self.logger.info(f"no client to evaluate")
             return
@@ -179,6 +194,9 @@ class SimulatedBaseCoordinator(AbsCoordinator):
 
         self.logger.info(f"total train result: {total_train_metric}")
         self.logger.info(f"total test result: {total_test_metric}")
+
+        self.log_metric(-1, total_train_metric, "train")
+        self.log_metric(-1, total_test_metric, "test")
 
         self.logger.info(
             f"final server model version: {self.server.model.get_model_version()}"

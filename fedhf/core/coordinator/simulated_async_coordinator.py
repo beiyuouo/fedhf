@@ -124,11 +124,6 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
     def finish(self) -> None:
         super(SimulatedAsyncCoordinator, self).finish()
 
-    def run(self) -> None:
-        self.prepare()
-        self.main()
-        self.finish()
-
 
 class SimulatedAsyncRandomCoordinator(SimulatedAsyncCoordinator):
     """Simulated Asynchorous Completely Random Coordinator"""

@@ -62,8 +62,3 @@ class SimulatedSyncCoordinator(SimulatedBaseCoordinator):
 
     def finish(self) -> None:
         super(SimulatedSyncCoordinator, self).finish()
-
-    def run(self) -> None:
-        self.prepare()
-        self.main()
-        self.finish()
