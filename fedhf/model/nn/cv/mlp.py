@@ -6,6 +6,7 @@
 # @Email   :   bj.yan.pa@qq.com
 # @License :   Apache License 2.0
 
+from collections import OrderedDict
 import torch
 import torch.nn as nn
 
@@ -13,9 +14,9 @@ from fedhf import Config
 from ..base_model import BaseModel
 
 
-class MLP(BaseModel):
+class MLPMNIST(BaseModel):
     default_args = Config(
-        mlp={"input_dim": 28 * 28, "hidden_dim": 128, "output_dim": 10}
+        mlp={"input_dim": 28 * 28, "hidden_dim": 200, "output_dim": 10}
     )
 
     def __init__(
@@ -26,19 +27,28 @@ class MLP(BaseModel):
         super().__init__(args, **kwargs)
         self.add_default_args()
 
-        self.layer_input = nn.Linear(
-            self.args.mlp.get("input_dim"), self.args.mlp.get("hidden_dim")
-        )
-        self.relu = nn.ReLU()
-        self.dropout = nn.Dropout()
-        self.layer_hidden = nn.Linear(
-            self.args.mlp.get("hidden_dim"), self.args.mlp.get("output_dim")
+        self.net = nn.Sequential(
+            OrderedDict(
+                [
+                    (
+                        "fc1",
+                        nn.Linear(self.args.mlp.input_dim, self.args.mlp.hidden_dim),
+                    ),
+                    ("relu1", nn.ReLU()),
+                    (
+                        "fc2",
+                        nn.Linear(self.args.mlp.hidden_dim, self.args.mlp.hidden_dim),
+                    ),
+                    ("relu2", nn.ReLU()),
+                    (
+                        "fc3",
+                        nn.Linear(self.args.mlp.hidden_dim, self.args.mlp.output_dim),
+                    ),
+                ]
+            )
         )
 
     def forward(self, x):
-        x = x.view(-1, x.shape[1] * x.shape[-2] * x.shape[-1])
-        x = self.layer_input(x)
-        x = self.dropout(x)
-        x = self.relu(x)
-        x = self.layer_hidden(x)
+        x = x.view(x.size(0), -1)
+        x = self.net(x)
         return x
