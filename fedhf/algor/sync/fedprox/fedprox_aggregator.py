@@ -7,6 +7,7 @@
 # @License :   Apache License 2.0
 
 
+from copy import deepcopy
 import time
 import numpy as np
 import torch
@@ -21,7 +22,7 @@ class FedProxAggregator(SyncAggregator):
         super(FedProxAggregator, self).__init__(args)
 
     def agg(self, server_param: torch.Tensor, client_param: torch.Tensor, **kwargs):
-        self._model_cached.append(client_param)
+        self._model_cached.append(deepcopy(client_param))
         self._model_counter += 1
 
         kwargs = Config(**kwargs)
