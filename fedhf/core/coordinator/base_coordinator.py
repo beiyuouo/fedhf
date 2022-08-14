@@ -205,11 +205,11 @@ class SimulatedBaseCoordinator(AbsCoordinator):
         assert total_train_metric["data_size"] > 0, "data_size is zero"
 
         for key in total_train_metric:
-            if key != "data_size":
+            if key != "data_size" and total_train_metric["data_size"] > 0:
                 total_train_metric[key] /= total_train_metric["data_size"]
 
         for key in total_test_metric:
-            if key != "data_size":
+            if key != "data_size" and total_test_metric["data_size"] > 0:
                 total_test_metric[key] /= total_test_metric["data_size"]
 
         self.logger.info(f"total train result: {total_train_metric}")
