@@ -71,9 +71,19 @@ class SimulatedBaseCoordinator(AbsCoordinator):
                 self.dataset.trainset, self.dataset.testset
             )
 
+            for i in range(self.args.num_clients):
+                self.logger.info(
+                    f"client {i} train data: {len(self.train_data[i])} samples, test data: {len(self.test_data[i])} samples"
+                )
+            self.logger.info(
+                f"server train data: {len(self.train_data[-1])} samples, test data: {len(self.test_data[-1])} samples"
+            )
+
         # setup data for server
-        self.train_data[-1] = None
-        self.test_data[-1] = None
+        if -1 not in self.train_data:
+            self.train_data[-1] = None
+        if -1 not in self.test_data:
+            self.test_data[-1] = None
 
     def prepare(self) -> None:
         self.setup_data()
