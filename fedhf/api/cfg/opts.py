@@ -168,7 +168,7 @@ class opts(object):
         self.parser.add_argument(
             "--evaluator", type=str, default="default_evaluator", help="evaluator."
         )
-        self.parser.add_argument("--optim", type=str, default="adam", help="optimizer.")
+        self.parser.add_argument("--optim", type=str, default="sgd", help="optimizer.")
         self.parser.add_argument(
             "--momentum", type=float, default=0.75, help="momentum."
         )

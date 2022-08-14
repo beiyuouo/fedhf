@@ -62,3 +62,16 @@ class TestSampler(object):
         assert len(train_data) == self.args.num_clients
         assert len(train_data[0]) == len(dataset.trainset) // self.args.num_clients
         assert len(test_data[1]) % (len(dataset.testset) // self.args.num_classes) == 0
+
+    def test_noniid_sampler_with_test_dataset(self):
+        sampler = build_sampler("per-non-iid")(self.args)
+
+        assert sampler is not None
+        assert sampler.__class__.__name__ == "PerNonIIDSampler"
+
+        dataset = build_dataset(self.args.dataset)(self.args)
+        train_data, test_data = sampler.sample(dataset.trainset, dataset.testset)
+
+        assert len(train_data) == self.args.num_clients
+        assert len(train_data[0]) == len(dataset.trainset) // self.args.num_clients
+        assert len(test_data[1]) % (len(dataset.testset) // self.args.num_classes) == 0

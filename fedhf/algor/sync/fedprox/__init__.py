@@ -8,11 +8,11 @@
 
 import os
 from fedhf import Config
-from .fedprox_aggregator import FedProxAggregator
+from ..fedavg.fedavg_aggregator import FedAvgAggregator
 from .fedprox_trainer import FedProxTrainer
 
 components = {
-    "agg": {"fedprox": FedProxAggregator},
+    "agg": {"fedprox": FedAvgAggregator},
     "trainer": {"fedprox": FedProxTrainer},
 }
 

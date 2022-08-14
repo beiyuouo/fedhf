@@ -7,7 +7,11 @@
 # @License :   Apache License 2.0
 
 from abc import ABC
+from copy import deepcopy
+from typing import Any, List
+import torch.utils.data as data
 
+from fedhf.api import Config
 from fedhf.api.utils.json_utils import NpEncoder
 
 
@@ -17,6 +21,15 @@ class BaseSampler(ABC):
 
     def sample(self):
         raise NotImplementedError
+
+    def split_dataset(self, data_idxs: List, test_size: int = 0.2):
+        """
+        split dataset into train and test
+        """
+        from sklearn.model_selection import train_test_split
+
+        train_data, test_data = train_test_split(data_idxs, test_size=test_size)
+        return train_data, test_data
 
     def export_data_partition(self, train_data, test_data):
         # export to json
@@ -46,3 +59,14 @@ class BaseSampler(ABC):
                     json.dump(test_data_, f, cls=NpEncoder)
             else:
                 raise TypeError("test_data must be dict or list")
+
+    def add_default_args(self, args=None) -> Any:
+        if args is None:
+            if not hasattr(self, "default_args"):
+                args = Config()
+            else:
+                args = deepcopy(self.default_args)
+        # print("func args:", args)
+        self.args.merge(args, overwrite=False)
+        # print("func args:", self.args)
+        # return self.args

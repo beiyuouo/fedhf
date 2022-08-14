@@ -18,10 +18,12 @@ from .base_sampler import BaseSampler
 
 from .random_sampler import RandomSampler
 from .noniid_sampler import NonIIDSampler
+from .pernoniid_sampler import PerNonIIDSampler
 
 sampler_factory = {
     "random": RandomSampler,
     "non-iid": NonIIDSampler,
+    "per-non-iid": PerNonIIDSampler,
 }
 
 
