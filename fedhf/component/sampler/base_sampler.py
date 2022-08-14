@@ -11,13 +11,14 @@ from copy import deepcopy
 from typing import Any, List
 import torch.utils.data as data
 
-from fedhf.api import Config
+from fedhf.api import Config, Logger
 from fedhf.api.utils.json_utils import NpEncoder
 
 
 class BaseSampler(ABC):
     def __init__(self, args) -> None:
         self.args = args
+        self.logger = Logger(self.args)
 
     def sample(self):
         raise NotImplementedError

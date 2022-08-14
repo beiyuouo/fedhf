@@ -14,17 +14,22 @@ from .base_sampler import BaseSampler
 
 
 class NonIIDSampler(BaseSampler):
-    default_args = {"noniid_sampler": {"alpha": 0.5, "least_samples": 20}}
+    default_args = {
+        "noniid_sampler": {"alpha": 0.5, "least_samples": 20, "split": False}
+    }
 
     def __init__(self, args) -> None:
         super(NonIIDSampler, self).__init__(args)
 
-    def sample(self, train_dataset, test_dataset=None, export=True, split=True):
+    def sample(self, train_dataset, test_dataset=None, export=True, split=None):
         self.add_default_args()
 
-        if split:
-            train_idxs, test_idxs = self.split_dataset(range(len(train_dataset)))
+        if split is True or self.args.noniid_sampler.get("split", True):
+            train_idxs, test_idxs = self.split_dataset(list(range(len(train_dataset))))
             test_dataset = train_dataset
+        else:
+            train_idxs = list(range(len(train_dataset)))
+            test_idxs = list(range(len(test_dataset)))
 
         # print("train_idxs:", train_idxs)
         # print("test_idxs:", test_idxs)
@@ -94,6 +99,9 @@ class NonIIDSampler(BaseSampler):
             i: ClientDataset(test_dataset, list(client_data_test[i]))
             for i in client_data_test.keys()
         }
+
+        self.logger.info("client_data_train: {}".format(client_data_train))
+        self.logger.info("client_data_test: {}".format(client_data_test))
 
         if export:
             self.export_data_partition(client_data_train, client_data_test)
