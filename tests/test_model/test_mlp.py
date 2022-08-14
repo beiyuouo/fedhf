@@ -24,8 +24,8 @@ class TestMLP(object):
         model = build_model(self.args.model)(self.args)
         print(model)
 
-        assert model.__class__.__name__ == "MLP"
-        assert model.layer_hidden.out_features == 10
+        assert model.__class__.__name__ == "MLPMNIST"
+        assert model.args.mlp.hidden_dim == 200
 
         dataset = build_dataset(self.args.dataset)(self.args)
         dataloader = DataLoader(dataset.trainset, batch_size=1, shuffle=False)

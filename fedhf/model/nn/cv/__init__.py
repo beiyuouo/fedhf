@@ -20,6 +20,7 @@ cv_model_factory = {
     "resnet": ResNet,
     "resnet18": ResNet,
     "resnet_mnist": ResNetMNIST,
+    "mlp": MLPMNIST,
     "mlp_mnist": MLPMNIST,
     "alexnet_cifar10": AlexNetCIFAR10,
     "cnn_cifar10": CNN2CIFAR10,

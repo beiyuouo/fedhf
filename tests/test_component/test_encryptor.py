@@ -9,7 +9,7 @@
 import pytest
 import fedhf
 from fedhf.component import build_encryptor
-from fedhf.model.nn import MLP
+from fedhf.model.nn import MLPMNIST as MLP
 
 
 @pytest.mark.order(3)

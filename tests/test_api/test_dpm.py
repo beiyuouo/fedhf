@@ -14,7 +14,7 @@ import torch.nn as nn
 from fedhf import dpm
 import fedhf
 
-from fedhf.model.nn import MLP
+from fedhf.model.nn import MLPMNIST as MLP
 from fedhf.dataset.random import RandomDataset
 
 
