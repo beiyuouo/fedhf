@@ -103,6 +103,10 @@ class SimulatedBaseCoordinator(AbsCoordinator):
         self, client_id: int = -1, metric: dict = None, event_type: str = "train"
     ) -> None:
         self.logger.info(f"client {client_id} {event_type} metric: {metric}")
+
+        if metric is None:
+            return
+
         for k, v in metric.items():
             # time, round, client, event_type, metric_name, metric_value
             self.logger.log_metric(
