@@ -7,6 +7,7 @@
 # @License :   Apache License 2.0
 
 import time
+import os
 from abc import ABC, abstractmethod
 from copy import deepcopy
 from typing import Any
@@ -89,6 +90,9 @@ class SimulatedBaseCoordinator(AbsCoordinator):
                 self.round_idx = round_idx
                 self.run_round(round_idx=round_idx)
 
+                self.check_eval(round_idx=round_idx)
+                self.check_chkp(round_idx=round_idx)
+
             self.logger.info(f"all rounds finished.")
 
         except KeyboardInterrupt:
@@ -125,6 +129,8 @@ class SimulatedBaseCoordinator(AbsCoordinator):
         self.logger.info(
             f"final server model version: {self.server.model.get_model_version()}"
         )
+        self.log_metric(-1, train_result, "train")
+        self.log_metric(-1, test_result, "test")
 
     def evaluate_on_client(self) -> None:
         self.logger.info("evaluate on client")
@@ -228,3 +234,18 @@ class SimulatedBaseCoordinator(AbsCoordinator):
                 args = deepcopy(self.default_args)
         # print("func args:", args)
         self.args.merge(args, overwrite=False)
+
+    def check_eval(self, round_idx):
+        if (round_idx + 1) % self.args.eval_interval == 0:
+            if self.args.evaluate_on_client:
+                self.evaluate_on_client()
+            self.evaluate_on_server()
+
+    def check_chkp(self, round_idx):
+        if (round_idx + 1) % self.args.chkp_interval == 0:
+            self.server.model.save(
+                os.path.join(
+                    self.args.save_dir,
+                    f"{self.args.exp_name}-{self.server.model.get_model_version()}.pth",
+                )
+            )

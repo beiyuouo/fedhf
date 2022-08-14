@@ -46,19 +46,5 @@ class SimulatedSyncCoordinator(SimulatedBaseCoordinator):
                 weight=len(self.train_data[client_id]),
             )
 
-        if (
-            self.args.evaluate_on_client
-            and (round_idx + 1) % self.args.eval_interval == 0
-        ):
-            self.evaluate_on_client()
-
-        if (round_idx + 1) % self.args.chkp_interval == 0:
-            self.server.model.save(
-                os.path.join(
-                    self.args.save_dir,
-                    f"{self.args.exp_name}-{self.server.model.get_model_version()}.pth",
-                )
-            )
-
     def finish(self) -> None:
         super(SimulatedSyncCoordinator, self).finish()

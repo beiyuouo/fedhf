@@ -90,22 +90,6 @@ class SimulatedAsyncCoordinator(SimulatedBaseCoordinator):
                 client_model_version=max(0, model.get_model_version()),
             )
 
-            if (
-                self.args.evaluate_on_client
-                and (round_idx + 1) % self.args.eval_interval == 0
-            ):
-                self.evaluate_on_client()
-
-            # save check point model
-            if (round_idx + 1) % self.args.chkp_interval == 0:
-                self.logger.info(f"save model: {self.args.exp_name}-{round_idx}.pth")
-                self.server.model.save(
-                    os.path.join(
-                        self.args.weights_dir,
-                        f"{self.args.exp_name}-{round_idx}.pth",
-                    )
-                )
-
             # save temporary model
             self.logger.info(
                 f"save temporary model: {self.args.exp_name}-model-tmp-{self.server.model.get_model_version()}.pth"
@@ -172,22 +156,6 @@ class SimulatedAsyncRandomCoordinator(SimulatedAsyncCoordinator):
                 server_model_version=max(0, self.server.model.get_model_version()),
                 client_model_version=max(0, model.get_model_version()),
             )
-
-            if (
-                self.args.evaluate_on_client
-                and (round_idx + 1) % self.args.eval_interval == 0
-            ):
-                self.evaluate_on_client()
-
-            # save check point model
-            if (round_idx + 1) % self.args.chkp_interval == 0:
-                self.logger.info(f"save model: {self.args.exp_name}-{round_idx}.pth")
-                self.server.model.save(
-                    os.path.join(
-                        self.args.weights_dir,
-                        f"{self.args.exp_name}-{round_idx}.pth",
-                    )
-                )
 
             # save temporary model
             self.logger.info(
@@ -364,22 +332,6 @@ class SimulatedAsyncEstimateCoordinator(SimulatedAsyncCoordinator):
                 f"{time.time()}, {round_idx}, {client_id}, {'time'}, {'client_end_communication'}, {self._client_time[client_id] + self._client_communication_time[client_id]}"
             )
 
-            if (
-                self.args.evaluate_on_client
-                and (round_idx + 1) % self.args.eval_interval == 0
-            ):
-                self.evaluate_on_client()
-
-            # save check point model
-            if (round_idx + 1) % self.args.chkp_interval == 0:
-                self.logger.info(f"save model: {self.args.exp_name}-{round_idx}.pth")
-                self.server.model.save(
-                    os.path.join(
-                        self.args.weights_dir,
-                        f"{self.args.exp_name}-{round_idx}.pth",
-                    )
-                )
-
             # save temporary model
             self.logger.info(
                 f"save temporary model: {self.args.exp_name}-model-tmp-{self.server.model.get_model_version()}.pth"
@@ -526,22 +478,6 @@ class SimulatedAsyncLimitedEstimateCoordinator(SimulatedAsyncEstimateCoordinator
             self.logger.log_metric(
                 f"{time.time()}, {round_idx}, {client_id}, {'time'}, {'client_end_communication'}, {self._client_time[client_id] + self._client_communication_time[client_id]}"
             )
-
-            if (
-                self.args.evaluate_on_client
-                and (round_idx + 1) % self.args.eval_interval == 0
-            ):
-                self.evaluate_on_client()
-
-            # save check point model
-            if (round_idx + 1) % self.args.chkp_interval == 0:
-                self.logger.info(f"save model: {self.args.exp_name}-{round_idx}.pth")
-                self.server.model.save(
-                    os.path.join(
-                        self.args.weights_dir,
-                        f"{self.args.exp_name}-{round_idx}.pth",
-                    )
-                )
 
             # save temporary model
             self.logger.info(

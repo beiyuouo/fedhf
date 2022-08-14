@@ -52,8 +52,10 @@ class DefaultEvaluator(BaseEvaluator):
 
             losses += loss.item()
 
-        losses /= len(dataloader)
-        acc /= len(dataloader.dataset)
+        if dataloader and len(dataloader) > 0:
+            losses /= len(dataloader)
+            acc /= len(dataloader.dataset)
+
         self.logger.info(f"evaluation on {client_id}: loss {losses}, acc {acc}")
         self.logger.info(f"evaluation on {client_id} finished")
 
